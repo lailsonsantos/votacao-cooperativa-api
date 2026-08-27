@@ -232,11 +232,15 @@
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
-        <version>2.43.0</version>
+        <version>3.10.1</version>
         <configuration>
           <java>
             <googleJavaFormat>
-              <version>1.22.0</version>
+              <!-- O formatador usa APIs internas do javac, entao a versao precisa
+                   conhecer o JDK que roda o build. O JBR embutido do IntelliJ ja
+                   esta no 25; uma versao antiga falha com NoSuchMethodError ali e
+                   passa no terminal, onde o JDK e outro. -->
+              <version>1.36.1</version>
               <style>AOSP</style>
             </googleJavaFormat>
             <removeUnusedImports/>
@@ -258,7 +262,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.8.6.4</version>
+        <version>4.10.4.0</version>
         <configuration>
           <effort>Max</effort>
           <threshold>Medium</threshold>

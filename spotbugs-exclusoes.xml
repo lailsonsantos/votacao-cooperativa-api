@@ -23,4 +23,23 @@
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
 
+  <!--
+    Divisao de resposta HTTP no filtro de correlacao.
+
+    O achado e legitimo na origem: o valor vem de um cabecalho da requisicao e
+    termina em um cabecalho da resposta. Ele foi corrigido — o valor so e
+    reaproveitado se casar com [A-Za-z0-9_-]{1,64}; qualquer outra coisa e
+    descartada e um UUID novo e gerado no lugar.
+
+    A analise de contaminacao nao consegue provar que a verificacao torna o valor
+    seguro, entao continua sinalizando. A exclusao e pontual, nomeia a classe e o
+    padrao, e a correcao esta coberta por CorrelationIdFilterTest, que inclui os
+    dois vetores concretos: CRLF injetando cabecalho e quebra de linha forjando
+    linha de log.
+  -->
+  <Match>
+    <Class name="br.com.cooperativa.votacao.config.CorrelationIdFilter"/>
+    <Bug pattern="HRS_REQUEST_PARAMETER_TO_HTTP_HEADER"/>
+  </Match>
+
 </FindBugsFilter>

@@ -112,6 +112,18 @@ Se ainda assim ocorrer, alinhe o JDK da IDE ao do projeto:
   deve ser **Project SDK** (não o *JetBrains Runtime* embutido, que costuma ser
   outra versão).
 
+### `NoSuchMethodError` em `google-java-format` durante o `spotless:check`
+
+Mesma causa do erro do Lombok, em outra ferramenta. O formatador também usa APIs
+internas do compilador, e o **JBR embutido do IntelliJ já está no JDK 25** —
+mais novo do que versões antigas conhecem.
+
+As versões no `pom.xml` já são as que suportam o JDK 25. Se o erro aparecer,
+recarregue o projeto Maven para que a IDE pegue as versões novas.
+
+O padrão vale para qualquer ferramenta que toque no compilador: quando algo falha
+na IDE e passa no terminal, o primeiro suspeito é a diferença de JDK.
+
 ### Fazer a IDE usar exatamente o mesmo build do terminal
 
 Se as diferenças entre IDE e terminal incomodarem, delegue a compilação ao Maven:
@@ -131,6 +143,11 @@ O Docker Desktop não está rodando. Suba e execute de novo.
 
 **"invalid target release: 21".**
 SDK do projeto em versão anterior. Volte ao passo 1.
+
+**Qualquer erro que aconteça na IDE e não no terminal.**
+Quase sempre é diferença de JDK: o IntelliJ usa o JBR embutido (hoje JDK 25) e o
+terminal usa o `JAVA_HOME` (JDK 21). O build foi verificado nas duas versões, mas
+se algo destoar, alinhe o *Maven Runner JRE* ao *Project SDK*.
 
 **O build falha em `spotless:check` depois de eu editar código.**
 Rode a configuração **Formatar codigo (Spotless)**. Se preferir formatar ao

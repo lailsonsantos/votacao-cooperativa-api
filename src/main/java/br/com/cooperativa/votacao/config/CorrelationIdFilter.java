@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.regex.Pattern;
 import org.slf4j.MDC;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -34,6 +35,25 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
     public static final String MDC_KEY = "correlationId";
 
     /**
+     * Formato aceito para um identificador vindo do cliente.
+     *
+     * <p>O valor recebido era devolvido no cabecalho da resposta e gravado no log sem nenhuma
+     * verificacao, o que abre dois caminhos de ataque:
+     *
+     * <ul>
+     *   <li><strong>Divisao de resposta HTTP:</strong> um valor contendo CR ou LF permite injetar
+     *       cabecalhos adicionais na resposta;
+     *   <li><strong>Injecao de log:</strong> uma quebra de linha no valor permite forjar linhas de
+     *       log inteiras, contaminando justamente o rastro usado para investigar incidentes.
+     * </ul>
+     *
+     * <p>O container costuma recusar CR e LF em cabecalho, mas depender disso e confiar a seguranca
+     * a um detalhe de implementacao do servidor. Aceitar apenas o formato esperado resolve os dois
+     * casos na origem.
+     */
+    private static final Pattern FORMATO_ACEITO = Pattern.compile("[A-Za-z0-9_-]{1,64}");
+
+    /**
      * Injeta o identificador no MDC antes de seguir a cadeia de filtros.
      *
      * @param request requisicao HTTP recebida
@@ -47,7 +67,10 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
             HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         var correlationId = request.getHeader(HEADER);
-        if (!StringUtils.hasText(correlationId)) {
+        if (!aceitavel(correlationId)) {
+            // Valor ausente ou fora do formato: gera um proprio em vez de
+            // recusar a requisicao. Rastreabilidade nao deve ser motivo para
+            // negar um voto.
             correlationId = UUID.randomUUID().toString();
         }
 
@@ -61,6 +84,16 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
             // servidor e o identificador vazaria para a proxima requisicao.
             MDC.remove(MDC_KEY);
         }
+    }
+
+    /**
+     * Verifica se o identificador recebido do cliente pode ser reaproveitado.
+     *
+     * @param valor conteudo do cabecalho, possivelmente nulo
+     * @return {@code true} se o valor existir e obedecer ao formato aceito
+     */
+    private static boolean aceitavel(String valor) {
+        return StringUtils.hasText(valor) && FORMATO_ACEITO.matcher(valor).matches();
     }
 
     /**

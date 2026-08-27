@@ -113,7 +113,7 @@ Testcontainers).
 ./mvnw verify
 ```
 
-Executa 103 testes, o gate de cobertura, a verificacao de formatacao (Spotless)
+Executa 113 testes, o gate de cobertura, a verificacao de formatacao (Spotless)
 e a analise estatica (SpotBugs). Relatório em
 `target/site/jacoco/index.html`.
 
@@ -329,7 +329,7 @@ Análise completa das alternativas e da política de depreciação:
 
 ## Qualidade
 
-**103 testes**, gate de cobertura em 80% de linhas, formatacao e analise estatica — todos falham o build.
+**113 testes**, gate de cobertura em 80% de linhas, formatacao e analise estatica — todos falham o build.
 
 | Nível | Ferramenta | Alvo |
 |---|---|---|
