@@ -1,9 +1,73 @@
 # Plano de Desenvolvimento — Assembleia de Votação Cooperativa
 
 > Teste técnico — vaga de Desenvolvedor Sênior
-> Documento de planejamento. Escrito antes da primeira linha de código, para que
-> cada decisão possa ser justificada (critério explícito de avaliação:
-> *"Explicação breve do porquê das escolhas tomadas"*).
+> Plano de desenvolvimento **e registro da execução**. Escrito antes da primeira
+> linha de código para que cada decisão pudesse ser justificada (critério
+> explícito: *"Explicação breve do porquê das escolhas tomadas"*), e atualizado
+> com o que foi efetivamente construído.
+
+**Repositórios**
+
+| Repositório | Conteúdo | Testes |
+|---|---|---|
+| [`votacao-cooperativa-api`](https://github.com/lailsonsantos/votacao-cooperativa-api) | Spring Boot 3.3, Java 21, PostgreSQL, Flyway, Docker | 59 |
+| [`votacao-cooperativa-web`](https://github.com/lailsonsantos/votacao-cooperativa-web) | React 18, Vite, TypeScript estrito | 14 |
+
+---
+
+## 0. O que foi entregue
+
+Este documento nasceu como plano. As decisões abaixo foram tomadas depois dele e
+esta seção registra o que mudou — o resto do documento segue válido como escrito.
+
+### 0.1 Dois repositórios, não um monorepo
+
+Públicos, para que o avaliador acesse pelo link sem precisar de convite. A
+separação também deixa claro o limite do que o enunciado avalia: o backend é a
+entrega, o cliente é diferencial.
+
+### 0.2 Web responsivo, não mobile nativo
+
+O enunciado fala em "solução para dispositivos móveis", mas também diz que *"a
+aplicação cliente não faz parte da avaliação"*. O cliente foi construído como
+**aplicação web responsiva**, atendendo desktop e celular a partir de uma única
+base de código — decisão do autor, que não trabalha com mobile nativo.
+
+Isso não enfraquece a demonstração do Anexo 1: o protocolo Server-Driven UI
+independe da plataforma do cliente. O renderizador é exercitado dentro de uma
+moldura de celular, com os mesmos payloads que um app nativo receberia.
+
+### 0.3 Ajustes de plataforma feitos durante a implementação
+
+| Situação encontrada | Resolução |
+|---|---|
+| O Docker Engine 29 elevou a versão mínima da API aceita e recusa com `400` a versão 1.32 que o docker-java negocia por padrão — os testes com Testcontainers não subiam | `api.version=1.44` fixado na configuração do Failsafe, no próprio `pom.xml`, para que a suíte rode em qualquer máquina sem configuração manual |
+| O gate de cobertura lia apenas os testes unitários e reprovava em 35%, ignorando as regras de borda cobertas na integração | Os dois arquivos de execução do JaCoCo são fundidos antes da verificação |
+| O fallback do Resilience4j só existe através do proxy do Spring; o teste instanciava o cliente com `new` e passaria mesmo sem a anotação | Cenário movido para um teste que sobe o contexto (`UserInfoFallbackIT`), exercitando a fiação real |
+| O botão "Atualizar" da tela de resultado aponta para um endpoint de leitura, mas o cliente enviava `POST` em todo `botaoOk` | A presença de `body` passou a distinguir ação de navegação, no `FORMULARIO` como já era no `SELECAO` (§6) |
+
+### 0.4 Deploy
+
+Heroku deixou de ter plano gratuito em novembro de 2022; subir a stack custa
+cerca de **US$ 12/mês** (dyno Basic + Postgres Essential-0). A configuração está
+pronta em ambos os repositórios — `Procfile`, `system.properties`, `app.json` e
+consumo das variáveis `JDBC_DATABASE_*` que o buildpack Java exporta — e o deploy
+fica a cargo de quem decide pelo custo.
+
+Como alternativa sem custo, cada repositório traz um `render.yaml`: basta conectar
+o repositório no Render e aplicar o *blueprint*.
+
+### 0.5 Verificação executada
+
+- `./mvnw verify` — **59 testes verdes**, incluindo 200 threads simultâneas
+  votando com o mesmo CPF contra PostgreSQL real, com exatamente 1 voto
+  persistido.
+- Fluxo REST completo exercitado por HTTP: cadastro, sessão com default de 1
+  minuto, votos, voto duplicado (`409`), CPF inválido (`400`) e apuração.
+- Fluxo do Anexo 1 exercitado ponta a ponta no navegador, com a navegação
+  inteiramente dirigida pelo servidor.
+- CORS confirmado: origem não declarada recebe `403`; origem declarada, `200`.
+- Layout verificado a 390 px e 768 px, sem rolagem horizontal.
 
 ---
 
