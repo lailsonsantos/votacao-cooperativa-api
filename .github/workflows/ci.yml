@@ -1,8 +1,8 @@
 # ---------------------------------------------------------------------------
-# Integracao continua: o mesmo comando que o desenvolvedor roda localmente.
+# Integração continua: o mesmo comando que o desenvolvedor roda localmente.
 #
-# `mvn verify` executa testes unitarios, testes de integracao com Testcontainers
-# e o gate de cobertura. Nao existe um "comando especial de CI" que passe onde o
+# `mvn verify` executa testes unitários, testes de integração com Testcontainers
+# e o gate de cobertura. Não existe um "comando especial de CI" que passe onde o
 # local falha, nem o contrario.
 # ---------------------------------------------------------------------------
 name: CI
@@ -28,9 +28,9 @@ jobs:
           distribution: temurin
           cache: maven
 
-      # O wrapper usa distributionType=only-script, entao baixa o Maven a cada
-      # execucao. Sem cache, uma indisponibilidade momentanea do repositorio
-      # derruba o build por motivo que nada tem a ver com o codigo — foi o que
+      # O wrapper usa distributionType=only-script, então baixa o Maven a cada
+      # execução. Sem cache, uma indisponibilidade momentânea do repositorio
+      # derruba o build por motivo que nada tem a ver com o código — foi o que
       # aconteceu e motivou este passo.
       - name: Cache da distribuicao do Maven
         uses: actions/cache@v4
@@ -39,8 +39,8 @@ jobs:
           key: maven-wrapper-${{ hashFiles('.mvn/wrapper/maven-wrapper.properties') }}
 
       - name: Build, testes e gate de cobertura
-        # O runner do GitHub ja tem Docker, entao o Testcontainers sobe o
-        # PostgreSQL real sem nenhum servico declarado no workflow.
+        # O runner do GitHub já tem Docker, então o Testcontainers sobe o
+        # PostgreSQL real sem nenhum serviço declarado no workflow.
         run: ./mvnw -B verify
 
       - name: Publicar relatorio de cobertura

@@ -1,20 +1,20 @@
 # ---------------------------------------------------------------------------
 # Perfil "prod".
 #
-# A conexao pode chegar de duas formas, e as duas funcionam sem alteracao:
+# A conexão pode chegar de duas formas, e as duas funcionam sem alteração:
 #
 #   1. DATABASE_URL no formato URI (postgresql://usuario:senha@host:porta/banco),
 #      que e como Render, Railway, Fly.io, Neon e Supabase a injetam. A conversao
 #      para JDBC e feita por DatabaseUrlEnvironmentPostProcessor.
 #
 #   2. SPRING_DATASOURCE_URL / _USERNAME / _PASSWORD explicitas, que tem
-#      precedencia sobre a anterior.
+#      precedência sobre a anterior.
 # ---------------------------------------------------------------------------
 spring:
   datasource:
     hikari:
-      # Dimensionado para nao transformar o pool em gargalo sob a carga da
-      # Tarefa Bonus 2, respeitando o limite de conexoes do plano do banco.
+      # Dimensionado para não transformar o pool em gargalo sob a carga da
+      # Tarefa Bônus 2, respeitando o limite de conexões do plano do banco.
       maximum-pool-size: ${DB_POOL_MAX:10}
       minimum-idle: ${DB_POOL_MIN:2}
       connection-timeout: 3000

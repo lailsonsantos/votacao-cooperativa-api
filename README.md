@@ -282,7 +282,7 @@ curl -s $API/pautas/$PAUTA/resultado
   "type": "https://api.cooperativa.com/erros/voto-duplicado",
   "title": "Voto duplicado",
   "status": 409,
-  "detail": "O associado 198******69 ja registrou voto na pauta 3a7b...",
+  "detail": "O associado 198******69 já registrou voto na pauta 3a7b...",
   "instance": "/api/v1/pautas/3a7b.../votos",
   "correlationId": "0f3c9a12-...",
   "timestamp": "2026-08-27T14:03:11Z"

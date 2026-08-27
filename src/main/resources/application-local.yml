@@ -13,7 +13,7 @@ spring:
 
 app:
   user-info:
-    # Desligada por padrao no perfil local. Ligue com APP_USER_INFO_ENABLED=true.
+    # Desligada por padrão no perfil local. Ligue com APP_USER_INFO_ENABLED=true.
     enabled: false
 
 logging:

@@ -1,13 +1,13 @@
 # ---------------------------------------------------------------------------
-# Configuracao base. Todo valor sensivel ou dependente de ambiente vem de
-# variavel de ambiente, com default util para desenvolvimento local.
-# Perfil ativo padrao: "local" (H2 em memoria, sem dependencia externa).
+# Configuração base. Todo valor sensível ou dependente de ambiente vem de
+# variável de ambiente, com default útil para desenvolvimento local.
+# Perfil ativo padrão: "local" (H2 em memória, sem dependência externa).
 # ---------------------------------------------------------------------------
 spring:
   application:
     name: votacao-cooperativa-api
   lifecycle:
-    # Tempo maximo para drenar as requisicoes em andamento antes de encerrar.
+    # Tempo maximo para drenar as requisições em andamento antes de encerrar.
     timeout-per-shutdown-phase: 20s
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:local}
@@ -16,7 +16,7 @@ spring:
     deserialization:
       fail-on-unknown-properties: false
   jpa:
-    open-in-view: false          # Evita sessao JPA aberta durante a serializacao.
+    open-in-view: false          # Evita sessão JPA aberta durante a serializacao.
     hibernate:
       ddl-auto: validate         # O schema e do Flyway; o Hibernate apenas confere.
     properties:
@@ -29,29 +29,29 @@ spring:
     locations: classpath:db/migration
 
 server:
-  port: ${PORT:8080}             # PORT e injetada pela plataforma de nuvem.
+  port: ${PORT:8080}             # PORT é injetada pela plataforma de nuvem.
   # Encerramento gracioso: em um redeploy a plataforma envia SIGTERM, e sem isso
-  # as requisicoes em andamento seriam cortadas no meio — inclusive um voto ja
-  # aceito mas ainda nao confirmado.
+  # as requisições em andamento seriam cortadas no meio — inclusive um voto já
+  # aceito mas ainda não confirmado.
   shutdown: graceful
   error:
-    include-message: never       # Mensagens de erro vem do nosso handler, nao do container.
+    include-message: never       # Mensagens de erro vêm do nosso handler, não do container.
   compression:
     enabled: true
 
 app:
   callback:
-    # Dica explicita do enunciado: o dominio das URLs de callback e configuravel,
+    # Dica explícita do enunciado: o domínio das URLs de callback e configuravel,
     # para funcionar em emulador, dispositivo fisico e nuvem sem recompilar.
     base-url: ${APP_CALLBACK_BASE_URL:http://localhost:8080}
   sessao:
-    # Default de 1 minuto definido no enunciado, em configuracao para nao existir
-    # numero magico no codigo.
+    # Default de 1 minuto definido no enunciado, em configuração para não existir
+    # número mágico no código.
     duracao-padrao-minutos: ${APP_SESSAO_DURACAO_PADRAO:1}
   cors:
     allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:4173}
   user-info:
-    # Tarefa Bonus 1. O endpoint do enunciado esta fora do ar; ver README.
+    # Tarefa Bônus 1. O endpoint do enunciado está fora do ar; ver README.
     base-url: ${APP_USER_INFO_URL:https://user-info.herokuapp.com}
     enabled: ${APP_USER_INFO_ENABLED:true}
     fallback-permite-voto: ${APP_USER_INFO_FALLBACK:true}
@@ -66,7 +66,7 @@ resilience4j:
         wait-duration: 200ms
         enable-exponential-backoff: true
         exponential-backoff-multiplier: 2
-        # Retry apenas para falhas transientes. Um 4xx nao melhora com repeticao.
+        # Retry apenas para falhas transientes. Um 4xx não melhora com repetição.
         retry-exceptions:
           - org.springframework.web.client.ResourceAccessException
           - org.springframework.web.client.HttpServerErrorException
@@ -88,10 +88,10 @@ management:
   endpoint:
     health:
       probes:
-        enabled: true            # Necessario para liveness/readiness em nuvem.
-      # O enunciado autoriza abstrair a seguranca das interfaces, entao nao ha
-      # autenticacao e "when_authorized" nunca exibiria nada. Mostrar os detalhes
-      # permite ao avaliador ver a saude do banco. Com seguranca real, isto
+        enabled: true            # Necessário para liveness/readiness em nuvem.
+      # O enunciado autoriza abstrair a segurança das interfaces, então não ha
+      # autenticação e "when_authorized" nunca exibiria nada. Mostrar os detalhes
+      # permite ao avaliador ver a saude do banco. Com segurança real, isto
       # voltaria a ser "when_authorized".
       show-details: always
   info:

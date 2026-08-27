@@ -2,10 +2,10 @@
 # Blueprint do Render.
 #
 # Aplique conectando o repositorio em https://render.com > Blueprints > New.
-# O Render le este arquivo, cria o servico e o banco, e mostra o custo antes de
+# O Render lê este arquivo, cria o serviço e o banco, e mostra o custo antes de
 # confirmar.
 #
-# Apos o primeiro deploy, defina no painel:
+# Após o primeiro deploy, defina no painel:
 #   APP_CALLBACK_BASE_URL     = a URL publica desta API
 #   APP_CORS_ALLOWED_ORIGINS  = a URL publica do frontend
 #
@@ -18,9 +18,9 @@ services:
     runtime: docker
     dockerfilePath: ./Dockerfile
     region: oregon
-    # "starter" mantem o servico sempre no ar. No plano "free" ele hiberna apos
+    # "starter" mantém o serviço sempre no ar. No plano "free" ele hiberna após
     # 15 minutos de inatividade e leva cerca de um minuto para voltar — tempo
-    # suficiente para um avaliador concluir que a aplicacao esta fora do ar.
+    # suficiente para um avaliador concluir que a aplicação está fora do ar.
     plan: starter
     healthCheckPath: /actuator/health
     autoDeploy: true
@@ -29,7 +29,7 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
 
-      # O Render entrega a conexao como URI postgresql://, que o Spring nao
+      # O Render entrega a conexão como URI postgresql://, que o Spring não
       # consome diretamente. A conversao para JDBC e feita em tempo de
       # inicializacao por DatabaseUrlEnvironmentPostProcessor.
       - key: DATABASE_URL
@@ -38,16 +38,16 @@ services:
           property: connectionString
 
       # O plano starter oferece 512 MB. Sem limitar a heap, a JVM enxerga a
-      # memoria do host e o container e encerrado por OOM sob carga.
+      # memória do host e o container é encerrado por OOM sob carga.
       - key: JAVA_TOOL_OPTIONS
         value: -XX:MaxRAMPercentage=70 -XX:+UseContainerSupport -Xss512k
 
-      # O plano de banco tem poucas conexoes disponiveis; um pool maior do que
-      # elas so troca um gargalo por um erro de conexao recusada.
+      # O plano de banco tem poucas conexões disponiveis; um pool maior do que
+      # elas só troca um gargalo por um erro de conexão recusada.
       - key: DB_POOL_MAX
         value: "5"
 
-      # Tarefa Bonus 1: o servico de CPF do enunciado esta fora do ar desde o
+      # Tarefa Bônus 1: o serviço de CPF do enunciado está fora do ar desde o
       # encerramento do plano gratuito da Heroku.
       - key: APP_USER_INFO_ENABLED
         value: "false"
@@ -55,7 +55,7 @@ services:
       - key: APP_SESSAO_DURACAO_PADRAO
         value: "1"
 
-      # Preenchidas no painel apos o primeiro deploy, quando as URLs existem.
+      # Preenchidas no painel após o primeiro deploy, quando as URLs existem.
       - key: APP_CALLBACK_BASE_URL
         sync: false
       - key: APP_CORS_ALLOWED_ORIGINS
@@ -67,7 +67,7 @@ databases:
     user: votacao
     region: oregon
     postgresMajorVersion: "16"
-    # ATENCAO: o plano gratuito de banco do Render expira 30 dias apos a criacao,
+    # ATENÇÃO: o plano gratuito de banco do Render expira 30 dias após a criação,
     # com 14 dias de carencia antes da exclusao definitiva dos dados. E suficiente
     # para uma avaliacao; para uso prolongado, troque por "basic-256mb".
     plan: free

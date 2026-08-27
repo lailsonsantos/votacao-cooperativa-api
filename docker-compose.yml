@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# Stack completa para execucao local: PostgreSQL + API.
+# Stack completa para execução local: PostgreSQL + API.
 # ---------------------------------------------------------------------------
 services:
 
@@ -11,17 +11,17 @@ services:
       POSTGRES_USER: votacao
       POSTGRES_PASSWORD: votacao
     ports:
-      # A porta no host e 5434, e nao 5432, para nao disputar com outro
-      # PostgreSQL que ja esteja rodando na maquina — o sintoma dessa disputa e
-      # um erro de autenticacao, nao de conexao, porque a aplicacao encontra um
-      # banco de verdade que simplesmente nao e o dela.
-      # Sobrescreva com DB_PORT se 5434 tambem estiver em uso.
+      # A porta no host é 5434, e não 5432, para não disputar com outro
+      # PostgreSQL que já esteja rodando na máquina — o sintoma dessa disputa e
+      # um erro de autenticação, não de conexão, porque a aplicação encontra um
+      # banco de verdade que simplesmente não é o dela.
+      # Sobrescreva com DB_PORT se 5434 também estiver em uso.
       - "${DB_PORT:-5434}:5432"
     volumes:
       - dados-postgres:/var/lib/postgresql/data
     healthcheck:
-      # A API so sobe depois que o banco aceita conexoes; sem isso o Flyway
-      # falharia na primeira tentativa em uma maquina lenta.
+      # A API só sobe depois que o banco aceita conexões; sem isso o Flyway
+      # falharia na primeira tentativa em uma máquina lenta.
       test: ["CMD-SHELL", "pg_isready -U votacao -d votacao"]
       interval: 5s
       timeout: 3s
@@ -40,12 +40,12 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://banco:5432/votacao
       SPRING_DATASOURCE_USERNAME: votacao
       SPRING_DATASOURCE_PASSWORD: votacao
-      # Dica do enunciado: o dominio das URLs de callback e configuravel. Ao
+      # Dica do enunciado: o domínio das URLs de callback e configuravel. Ao
       # testar de um celular na mesma rede, troque por http://SEU_IP:8080.
       APP_CALLBACK_BASE_URL: ${APP_CALLBACK_BASE_URL:-http://localhost:8080}
       APP_CORS_ALLOWED_ORIGINS: ${APP_CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:4173}
-      # Tarefa Bonus 1: o servico do enunciado esta fora do ar. Desligado por
-      # padrao para que a avaliacao nao dependa de um terceiro indisponivel.
+      # Tarefa Bônus 1: o serviço do enunciado está fora do ar. Desligado por
+      # padrão para que a avaliacao não dependa de um terceiro indisponível.
       APP_USER_INFO_ENABLED: ${APP_USER_INFO_ENABLED:-false}
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/actuator/health"]
