@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# Perfil "prod": PostgreSQL gerenciado e log estruturado em JSON.
+# Perfil "prod".
 #
 # A conexao pode chegar de duas formas, e as duas funcionam sem alteracao:
 #

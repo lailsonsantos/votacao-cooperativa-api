@@ -24,7 +24,7 @@ public record AppProperties(Callback callback, Sessao sessao) {
      * Configuracao do host usado para montar as URLs absolutas das telas.
      *
      * @param baseUrl raiz publica da aplicacao, sem barra final
-     *                (ex.: {@code https://votacao.herokuapp.com})
+     *                (ex.: {@code https://votacao-cooperativa-api.onrender.com})
      */
     public record Callback(@NotBlank String baseUrl) {
 

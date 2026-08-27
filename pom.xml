@@ -24,9 +24,7 @@
     <springdoc.version>2.6.0</springdoc.version>
     <resilience4j.version>2.2.0</resilience4j.version>
     <archunit.version>1.3.0</archunit.version>
-    <!-- Sobrescreve a versao gerenciada pelo Spring Boot: o Docker Engine 29
-         elevou a versao minima da API e as versoes antigas do docker-java sao
-         recusadas com HTTP 400. -->
+
     <testcontainers.version>1.21.3</testcontainers.version>
     <wiremock.version>3.9.1</wiremock.version>
     <logstash.version>8.0</logstash.version>
@@ -181,7 +179,6 @@
             </path>
           </annotationProcessorPaths>
           <compilerArgs>
-            <!-- Preserva o nome dos parametros para o Spring e para o Javadoc. -->
             <arg>-parameters</arg>
           </compilerArgs>
         </configuration>
@@ -201,19 +198,11 @@
         </configuration>
       </plugin>
 
-      <!-- Quality gate de cobertura. Falha o build abaixo do limite. -->
-      <!-- Testes de integracao (*IT) rodam no `verify`, separados dos unitarios
-           (*Test) do `test`. A separacao mantem o ciclo curto de desenvolvimento
-           rapido: quem roda `mvn test` nao espera o Docker subir. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
         <configuration>
           <systemPropertyVariables>
-            <!-- O Docker Engine 29 recusa com HTTP 400 a versao de API 1.32 que o
-                 docker-java negocia por padrao (o minimo aceito passou a ser 1.40).
-                 Fixar aqui faz a suite rodar em engines novos e antigos sem exigir
-                 nenhuma configuracao na maquina de quem executa o projeto. -->
             <api.version>1.44</api.version>
           </systemPropertyVariables>
         </configuration>
@@ -227,10 +216,6 @@
         </executions>
       </plugin>
 
-      <!-- Cobertura. O gate considera os testes unitarios E os de integracao:
-           boa parte das regras de borda (status HTTP, contrato das telas,
-           unicidade sob concorrencia) so e exercitada na integracao, e medir
-           apenas os unitarios daria um numero enganosamente baixo. -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -245,7 +230,6 @@
             <goals><goal>prepare-agent-integration</goal></goals>
           </execution>
 
-          <!-- Funde os dois arquivos de execucao antes de relatar e conferir. -->
           <execution>
             <id>merge-results</id>
             <phase>verify</phase>
@@ -293,9 +277,6 @@
                 </rule>
               </rules>
               <excludes>
-                <!-- Sem logica propria: classe de boot, beans de configuracao e
-                     records de transporte. Medir cobertura neles infla o numero
-                     sem dizer nada sobre a qualidade dos testes. -->
                 <exclude>**/VotacaoApplication.class</exclude>
                 <exclude>**/config/**</exclude>
                 <exclude>**/dto/**</exclude>

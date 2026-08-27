@@ -1,11 +1,3 @@
-# ---------------------------------------------------------------------------
-# Build multi-estagio.
-#
-# O primeiro estagio compila com o JDK completo; o segundo carrega apenas o JRE
-# e o jar. Assim a imagem final nao leva Maven, codigo-fonte nem cache de build,
-# o que reduz o tamanho e a superficie de ataque.
-# ---------------------------------------------------------------------------
-
 FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /build
 

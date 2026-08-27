@@ -1,9 +1,5 @@
 # ---------------------------------------------------------------------------
 # Stack completa para execucao local: PostgreSQL + API.
-#
-# O enunciado avisa que a aplicacao sera executada pelo avaliador. Este arquivo
-# existe para que `docker compose up --build` seja tudo o que ele precisa
-# digitar, sem instalar Java, Maven ou banco na maquina.
 # ---------------------------------------------------------------------------
 services:
 

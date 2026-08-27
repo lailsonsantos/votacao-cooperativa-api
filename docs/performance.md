@@ -60,7 +60,7 @@ e é exatamente esse tipo de bug que não aparece em teste sequencial.
 
 ```bash
 k6 run perf/k6/votacao.js
-k6 run -e BASE_URL=https://sua-api.herokuapp.com perf/k6/votacao.js
+k6 run -e BASE_URL=https://votacao-cooperativa-api.onrender.com perf/k6/votacao.js
 ```
 
 Os *thresholds* fazem o k6 sair com código de erro quando violados, então o teste

@@ -15,7 +15,7 @@
  *
  * Execucao:
  *   k6 run perf/k6/votacao.js
- *   k6 run -e BASE_URL=https://sua-api.herokuapp.com perf/k6/votacao.js
+ *   k6 run -e BASE_URL=https://votacao-cooperativa-api.onrender.com perf/k6/votacao.js
  */
 
 import http from 'k6/http';

@@ -1,10 +1,3 @@
-# ---------------------------------------------------------------------------
-# Perfil "local": sobe a aplicacao inteira sem nenhuma dependencia externa.
-#
-# O enunciado avisa que a aplicacao sera executada pelo avaliador e pede cuidado
-# com dependencias externas. Este perfil existe para que um `./mvnw spring-boot:run`
-# funcione com apenas o JDK instalado, sem Docker e sem banco.
-# ---------------------------------------------------------------------------
 spring:
   datasource:
     url: jdbc:h2:mem:votacao;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
@@ -16,15 +9,11 @@ spring:
       enabled: true
       path: /h2-console
   flyway:
-    # As migrations sao escritas em SQL portavel; o H2 em modo PostgreSQL as
-    # executa sem alteracao, entao o mesmo script vale para os dois bancos.
     locations: classpath:db/migration
 
 app:
   user-info:
-    # Desligada por padrao no perfil local: o servico do enunciado esta fora do ar
-    # e a aplicacao precisa ser executavel sem ele. Ligue com
-    # APP_USER_INFO_ENABLED=true apontando para um stub.
+    # Desligada por padrao no perfil local. Ligue com APP_USER_INFO_ENABLED=true.
     enabled: false
 
 logging:
