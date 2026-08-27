@@ -28,14 +28,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 
-/**
- * Testes da apuracao, com atencao ao cache.
- *
- * <p>A regra do cache e condicional e depende do estado da sessao, nao apenas dos argumentos:
- * resultado de sessao encerrada e imutavel e pode ser cacheado; resultado de sessao aberta muda a
- * cada voto e nunca pode. Errar essa distincao faria a assembleia exibir um numero congelado
- * durante a votacao &mdash; um bug silencioso, porque a resposta continua parecendo correta.
- */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ResultadoServiceImpl")
 class ResultadoServiceImplTest {

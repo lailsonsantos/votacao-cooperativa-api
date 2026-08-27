@@ -16,14 +16,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-/**
- * Manifestacao de um associado sobre uma pauta.
- *
- * <p>A regra "um voto por associado por pauta" e garantida pela constraint unica {@code
- * uk_voto_sessao_associado}, e nao por uma consulta previa na aplicacao. Sob a concorrencia
- * prevista na Tarefa Bonus 2, um {@code SELECT} seguido de {@code INSERT} abre uma janela entre a
- * verificacao e a gravacao na qual duas requisicoes simultaneas passariam pela checagem.
- */
 @Entity
 @Table(name = "voto")
 @Getter
@@ -40,13 +32,7 @@ public class Voto {
     @JoinColumn(name = "sessao_id", nullable = false, updatable = false)
     private SessaoVotacao sessao;
 
-    /**
-     * Identificador unico do associado.
-     *
-     * <p>O enunciado fala em "id unico" no requisito base e em CPF na Tarefa Bonus 1. Unificamos os
-     * dois no CPF para nao criar dois identificadores concorrentes para a mesma pessoa. A premissa
-     * esta registrada no README.
-     */
+    /** Identificador unico do associado. */
     @Column(name = "associado_id", nullable = false, length = 11, updatable = false)
     private String associadoId;
 

@@ -9,16 +9,6 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-/**
- * Base dos testes de integracao, executados sobre PostgreSQL real.
- *
- * <p>O container e {@code static}: uma unica instancia atende a todas as classes que herdam desta,
- * em vez de subir um banco por classe. Isso mantem a suite rapida sem abrir mao de testar contra o
- * banco de producao de verdade.
- *
- * <p>Testar apuracao e unicidade em H2 daria falsa seguranca: sao exatamente os pontos em que a
- * semantica de constraint e de tipos diverge entre bancos.
- */
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -35,14 +25,9 @@ public abstract class IntegracaoTest {
                     .withReuse(true);
 
     static {
-        // O Docker Engine 29 elevou a versao minima da API aceita e recusa com
-        // HTTP 400 a versao 1.32 que o docker-java negocia por padrao. Definir a
-        // propriedade aqui, e nao apenas na configuracao do Failsafe, faz a suite
-        // funcionar tambem quando um teste e executado direto pela IDE — que e
-        // como se depura um teste que falhou.
-        //
-        // O docker-java le esta propriedade na primeira criacao de cliente, que
-        // acontece em start(); por isso a atribuicao precede a chamada.
+        // O Docker 29 recusa a versao de API que o docker-java negocia por padrao.
+        // Fica aqui, e nao no Failsafe, pra funcionar tambem rodando pela IDE.
+        // Precisa vir antes do start(), que e quando o cliente e criado.
         System.setProperty("api.version", "1.44");
         POSTGRES.start();
     }

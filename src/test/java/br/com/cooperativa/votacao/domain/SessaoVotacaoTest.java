@@ -10,12 +10,6 @@ import java.time.Instant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-/**
- * Testes do comportamento temporal de {@link SessaoVotacao}.
- *
- * <p>Todos usam instantes fixos em vez de {@code Thread.sleep}: o status e derivado de um {@code
- * Instant} recebido como parametro, entao "avancar o relogio" custa zero milissegundo de execucao.
- */
 @DisplayName("SessaoVotacao")
 class SessaoVotacaoTest {
 
@@ -38,9 +32,8 @@ class SessaoVotacaoTest {
     void fechaNoInstanteDeFechamento() {
         var sessao = SessaoVotacao.abrir(pauta, ABERTURA, Duration.ofMinutes(5));
 
-        // O limite e exclusivo: no instante do fechamento a sessao ja nao aceita
-        // votos. Um "isBefore" trocado por "isAfter" passaria despercebido sem
-        // este caso de borda.
+        // Limite exclusivo: no instante do fechamento ja nao aceita voto. Sem esse
+        // caso, trocar isBefore por isAfter passaria batido.
         assertThat(sessao.estaAberta(ABERTURA.plusSeconds(300))).isFalse();
         assertThat(sessao.status(ABERTURA.plusSeconds(300))).isEqualTo(StatusSessao.FECHADA);
     }

@@ -24,15 +24,6 @@ import org.springframework.boot.web.client.ClientHttpRequestFactorySettings;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 
-/**
- * Testes da integracao com o servico externo de CPF (Tarefa Bonus 1).
- *
- * <p>Toda a suite roda contra um WireMock local, jamais contra a rede real. Isso e obrigatorio por
- * dois motivos: o endpoint do enunciado esta fora do ar, e um teste que depende de internet nao
- * roda em CI de forma confiavel.
- *
- * <p>Cobre os quatro desfechos possiveis do contrato descrito no enunciado.
- */
 @DisplayName("UserInfoClient (Bonus 1)")
 class UserInfoClientIT {
 
@@ -57,8 +48,8 @@ class UserInfoClientIT {
         wireMock.resetAll();
         properties =
                 new UserInfoProperties("http://localhost:" + wireMock.port(), true, true, 500, 500);
-        // Os mesmos timeouts de producao precisam valer aqui: sem eles, o cenario
-        // de indisponibilidade nunca dispararia e o teste passaria por engano.
+        // Mesmos timeouts de producao: sem eles o cenario de indisponibilidade
+        // nunca dispararia.
         var settings =
                 ClientHttpRequestFactorySettings.DEFAULTS
                         .withConnectTimeout(Duration.ofMillis(properties.connectTimeoutMs()))
@@ -123,11 +114,8 @@ class UserInfoClientIT {
                 get(urlPathEqualTo("/users/19839091069"))
                         .willReturn(aResponse().withFixedDelay(2_000).withStatus(200)));
 
-        // Aqui o cliente e instanciado sem o proxy do Spring, entao o fallback
-        // anotado nao entra: o teste verifica o comportamento da camada crua, que
-        // e propagar a falha para que retry e circuit breaker possam agir.
-        // O efeito do fallback com a fiacao real e coberto por
-        // UserInfoFallbackIT, que sobe o contexto da aplicacao.
+        // Sem o proxy do Spring o fallback anotado nao entra, entao aqui a falha
+        // propaga mesmo. O fallback real esta em UserInfoFallbackIT.
         assertThatThrownBy(() -> client.consultar(Cpf.de("19839091069")))
                 .isInstanceOf(ResourceAccessException.class);
     }

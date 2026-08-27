@@ -12,13 +12,6 @@ import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-/**
- * Testes do filtro de correlacao.
- *
- * <p>O identificador recebido do cliente volta no cabecalho da resposta e entra no log. Sem
- * verificacao, isso permitiria dividir a resposta HTTP e forjar linhas de log &mdash; contaminando
- * justamente o rastro usado para investigar incidentes.
- */
 @DisplayName("CorrelationIdFilter")
 class CorrelationIdFilterTest {
 

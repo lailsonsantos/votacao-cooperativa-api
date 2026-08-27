@@ -51,8 +51,7 @@ app:
   cors:
     allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:4173}
   user-info:
-    # Tarefa Bonus 1. O endpoint do enunciado esta fora do ar desde o fim do
-    # plano gratuito da Heroku; ver README, secao "Tarefa Bonus 1".
+    # Tarefa Bonus 1. O endpoint do enunciado esta fora do ar; ver README.
     base-url: ${APP_USER_INFO_URL:https://user-info.herokuapp.com}
     enabled: ${APP_USER_INFO_ENABLED:true}
     fallback-permite-voto: ${APP_USER_INFO_FALLBACK:true}

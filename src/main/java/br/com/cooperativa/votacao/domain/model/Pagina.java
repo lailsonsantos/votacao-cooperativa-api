@@ -3,28 +3,9 @@ package br.com.cooperativa.votacao.domain.model;
 import java.util.List;
 import java.util.function.Function;
 
-/**
- * Fatia paginada de um conjunto de resultados.
- *
- * <p>Existe para que as portas de repositorio nao precisem falar {@code
- * org.springframework.data.domain.Page}. O dominio nao deve conhecer a biblioteca de persistencia
- * escolhida &mdash; nem mesmo para representar algo tao generico quanto uma pagina.
- *
- * @param <T> tipo do conteudo
- * @param conteudo itens desta pagina
- * @param pagina indice da pagina, iniciando em zero
- * @param tamanho quantidade maxima de itens por pagina
- * @param totalElementos total de itens em todas as paginas
- */
 public record Pagina<T>(List<T> conteudo, int pagina, int tamanho, long totalElementos) {
 
-    /**
-     * Copia defensiva das colecoes recebidas.
-     *
-     * <p>Um record e imutavel apenas na superficie: sem a copia, quem construiu a lista continua
-     * podendo altera-la depois, e o objeto "imutavel" muda pelas costas de quem o recebeu. A
-     * analise estatica sinaliza exatamente isso.
-     */
+    /** Copia defensiva das colecoes recebidas. */
     public Pagina {
         conteudo = conteudo == null ? List.of() : List.copyOf(conteudo);
     }
@@ -58,9 +39,6 @@ public record Pagina<T>(List<T> conteudo, int pagina, int tamanho, long totalEle
 
     /**
      * Converte o conteudo preservando os dados de paginacao.
-     *
-     * <p>Permite que a camada de API transforme entidades em DTOs sem reconstruir a pagina campo a
-     * campo.
      *
      * @param <R> tipo de destino
      * @param conversor funcao aplicada a cada item

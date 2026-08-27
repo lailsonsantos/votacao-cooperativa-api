@@ -9,11 +9,6 @@ import br.com.cooperativa.votacao.domain.model.OpcaoVoto;
 import br.com.cooperativa.votacao.domain.model.Voto;
 import java.util.UUID;
 
-/**
- * Caso de uso de registro de voto.
- *
- * @see br.com.cooperativa.votacao.application.impl.VotoServiceImpl
- */
 public interface VotoService {
 
     /**
@@ -32,9 +27,6 @@ public interface VotoService {
 
     /**
      * Indica se o associado ja votou na pauta.
-     *
-     * <p>Usado apenas pelas telas, para nao oferecer a opcao de voto a quem ja votou. Nao substitui
-     * a constraint de unicidade: e uma cortesia de interface, nao uma garantia de integridade.
      *
      * @param pautaId identificador da pauta
      * @param cpf CPF do associado

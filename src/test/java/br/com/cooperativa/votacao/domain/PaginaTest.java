@@ -9,13 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-/**
- * Testes do calculo de paginacao.
- *
- * <p>A aritmetica de {@code totalPaginas} e {@code ultima} decide se o cliente continua paginando
- * ou para. Um erro de arredondamento faria a ultima pagina ser ignorada, escondendo pautas da
- * assembleia sem nenhum sinal de erro.
- */
 @DisplayName("Pagina")
 class PaginaTest {
 

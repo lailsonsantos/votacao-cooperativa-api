@@ -16,15 +16,6 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-/**
- * Traduz o estado do dominio nas telas do Anexo 1.
- *
- * <p>Esta e a unica classe que conhece, ao mesmo tempo, o dominio e o vocabulario de telas do
- * cliente. Ela nao contem regra de negocio: apenas decide qual tela representa cada estado. Manter
- * a traducao concentrada aqui e o que permite alterar a experiencia do cliente sem tocar em
- * servico, dominio ou banco &mdash; que e exatamente o beneficio que o padrao Server-Driven UI
- * existe para entregar.
- */
 @Component
 @RequiredArgsConstructor
 public class TelaFactory {
@@ -79,9 +70,7 @@ public class TelaFactory {
      */
     public Tela listaPautas(Pagina<Pauta> pautas) {
         if (pautas.vazia()) {
-            // Uma SELECAO vazia deixaria o usuario numa tela sem saida. Um
-            // FORMULARIO com texto e botao de volta comunica o estado e oferece
-            // um caminho adiante.
+            // SELECAO vazia deixaria o usuario sem saida. Uso FORMULARIO pra ter botao.
             return Tela.formulario(
                     "Pautas em deliberacao",
                     List.of(ItemTela.texto("Nenhuma pauta cadastrada ate o momento.")),
@@ -121,11 +110,6 @@ public class TelaFactory {
 
     /**
      * Tela de identificacao do associado, para uma pauta com sessao aberta.
-     *
-     * <p>A votacao acontece em dois passos. A tela FORMULARIO oferece apenas {@code botaoOk} e
-     * {@code botaoCancelar}, e mapear "Nao" em "Cancelar" seria semanticamente errado: cancelar nao
-     * pode registrar voto. Coletar o CPF aqui e oferecer as opcoes em uma tela SELECAO respeita o
-     * vocabulario do Anexo 1 e ainda permite validar o CPF antes de apresentar as opcoes.
      *
      * @param sessao sessao aberta
      * @param agora instante de referencia, para calcular o tempo restante
@@ -188,10 +172,6 @@ public class TelaFactory {
 
     /**
      * Tela usada para comunicar um erro de negocio ao cliente.
-     *
-     * <p>Um {@code 409} cru quebraria a experiencia: o cliente do Anexo 1 sabe renderizar telas,
-     * nao codigos de status. O erro vira uma tela legivel com caminho de volta, enquanto a API REST
-     * continua devolvendo o status correto para quem a consome como API.
      *
      * @param titulo titulo da tela de erro
      * @param mensagem explicacao apresentada ao usuario

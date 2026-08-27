@@ -21,12 +21,6 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.http.HttpStatus;
 
-/**
- * Testes da traducao entre vocabulario de dominio e protocolo HTTP.
- *
- * <p>O dominio declara a natureza da falha; esta e a unica classe que decide como isso se expressa
- * em HTTP. Um erro aqui muda o status de toda uma familia de regras de uma vez so.
- */
 @DisplayName("MapeadorDeStatus")
 class MapeadorDeStatusTest {
 

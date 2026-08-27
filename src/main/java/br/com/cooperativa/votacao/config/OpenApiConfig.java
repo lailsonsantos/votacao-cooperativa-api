@@ -7,13 +7,6 @@ import io.swagger.v3.oas.models.info.License;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Metadados da documentacao OpenAPI publicada em {@code /swagger-ui.html}.
- *
- * <p>A descricao registra na propria documentacao viva a existencia das duas superficies HTTP e a
- * estrategia de versionamento, de modo que quem consome a API entenda o contrato sem precisar abrir
- * o repositorio.
- */
 @Configuration
 public class OpenApiConfig {
     /**

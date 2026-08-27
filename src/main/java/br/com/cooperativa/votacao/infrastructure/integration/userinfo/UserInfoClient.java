@@ -12,24 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 
-/**
- * Cliente do servico externo que verifica se um CPF pode votar (Tarefa Bonus 1).
- *
- * <p>O endpoint indicado no enunciado esta fora do ar desde o encerramento do plano gratuito da
- * Heroku. A integracao e implementada exatamente como especificada, e a resiliencia em torno dela
- * existe para que a indisponibilidade de um terceiro nao impeca a assembleia de acontecer:
- *
- * <ul>
- *   <li><strong>Timeouts curtos</strong> &mdash; sem eles, threads do servidor ficariam presas ate
- *       esgotar o pool durante uma votacao;
- *   <li><strong>Retry</strong> apenas para falhas transientes;
- *   <li><strong>Circuit breaker</strong> &mdash; apos uma sequencia de falhas, para de tentar por
- *       um intervalo em vez de castigar um servico que ja esta em dificuldade;
- *   <li><strong>Fallback configuravel</strong> &mdash; o que fazer quando nao ha resposta e uma
- *       decisao de negocio, nao um acidente, e por isso vive em {@code
- *       app.user-info.fallback-permite-voto}.
- * </ul>
- */
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -42,11 +24,6 @@ public class UserInfoClient implements ConsultaAptidaoParaVotar {
 
     /**
      * Consulta a situacao de um CPF no servico externo.
-     *
-     * <p>Um {@code 404} do servico significa CPF desconhecido e e traduzido em {@link
-     * Optional#empty()}, e nao em erro: e uma resposta legitima do contrato, nao uma falha de
-     * comunicacao. Ja uma falha de rede propaga a excecao, para que o retry e o circuit breaker
-     * possam agir.
      *
      * @param cpf CPF ja validado nos digitos verificadores
      * @return a resposta do servico, ou vazio se o CPF for desconhecido
@@ -78,11 +55,6 @@ public class UserInfoClient implements ConsultaAptidaoParaVotar {
 
     /**
      * Fallback acionado quando o servico externo esta indisponivel.
-     *
-     * <p>A decisao entre liberar ou bloquear o voto e de negocio: liberar privilegia a realizacao
-     * da assembleia, bloquear privilegia o rigor da verificacao. O padrao e liberar, porque o
-     * enunciado descreve o servico como instavel por natureza e uma cooperativa nao pode ter sua
-     * assembleia interrompida por indisponibilidade de terceiro.
      *
      * @param cpf CPF consultado
      * @param erro falha que disparou o fallback

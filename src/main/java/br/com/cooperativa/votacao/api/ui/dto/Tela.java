@@ -4,35 +4,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
-/**
- * Descricao de tela devolvida ao cliente, no formato do Anexo 1 do enunciado.
- *
- * <p>Este e o contrato central da avaliacao: o cliente nao conhece "pauta", "sessao" nem "voto",
- * apenas sabe renderizar {@link TipoTela#FORMULARIO} e {@link TipoTela#SELECAO}. Toda a navegacao e
- * dirigida pelo servidor &mdash; cada acao devolve a proxima tela.
- *
- * <p>Um unico record cobre os dois tipos, com campos nulos omitidos na serializacao. A alternativa,
- * uma hierarquia selada com serializacao polimorfica, produziria exatamente o mesmo JSON ao custo
- * de tres tipos a mais; para duas variantes, nao se paga.
- *
- * @param tipo tipo da tela
- * @param titulo titulo exibido no topo
- * @param itens itens da tela: {@link ItemTela} em FORMULARIO, {@link ItemSelecao} em SELECAO
- * @param botaoOk acao principal, apenas em FORMULARIO
- * @param botaoCancelar acao secundaria, apenas em FORMULARIO
- */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(description = "Descricao de tela no formato do Anexo 1")
 public record Tela(
         TipoTela tipo, String titulo, List<?> itens, Botao botaoOk, Botao botaoCancelar) {
 
-    /**
-     * Copia defensiva das colecoes recebidas.
-     *
-     * <p>Um record e imutavel apenas na superficie: sem a copia, quem construiu a lista continua
-     * podendo altera-la depois, e o objeto "imutavel" muda pelas costas de quem o recebeu. A
-     * analise estatica sinaliza exatamente isso.
-     */
+    /** Copia defensiva das colecoes recebidas. */
     public Tela {
         itens = itens == null ? null : List.copyOf(itens);
     }

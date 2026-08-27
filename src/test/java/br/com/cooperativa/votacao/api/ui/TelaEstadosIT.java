@@ -23,16 +23,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-/**
- * Verifica que a tela de uma pauta muda conforme o estado da sessao.
- *
- * <p>E a decisao central do padrao Server-Driven UI: quem escolhe o que o usuario ve e o servidor,
- * e nao o cliente. Os tres estados — sem sessao, sessao aberta e sessao encerrada — produzem telas
- * diferentes a partir da mesma URL.
- *
- * <p>O relogio da aplicacao e substituido por um controlavel, o que permite exercitar o estado
- * "encerrada" sem esperar o prazo real passar.
- */
 @Import(TelaEstadosIT.RelogioControlavel.class)
 @DisplayName("Telas por estado da sessao")
 class TelaEstadosIT extends IntegracaoTest {

@@ -62,9 +62,6 @@ public class VotoController {
     /**
      * Apura o resultado de uma pauta.
      *
-     * <p>A consulta e permitida com a sessao aberta; nesse caso a resposta vem marcada como
-     * parcial.
-     *
      * @param id identificador da pauta
      * @return {@code 200} com o resultado apurado
      */

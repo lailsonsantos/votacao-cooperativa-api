@@ -29,16 +29,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Testes do tratamento de erros nas duas superficies HTTP.
- *
- * <p>A mesma falha precisa produzir respostas diferentes conforme quem pergunta: um consumidor de
- * API espera o status correto e um corpo RFC 7807; o cliente do Anexo 1 sabe renderizar telas, nao
- * interpretar status, e receberia uma tela em branco diante de um 409.
- *
- * <p>Os testes de integracao ja cobrem a superficie REST. Aqui o foco esta no ramo das telas, que
- * exigiria montar estado de banco para ser alcancado de outra forma.
- */
 @DisplayName("GlobalExceptionHandler")
 class GlobalExceptionHandlerTest {
 
@@ -75,13 +65,7 @@ class GlobalExceptionHandlerTest {
             throw new IllegalStateException("falha nao prevista");
         }
 
-        /**
-         * Dispara a violacao diretamente.
-         *
-         * <p>A validacao declarativa de parametro depende do proxy AOP do Spring, que o setup
-         * isolado nao cria. Como o alvo aqui e o tratador, e nao a fiacao da validacao — ja coberta
-         * em {@code VotacaoApiIT} —, a excecao e construida a partir de uma violacao real.
-         */
+        /** Dispara a violacao diretamente. */
         /** Corpo com restricao violada, para exercitar a validacao de payload. */
         record CorpoValidado(@jakarta.validation.constraints.NotBlank String titulo) {}
 

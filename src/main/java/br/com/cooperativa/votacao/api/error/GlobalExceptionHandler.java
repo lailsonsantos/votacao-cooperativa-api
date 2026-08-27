@@ -23,23 +23,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-/**
- * Traduz excecoes em respostas HTTP coerentes com a superficie acionada.
- *
- * <p>A aplicacao tem dois publicos com necessidades opostas diante de um erro:
- *
- * <ul>
- *   <li><strong>{@code /api/v1/**}</strong> &mdash; consumidores de API esperam o status HTTP
- *       correto e um corpo no padrao RFC 7807 ({@link ProblemDetail}), que e o formato nativo do
- *       Spring 6;
- *   <li><strong>{@code /api/v1/telas/**}</strong> &mdash; o cliente do Anexo 1 sabe renderizar
- *       telas, nao codigos de status. Um {@code 409} cru o deixaria sem nada para desenhar, entao o
- *       erro vira uma tela legivel com caminho de volta.
- * </ul>
- *
- * <p>Nenhuma regra de negocio vive aqui: cada excecao ja carrega seu status e seu tipo, e o
- * tratador apenas os transporta. Uma regra nova nao exige alterar esta classe.
- */
 @RestControllerAdvice
 @RequiredArgsConstructor
 @Slf4j
@@ -55,10 +38,6 @@ public class GlobalExceptionHandler {
 
     /**
      * Trata as falhas previstas pelas regras de negocio.
-     *
-     * <p>Registradas em {@code WARN}, nunca em {@code ERROR}: um voto duplicado recusado significa
-     * que a aplicacao funcionou. Poluir o nivel de erro com rejeicoes esperadas tornaria o alarme
-     * inutil.
      *
      * @param e excecao de negocio
      * @param request requisicao que originou a falha
@@ -112,10 +91,6 @@ public class GlobalExceptionHandler {
 
     /**
      * Trata corpo malformado e enums desconhecidos.
-     *
-     * <p>Um valor fora do enum {@code OpcaoVoto} chega como falha de leitura do corpo, e nao como
-     * violacao de validacao; sem este tratamento viraria {@code 500} para um erro que e claramente
-     * do cliente.
      *
      * @param e excecao de leitura
      * @param request requisicao que originou a falha
@@ -177,10 +152,6 @@ public class GlobalExceptionHandler {
     /**
      * Trata rota inexistente e metodo nao suportado.
      *
-     * <p>Sem este tratador, ambos caem no {@code catch-all} e viram {@code 500}: um erro do cliente
-     * passa a ser reportado como falha do servidor, o que engana quem consome a API e polui o nivel
-     * {@code ERROR} do log com ruido que nao exige acao nenhuma.
-     *
      * @param e excecao de roteamento
      * @param request requisicao que originou a falha
      * @return {@code 404} para rota inexistente, {@code 405} para metodo nao suportado
@@ -214,10 +185,6 @@ public class GlobalExceptionHandler {
     /**
      * Trata violacoes de restricao em parametros de requisicao.
      *
-     * <p>Cobre as anotacoes declaradas diretamente nos parametros do controlador, como os limites
-     * de paginacao. Sem este tratador, um {@code size} negativo viraria {@code 500} &mdash; entrada
-     * invalida do cliente reportada como falha do servidor.
-     *
      * @param e violacao de restricao
      * @param request requisicao que originou a falha
      * @return {@code 400} descrevendo o parametro recusado
@@ -250,9 +217,6 @@ public class GlobalExceptionHandler {
     /**
      * Extrai o nome do parametro violado do caminho da propriedade.
      *
-     * <p>O caminho vem como {@code metodo.parametro}; so o ultimo trecho interessa a quem consome a
-     * API.
-     *
      * @param violacao violacao de restricao
      * @return o nome do parametro
      */
@@ -264,10 +228,6 @@ public class GlobalExceptionHandler {
 
     /**
      * Ultimo recurso para falhas inesperadas.
-     *
-     * <p>Este e o unico tratador que registra em {@code ERROR}, com o rastro completo. A resposta
-     * ao cliente e deliberadamente generica: detalhes internos em mensagem de erro sao vazamento de
-     * informacao. O {@code correlationId} devolvido permite localizar o rastro no log.
      *
      * @param e excecao inesperada
      * @param request requisicao que originou a falha

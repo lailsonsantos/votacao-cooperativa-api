@@ -27,17 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Superficie Server-Driven UI: devolve as telas do Anexo 1 ao cliente.
- *
- * <p>E o foco declarado da avaliacao. O cliente nao conhece o dominio: recebe uma descricao de
- * tela, renderiza, e ao acionar um botao envia {@code POST} para a URL indicada. Cada acao
- * <strong>executa a operacao e devolve a proxima tela</strong>, de modo que a navegacao inteira e
- * dirigida pelo servidor.
- *
- * <p>Este controlador e uma casca fina: toda regra vive nos mesmos servicos de aplicacao usados
- * pela API REST {@code /api/v1}. Nao ha logica de negocio duplicada entre as duas superficies.
- */
+/** Superficie Server-Driven UI: devolve as telas do Anexo 1 ao cliente. */
 @RestController
 @RequestMapping("/api/v1/telas")
 @Validated
@@ -117,10 +107,6 @@ public class TelaController {
     /**
      * Tela de uma pauta, cujo conteudo depende do estado da sessao.
      *
-     * <p>Sem sessao, oferece a abertura; com sessao aberta, coleta o CPF para votar; com sessao
-     * encerrada, mostra o resultado. Essa decisao vive no servidor, e nao no cliente &mdash; que e
-     * justamente o objetivo do padrao.
-     *
      * @param id identificador da pauta
      * @return a tela correspondente ao estado atual da pauta
      */
@@ -158,9 +144,6 @@ public class TelaController {
 
     /**
      * Valida o CPF e devolve as opcoes de voto.
-     *
-     * <p>A validacao acontece aqui, antes de mostrar "Sim" e "Nao", para que o associado impedido
-     * descubra o problema no passo da identificacao e nao depois de ja ter escolhido seu voto.
      *
      * @param id identificador da pauta
      * @param acao campos digitados, incluindo o CPF

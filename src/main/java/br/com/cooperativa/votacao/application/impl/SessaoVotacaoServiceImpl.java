@@ -17,12 +17,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Implementacao dos casos de uso de sessao de votacao.
- *
- * <p>O contrato vive em {@link SessaoVotacaoService}; aqui documenta-se apenas o porque de cada
- * escolha.
- */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -33,15 +27,13 @@ public class SessaoVotacaoServiceImpl implements SessaoVotacaoService {
     private final AppProperties appProperties;
     private final Clock clock;
 
-    /** {@inheritDoc} */
     @Override
     @Transactional
     public SessaoVotacao abrir(UUID pautaId, Integer duracaoMinutos) {
         var pauta = pautaService.buscar(pautaId);
 
-        // Checagem antecipada apenas para devolver a mensagem de negocio correta.
-        // A garantia real e a constraint uk_sessao_pauta, tratada no catch abaixo,
-        // que resolve a corrida entre duas aberturas simultaneas.
+        // Checagem so pra dar a mensagem certa. Quem garante mesmo e a constraint
+        // uk_sessao_pauta, tratada no catch abaixo.
         if (sessaoRepository.existePorPauta(pautaId)) {
             throw new SessaoJaAbertaException(pautaId);
         }
@@ -68,14 +60,12 @@ public class SessaoVotacaoServiceImpl implements SessaoVotacaoService {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
     public SessaoVotacao buscarObrigatoria(UUID pautaId) {
         return buscar(pautaId).orElseThrow(() -> new SessaoNaoAbertaException(pautaId));
     }
 
-    /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
     public Optional<SessaoVotacao> buscar(UUID pautaId) {

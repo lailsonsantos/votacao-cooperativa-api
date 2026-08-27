@@ -14,17 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-/**
- * Associa um identificador de correlacao a cada requisicao HTTP.
- *
- * <p>O identificador entra no {@link MDC}, portanto aparece em toda linha de log emitida durante a
- * requisicao, e volta ao cliente tanto no cabecalho {@code X-Correlation-Id} quanto no corpo das
- * respostas de erro. Isso fecha o ciclo de diagnostico: a partir do erro devolvido ao usuario e
- * possivel recuperar o rastro completo da requisicao no log.
- *
- * <p>Se o cliente ja enviar um identificador, ele e preservado, permitindo rastrear uma operacao
- * que atravessa varios servicos.
- */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorrelationIdFilter extends OncePerRequestFilter {
@@ -34,23 +23,7 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
     /** Chave usada no contexto de diagnostico do SLF4J. */
     public static final String MDC_KEY = "correlationId";
 
-    /**
-     * Formato aceito para um identificador vindo do cliente.
-     *
-     * <p>O valor recebido era devolvido no cabecalho da resposta e gravado no log sem nenhuma
-     * verificacao, o que abre dois caminhos de ataque:
-     *
-     * <ul>
-     *   <li><strong>Divisao de resposta HTTP:</strong> um valor contendo CR ou LF permite injetar
-     *       cabecalhos adicionais na resposta;
-     *   <li><strong>Injecao de log:</strong> uma quebra de linha no valor permite forjar linhas de
-     *       log inteiras, contaminando justamente o rastro usado para investigar incidentes.
-     * </ul>
-     *
-     * <p>O container costuma recusar CR e LF em cabecalho, mas depender disso e confiar a seguranca
-     * a um detalhe de implementacao do servidor. Aceitar apenas o formato esperado resolve os dois
-     * casos na origem.
-     */
+    /** Formato aceito para um identificador vindo do cliente. */
     private static final Pattern FORMATO_ACEITO = Pattern.compile("[A-Za-z0-9_-]{1,64}");
 
     /**
@@ -68,9 +41,8 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         var correlationId = request.getHeader(HEADER);
         if (!aceitavel(correlationId)) {
-            // Valor ausente ou fora do formato: gera um proprio em vez de
-            // recusar a requisicao. Rastreabilidade nao deve ser motivo para
-            // negar um voto.
+            // Fora do formato: gera um novo em vez de recusar. Nao vale negar
+            // um voto por causa de rastreabilidade.
             correlationId = UUID.randomUUID().toString();
         }
 
@@ -80,8 +52,8 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } finally {
-            // Limpar o MDC e obrigatorio: threads sao reaproveitadas pelo pool do
-            // servidor e o identificador vazaria para a proxima requisicao.
+            // Precisa limpar: a thread volta pro pool e o id vazaria pra proxima
+            // requisicao.
             MDC.remove(MDC_KEY);
         }
     }

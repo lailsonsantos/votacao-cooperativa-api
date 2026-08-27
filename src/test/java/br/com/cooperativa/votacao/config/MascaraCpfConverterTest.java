@@ -10,17 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-/**
- * Testes do mascaramento de CPF em mensagens de log.
- *
- * <p>Este conversor e a rede de seguranca da LGPD: o codigo da aplicacao ja mascara o CPF, mas
- * bibliotecas de terceiros nao conhecem essa regra &mdash; o driver JDBC, por exemplo, inclui o
- * valor da coluna na mensagem de uma violacao de constraint. Uma falha aqui vaza dado pessoal para
- * arquivo de log, em silencio e sem nenhum teste vermelho.
- *
- * <p>A expressao regular usa <em>lookarounds</em>, que sao faceis de escrever errado. Daí os casos
- * de borda abaixo.
- */
 @DisplayName("MascaraCpfConverter")
 class MascaraCpfConverterTest {
 

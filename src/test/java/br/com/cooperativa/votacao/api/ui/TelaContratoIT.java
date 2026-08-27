@@ -15,13 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-/**
- * Verifica o contrato das telas contra os exemplos do Anexo 1 do enunciado.
- *
- * <p>Este e o conjunto de testes que protege o foco declarado da avaliacao: a comunicacao entre o
- * backend e o cliente. Uma renomeacao de campo que passasse despercebida aqui quebraria o app em
- * producao sem quebrar nenhum outro teste.
- */
 @DisplayName("Contrato das telas (Anexo 1)")
 class TelaContratoIT extends IntegracaoTest {
 
@@ -183,9 +176,8 @@ class TelaContratoIT extends IntegracaoTest {
                                 .content("{\"duracaoMinutos\":10}"))
                 .andExpect(status().isOk());
 
-        // A camada de telas recebe um mapa aberto de campos, entao nao ha DTO
-        // onde declarar @CPF. A guarda e o objeto de valor Cpf, e o erro vira
-        // uma tela legivel em vez de um status cru.
+        // Aqui o corpo e um mapa aberto, nao da pra usar @CPF. Quem valida e o
+        // objeto Cpf, e o erro vira tela.
         mockMvc.perform(
                         post("/api/v1/telas/pautas/{id}/votos/identificacao", pautaId)
                                 .contentType(MediaType.APPLICATION_JSON)

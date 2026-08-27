@@ -29,12 +29,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 
-/**
- * Testes das regras de registro de voto.
- *
- * <p>O {@link Clock} e fixo: simular o fim de uma sessao e trocar o instante do relogio, e nao
- * esperar tempo real. Sem isso, este arquivo levaria minutos para rodar e seria intermitente.
- */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("VotoService")
 class VotoServiceTest {

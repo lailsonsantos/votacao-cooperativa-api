@@ -9,34 +9,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.util.StringUtils;
 
-/**
- * Converte a variavel {@code DATABASE_URL} para o formato que o Spring espera.
- *
- * <p>Praticamente todas as plataformas de nuvem gerenciada &mdash; Render, Railway, Fly.io, Neon,
- * Supabase &mdash; injetam a conexao do banco como uma URI no formato:
- *
- * <pre>postgresql://usuario:senha@host:5432/banco?sslmode=require</pre>
- *
- * <p>O Spring, por sua vez, exige a URL no formato JDBC e as credenciais em propriedades separadas:
- *
- * <pre>
- * spring.datasource.url      = jdbc:postgresql://host:5432/banco?sslmode=require
- * spring.datasource.username = usuario
- * spring.datasource.password = senha
- * </pre>
- *
- * <p>Esta classe faz a ponte. A alternativa seria montar a URL JDBC na configuracao da plataforma,
- * mas nem todas expoem host e porta como variaveis separadas &mdash; o blueprint do Render, por
- * exemplo, so oferece a URI completa. Resolver aqui torna a mesma imagem implantavel em qualquer
- * uma dessas plataformas sem alteracao.
- *
- * <p>A conversao roda como {@link EnvironmentPostProcessor} porque precisa acontecer
- * <strong>antes</strong> da criacao do {@code DataSource}, ou seja, antes de qualquer bean existir.
- *
- * <p><strong>Precedencia:</strong> se {@code SPRING_DATASOURCE_URL} estiver definida
- * explicitamente, ela vence e a conversao nao acontece. Isso preserva a capacidade de apontar para
- * outro banco sem mexer na variavel da plataforma.
- */
 public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProcessor {
     /** Nome da fonte de propriedades acrescentada ao ambiente. */
     static final String FONTE = "databaseUrlConvertida";
@@ -61,8 +33,7 @@ public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProce
             return;
         }
 
-        // Configuracao explicita vence: quem definiu SPRING_DATASOURCE_URL a mao
-        // quis apontar para outro banco, e sobrescrever isso seria surpreendente.
+        // Quem definiu SPRING_DATASOURCE_URL a mao quis outro banco. Nao sobrescrevo.
         if (StringUtils.hasText(environment.getProperty(URL_EXPLICITA))) {
             return;
         }
@@ -107,8 +78,7 @@ public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProce
 
         // Porta ausente na URI significa a porta padrao do PostgreSQL.
         var porta = uri.getPort() > 0 ? uri.getPort() : 5432;
-        // A guarda acima garante o prefixo postgres://, o que torna a URI
-        // hierarquica; nesse caso getPath() devolve string vazia, nunca nulo.
+        // Com o prefixo postgres:// a URI e hierarquica, entao getPath() nunca vem nulo.
         var banco = uri.getPath();
 
         // A query string carrega parametros que nao podem ser perdidos: o

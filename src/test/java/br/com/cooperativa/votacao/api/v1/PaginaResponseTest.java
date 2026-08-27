@@ -8,12 +8,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-/**
- * Testes do envelope de paginacao da API.
- *
- * <p>Ele existe para dar um contrato explicito e estavel a paginacao na resposta, em vez de expor
- * um tipo interno de biblioteca cuja serializacao pode mudar entre versoes.
- */
 @DisplayName("PaginaResponse")
 class PaginaResponseTest {
 

@@ -10,13 +10,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.mock.env.MockEnvironment;
 
-/**
- * Testes da conversao de {@code DATABASE_URL} para propriedades do Spring.
- *
- * <p>Um defeito aqui so apareceria no deploy, com a aplicacao falhando ao subir e sem banco para
- * consultar &mdash; o pior momento possivel para descobrir. Daí a cobertura detalhada de um trecho
- * de codigo tao curto.
- */
 @DisplayName("DatabaseUrlEnvironmentPostProcessor")
 class DatabaseUrlEnvironmentPostProcessorTest {
 
@@ -170,9 +163,7 @@ class DatabaseUrlEnvironmentPostProcessorTest {
 
         processor.postProcessEnvironment(environment, new SpringApplication());
 
-        // Um banco de outro fornecedor na variavel nao pode ser convertido em URL
-        // JDBC de PostgreSQL; melhor nao mexer e deixar a configuracao explicita
-        // decidir do que produzir uma URL silenciosamente errada.
+        // Banco de outro fornecedor: melhor nao mexer do que gerar uma URL errada.
         assertThat(
                         environment
                                 .getPropertySources()

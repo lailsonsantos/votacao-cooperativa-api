@@ -10,11 +10,6 @@ public interface SessaoVotacaoRepository {
     /**
      * Persiste a sessao e confirma a gravacao imediatamente.
      *
-     * <p>A confirmacao imediata e necessaria para que a violacao da constraint {@code
-     * uk_sessao_pauta} ocorra dentro do metodo que a provoca, e possa ser traduzida em erro de
-     * negocio. Sem isso, a falha so apareceria no commit da transacao, longe do codigo capaz de
-     * interpreta-la.
-     *
      * @param sessao sessao a persistir
      * @return a sessao persistida
      */

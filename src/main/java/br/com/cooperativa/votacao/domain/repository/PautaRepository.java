@@ -5,16 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * Porta de saida para a persistencia de pautas.
- *
- * <p>Interface declarada pelo dominio e implementada pela infraestrutura: e o dominio quem define
- * de que operacoes precisa, nao a biblioteca de persistencia quem define o que ele pode fazer.
- *
- * <p>A porta declara apenas os quatro metodos efetivamente usados. Herdar {@code JpaRepository}
- * traria mais de vinte metodos que ninguem chama &mdash; incluindo {@code deleteAll()}, que jamais
- * deveria estar ao alcance de um caso de uso desta aplicacao.
- */
 public interface PautaRepository {
 
     /**

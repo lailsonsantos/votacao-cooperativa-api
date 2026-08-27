@@ -2,21 +2,6 @@ package br.com.cooperativa.votacao.api.ui.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-/**
- * Item de uma tela do tipo {@link TipoTela#FORMULARIO}.
- *
- * <p>O Anexo 1 usa um unico formato de objeto para todos os tipos de item, variando apenas quais
- * campos estao presentes. Campos nulos sao omitidos da serializacao para que o JSON produzido seja
- * identico ao dos exemplos do enunciado &mdash; um item {@code TEXTO} nao deve carregar {@code
- * "id": null}.
- *
- * @param tipo tipo do item
- * @param texto conteudo, presente apenas em itens {@link TipoItem#TEXTO}
- * @param id identificador do campo; e a chave com que o valor digitado sera enviado no corpo do
- *     POST da acao
- * @param titulo rotulo exibido acima do campo de entrada
- * @param valor valor inicial do campo, texto ou numero conforme o tipo
- */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ItemTela(TipoItem tipo, String texto, String id, String titulo, Object valor) {
     /**

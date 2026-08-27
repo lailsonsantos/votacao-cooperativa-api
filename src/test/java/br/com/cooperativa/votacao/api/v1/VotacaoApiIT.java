@@ -157,10 +157,8 @@ class VotacaoApiIT extends IntegracaoTest {
         var pautaId = criarPauta("Pauta com cpf invalido");
         abrirSessao(pautaId, 5);
 
-        // 11111111111 tem onze digitos e ainda assim nao e um CPF valido. A
-        // restricao @CPF do Hibernate Validator recusa na borda, antes de o
-        // controlador rodar, e a resposta nomeia o campo — mais util para o
-        // cliente do que uma mensagem generica.
+        // 11111111111 tem onze digitos mas nao e CPF valido. O @CPF pega na borda
+        // e a resposta diz qual campo falhou.
         votar(pautaId, "11111111111", "SIM")
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.title").value("Requisicao invalida"))
@@ -248,8 +246,7 @@ class VotacaoApiIT extends IntegracaoTest {
     @Test
     @DisplayName("limita o tamanho da pagina para impedir resposta ilimitada")
     void limitaTamanhoDaPagina() throws Exception {
-        // A troca de Pageable por parametros simples removeu o teto que o Spring
-        // Data aplicava; sem o @Max, size=999999 devolveria a base inteira.
+        // Sem o @Max, size=999999 devolveria a base inteira.
         mockMvc.perform(get("/api/v1/pautas").param("size", "999999"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.title").value("Requisicao invalida"))

@@ -2,19 +2,6 @@ package br.com.cooperativa.votacao.domain.model;
 
 import java.util.UUID;
 
-/**
- * Apuracao de uma pauta em um dado instante.
- *
- * <p>Nao e uma entidade e nao e persistida: o resultado e sempre derivado da contagem agregada dos
- * votos. Persistir uma contagem criaria um segundo lugar onde a verdade poderia divergir do fato.
- *
- * @param pautaId identificador da pauta apurada
- * @param titulo titulo da pauta, para exibicao direta na tela
- * @param status situacao da sessao no momento da apuracao
- * @param votosSim quantidade de votos favoraveis
- * @param votosNao quantidade de votos contrarios
- * @param resultado desfecho calculado a partir da contagem
- */
 public record ResultadoVotacao(
         UUID pautaId,
         String titulo,
@@ -49,9 +36,6 @@ public record ResultadoVotacao(
 
     /**
      * Indica se a apuracao ainda e parcial.
-     *
-     * <p>Consultar o resultado com a sessao aberta e permitido, mas o consumidor precisa saber que
-     * o numero ainda pode mudar &mdash; por isso o status acompanha a resposta.
      *
      * @return {@code true} enquanto a sessao estiver aberta
      */

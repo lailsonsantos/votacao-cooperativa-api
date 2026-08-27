@@ -17,7 +17,6 @@ public class RecursoNaoEncontradoException extends NegocioException {
                 "%s nao encontrada para o identificador %s.".formatted(recurso, id));
     }
 
-    /** {@inheritDoc} */
     @Override
     public String getTitulo() {
         return "Recurso nao encontrado";

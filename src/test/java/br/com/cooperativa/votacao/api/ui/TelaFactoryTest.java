@@ -21,14 +21,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-/**
- * Testes da traducao do dominio para as telas do Anexo 1.
- *
- * <p>Esta e a classe que decide o que o cliente ve. Os testes de contrato em {@code TelaContratoIT}
- * conferem o JSON final, mas exigem banco e sobem o contexto; aqui cada estado possivel e
- * verificado isoladamente e em milissegundos, o que torna barato cobrir combinacoes que a
- * integracao nao alcancaria sem massa artificial.
- */
 @DisplayName("TelaFactory")
 class TelaFactoryTest {
 

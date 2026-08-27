@@ -7,19 +7,10 @@ import br.com.cooperativa.votacao.domain.model.SessaoVotacao;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * Casos de uso de abertura e consulta de sessoes de votacao.
- *
- * @see br.com.cooperativa.votacao.application.impl.SessaoVotacaoServiceImpl
- */
 public interface SessaoVotacaoService {
 
     /**
      * Abre a sessao de votacao de uma pauta.
-     *
-     * <p>Quando a chamada nao informa duracao, aplica-se o padrao de 1 minuto definido no
-     * enunciado. O valor vem de configuracao para que nao exista numero magico no codigo e para
-     * permitir ajuste por ambiente.
      *
      * @param pautaId identificador da pauta
      * @param duracaoMinutos duracao solicitada, ou {@code null} para usar o padrao
@@ -40,9 +31,6 @@ public interface SessaoVotacaoService {
 
     /**
      * Busca a sessao de uma pauta, se existir.
-     *
-     * <p>Variante tolerante usada pelas telas, que precisam desenhar tanto o caso "sessao aberta"
-     * quanto o caso "ainda sem sessao" sem tratar excecao.
      *
      * @param pautaId identificador da pauta
      * @return a sessao, se houver

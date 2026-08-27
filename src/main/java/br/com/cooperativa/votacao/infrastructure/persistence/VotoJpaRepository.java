@@ -13,20 +13,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VotoJpaRepository extends VotoRepository, JpaRepository<Voto, UUID> {
 
-    /** {@inheritDoc} */
     @Override
     default Voto salvarEConfirmar(Voto voto) {
         return saveAndFlush(voto);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * <p>Esta e a unica consulta usada na apuracao. Ela e servida integralmente pelo indice {@code
-     * ix_voto_sessao_opcao}, entao o custo cresce com o numero de opcoes (duas) e nao com o numero
-     * de votos &mdash; que e o que permite apurar centenas de milhares de votos sem carregar nenhum
-     * deles em memoria.
-     */
     @Override
     @Query(
             """
@@ -37,7 +28,6 @@ public interface VotoJpaRepository extends VotoRepository, JpaRepository<Voto, U
             """)
     List<ContagemVotos> contarPorOpcao(UUID sessaoId);
 
-    /** {@inheritDoc} */
     @Override
     @Query(
             """

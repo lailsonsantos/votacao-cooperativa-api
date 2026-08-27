@@ -10,10 +10,6 @@ public interface VotoRepository {
     /**
      * Persiste o voto e confirma a gravacao imediatamente.
      *
-     * <p>A confirmacao imediata e o que faz a violacao de {@code uk_voto_sessao_associado}
-     * acontecer dentro do metodo que registra o voto, permitindo traduzi-la em {@code
-     * VotoDuplicadoException}.
-     *
      * @param voto voto a persistir
      * @return o voto persistido
      */

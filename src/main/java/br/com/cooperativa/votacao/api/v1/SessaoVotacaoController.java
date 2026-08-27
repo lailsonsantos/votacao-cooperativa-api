@@ -30,9 +30,6 @@ public class SessaoVotacaoController {
     /**
      * Abre a sessao de votacao de uma pauta.
      *
-     * <p>O corpo e opcional: {@code POST} sem corpo abre a sessao com a duracao padrao de 1 minuto,
-     * conforme o enunciado.
-     *
      * @param id identificador da pauta
      * @param request duracao solicitada, opcional
      * @return {@code 201} com os dados da sessao aberta

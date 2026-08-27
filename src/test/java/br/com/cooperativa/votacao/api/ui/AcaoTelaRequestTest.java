@@ -8,17 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-/**
- * Testes da leitura do corpo generico das acoes de tela.
- *
- * <p>Segundo o Anexo 1, o cliente envia o {@code body} do botao acrescido dos valores digitados. O
- * conjunto de chaves varia por tela, entao o corpo e um mapa aberto &mdash; e a conversao de tipos
- * fica concentrada aqui, longe dos controladores.
- *
- * <p>O campo {@code INPUT_NUMERO} e o caso delicado: dependendo de como o cliente monta a
- * requisicao, o valor chega como numero JSON ou como texto. Aceitar so um dos dois quebraria em
- * produção com um cliente que a suite nunca exercitou.
- */
 @DisplayName("AcaoTelaRequest")
 class AcaoTelaRequestTest {
 

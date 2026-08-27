@@ -22,13 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/**
- * Endpoints de cadastro e consulta de pautas.
- *
- * <p>O controlador nao contem regra de negocio: valida a entrada, delega ao servico e traduz o
- * retorno. E o que permite que a camada de telas (Server-Driven UI) reutilize exatamente os mesmos
- * casos de uso sem duplicacao.
- */
 @ApiV1
 @Validated
 @Tag(name = "Pautas", description = "Cadastro e consulta das pautas da assembleia")

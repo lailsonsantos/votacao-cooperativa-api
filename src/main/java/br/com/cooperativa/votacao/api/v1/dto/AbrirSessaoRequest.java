@@ -4,12 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Positive;
 
-/**
- * Corpo da requisicao de abertura de sessao.
- *
- * @param duracaoMinutos duracao da janela de votacao. Opcional: quando ausente, aplica-se o padrao
- *     de 1 minuto definido no enunciado e configurado em {@code app.sessao.duracao-padrao-minutos}.
- */
 @Schema(description = "Parametros de abertura da sessao de votacao")
 public record AbrirSessaoRequest(
         @Schema(

@@ -15,13 +15,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-/**
- * Janela de tempo durante a qual os associados podem votar em uma pauta.
- *
- * <p>Nao existe colecao de votos mapeada aqui, de proposito. Uma {@code List<Voto>} conveniente
- * convidaria a carregar centenas de milhares de registros em memoria para contar votos; a apuracao
- * e feita por consulta agregada no repositorio (Tarefa Bonus 2).
- */
 @Entity
 @Table(name = "sessao_votacao")
 @Getter
@@ -33,12 +26,7 @@ public class SessaoVotacao {
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
-    /**
-     * Pauta em deliberacao.
-     *
-     * <p>Carregamento {@code LAZY} porque a maior parte das operacoes de voto so precisa do
-     * identificador da sessao.
-     */
+    /** Pauta em deliberacao. */
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "pauta_id", nullable = false, updatable = false, unique = true)
     private Pauta pauta;
@@ -81,10 +69,6 @@ public class SessaoVotacao {
     /**
      * Indica se a sessao ainda aceita votos.
      *
-     * <p>O status e <strong>derivado</strong> do relogio em vez de persistido. Assim nao existe
-     * estado a ser reconciliado por um job de fechamento, e a sessao nunca fica indevidamente
-     * "aberta" porque o agendador nao rodou ou porque a aplicacao caiu no momento do encerramento.
-     *
      * @param agora instante de referencia, injetado para permitir teste deterministico
      * @return {@code true} enquanto {@code agora} for anterior ao fechamento
      */
@@ -104,9 +88,6 @@ public class SessaoVotacao {
 
     /**
      * Calcula quanto tempo resta de votacao.
-     *
-     * <p>Usado pelas telas para informar o associado. Nunca devolve valor negativo: apos o
-     * fechamento, o restante e {@link Duration#ZERO}.
      *
      * @param agora instante de referencia
      * @return o tempo restante, ou zero se a sessao ja encerrou
