@@ -1,12 +1,11 @@
 package br.com.cooperativa.votacao.application;
 
-import br.com.cooperativa.votacao.application.impl.SessaoVotacaoServiceImpl;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import br.com.cooperativa.votacao.application.impl.SessaoVotacaoServiceImpl;
 import br.com.cooperativa.votacao.config.AppProperties;
 import br.com.cooperativa.votacao.domain.exception.SessaoJaAbertaException;
 import br.com.cooperativa.votacao.domain.exception.SessaoNaoAbertaException;
@@ -26,9 +25,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-/**
- * Testes das regras de abertura de sessao.
- */
+/** Testes das regras de abertura de sessao. */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("SessaoVotacaoService")
 class SessaoVotacaoServiceTest {

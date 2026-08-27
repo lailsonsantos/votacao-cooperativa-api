@@ -20,8 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Implementacao dos casos de uso de sessao de votacao.
  *
- * <p>O contrato vive em {@link SessaoVotacaoService}; aqui documenta-se apenas o
- * porque de cada escolha.
+ * <p>O contrato vive em {@link SessaoVotacaoService}; aqui documenta-se apenas o porque de cada
+ * escolha.
  */
 @Service
 @RequiredArgsConstructor

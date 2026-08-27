@@ -5,8 +5,8 @@ import java.util.UUID;
 /**
  * Lancada ao tentar votar depois do prazo da sessao.
  *
- * <p>Devolve {@code 422}: a requisicao esta sintaticamente correta, mas nao pode
- * ser processada porque a janela de votacao ja expirou.
+ * <p>Devolve {@code 422}: a requisicao esta sintaticamente correta, mas nao pode ser processada
+ * porque a janela de votacao ja expirou.
  */
 public class SessaoEncerradaException extends NegocioException {
     /**

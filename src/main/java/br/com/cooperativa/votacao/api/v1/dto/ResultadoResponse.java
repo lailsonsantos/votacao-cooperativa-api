@@ -9,14 +9,14 @@ import java.util.UUID;
 /**
  * Resultado da apuracao de uma pauta.
  *
- * @param pautaId    identificador da pauta
- * @param titulo     titulo da pauta
- * @param status     situacao da sessao no momento da apuracao
- * @param parcial    {@code true} enquanto a sessao estiver aberta
+ * @param pautaId identificador da pauta
+ * @param titulo titulo da pauta
+ * @param status situacao da sessao no momento da apuracao
+ * @param parcial {@code true} enquanto a sessao estiver aberta
  * @param totalVotos soma dos votos registrados
- * @param votosSim   quantidade de votos favoraveis
- * @param votosNao   quantidade de votos contrarios
- * @param resultado  desfecho calculado
+ * @param votosSim quantidade de votos favoraveis
+ * @param votosNao quantidade de votos contrarios
+ * @param resultado desfecho calculado
  */
 @Schema(description = "Apuracao dos votos de uma pauta")
 public record ResultadoResponse(
@@ -31,10 +31,9 @@ public record ResultadoResponse(
     /**
      * Converte o resultado de dominio para a representacao da API.
      *
-     * <p>O campo {@code parcial} e explicito, e nao deixado para o consumidor
-     * inferir a partir de {@code status}: consultar o resultado com a sessao
-     * aberta e permitido, e o cliente precisa saber sem ambiguidade que o numero
-     * ainda pode mudar.
+     * <p>O campo {@code parcial} e explicito, e nao deixado para o consumidor inferir a partir de
+     * {@code status}: consultar o resultado com a sessao aberta e permitido, e o cliente precisa
+     * saber sem ambiguidade que o numero ainda pode mudar.
      *
      * @param resultado resultado de dominio
      * @return a representacao correspondente

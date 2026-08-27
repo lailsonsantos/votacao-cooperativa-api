@@ -1,0 +1,81 @@
+package br.com.cooperativa.votacao.config;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
+/**
+ * Testes do mascaramento de CPF em mensagens de log.
+ *
+ * <p>Este conversor e a rede de seguranca da LGPD: o codigo da aplicacao ja mascara o CPF, mas
+ * bibliotecas de terceiros nao conhecem essa regra &mdash; o driver JDBC, por exemplo, inclui o
+ * valor da coluna na mensagem de uma violacao de constraint. Uma falha aqui vaza dado pessoal para
+ * arquivo de log, em silencio e sem nenhum teste vermelho.
+ *
+ * <p>A expressao regular usa <em>lookarounds</em>, que sao faceis de escrever errado. Daí os casos
+ * de borda abaixo.
+ */
+@DisplayName("MascaraCpfConverter")
+class MascaraCpfConverterTest {
+
+    private final MascaraCpfConverter converter = new MascaraCpfConverter();
+
+    /**
+     * Constroi um evento de log com a mensagem informada.
+     *
+     * @param mensagem texto ja formatado
+     * @return o evento pronto para conversao
+     */
+    private ILoggingEvent evento(String mensagem) {
+        var e = mock(ILoggingEvent.class);
+        when(e.getFormattedMessage()).thenReturn(mensagem);
+        return e;
+    }
+
+    @ParameterizedTest(name = "{0} -> {1}")
+    @CsvSource({
+        "'Voto de 19839091069 registrado',        'Voto de 198******69 registrado'",
+        "'CPF 198.390.910-69 recusado',           'CPF 198******69 recusado'",
+        "'valor (19839091069) duplicado',         'valor (198******69) duplicado'"
+    })
+    @DisplayName("mascara CPF com e sem pontuacao")
+    void mascara(String entrada, String esperado) {
+        assertThat(converter.convert(evento(entrada))).isEqualTo(esperado);
+    }
+
+    @Test
+    @DisplayName("mascara todas as ocorrencias da mesma mensagem")
+    void mascaraMultiplas() {
+        var texto = "de 19839091069 para 62289608068";
+        assertThat(converter.convert(evento(texto))).isEqualTo("de 198******69 para 622******68");
+    }
+
+    @Test
+    @DisplayName("nao mascara os primeiros digitos de um numero maior")
+    void naoMascaraNumeroMaior() {
+        // Sem os lookarounds, os 11 primeiros digitos de um identificador de 15
+        // seriam substituidos, corrompendo o log em vez de proteger dado pessoal.
+        var texto = "identificador 123456789012345 processado";
+        assertThat(converter.convert(evento(texto))).isEqualTo(texto);
+    }
+
+    @Test
+    @DisplayName("preserva mensagens sem CPF")
+    void semCpf() {
+        var texto = "Sessao aberta. pautaId=3a7b duracaoMinutos=5";
+        assertThat(converter.convert(evento(texto))).isEqualTo(texto);
+    }
+
+    @Test
+    @DisplayName("nao quebra com mensagem vazia ou nula")
+    void mensagemVaziaOuNula() {
+        assertThat(converter.convert(evento(""))).isEmpty();
+        assertThat(converter.convert(evento(null))).isNull();
+    }
+}

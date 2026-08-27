@@ -19,11 +19,10 @@ import lombok.NoArgsConstructor;
 /**
  * Manifestacao de um associado sobre uma pauta.
  *
- * <p>A regra "um voto por associado por pauta" e garantida pela constraint
- * unica {@code uk_voto_sessao_associado}, e nao por uma consulta previa na
- * aplicacao. Sob a concorrencia prevista na Tarefa Bonus 2, um {@code SELECT}
- * seguido de {@code INSERT} abre uma janela entre a verificacao e a gravacao na
- * qual duas requisicoes simultaneas passariam pela checagem.
+ * <p>A regra "um voto por associado por pauta" e garantida pela constraint unica {@code
+ * uk_voto_sessao_associado}, e nao por uma consulta previa na aplicacao. Sob a concorrencia
+ * prevista na Tarefa Bonus 2, um {@code SELECT} seguido de {@code INSERT} abre uma janela entre a
+ * verificacao e a gravacao na qual duas requisicoes simultaneas passariam pela checagem.
  */
 @Entity
 @Table(name = "voto")
@@ -44,9 +43,9 @@ public class Voto {
     /**
      * Identificador unico do associado.
      *
-     * <p>O enunciado fala em "id unico" no requisito base e em CPF na Tarefa
-     * Bonus 1. Unificamos os dois no CPF para nao criar dois identificadores
-     * concorrentes para a mesma pessoa. A premissa esta registrada no README.
+     * <p>O enunciado fala em "id unico" no requisito base e em CPF na Tarefa Bonus 1. Unificamos os
+     * dois no CPF para nao criar dois identificadores concorrentes para a mesma pessoa. A premissa
+     * esta registrada no README.
      */
     @Column(name = "associado_id", nullable = false, length = 11, updatable = false)
     private String associadoId;
@@ -63,10 +62,10 @@ public class Voto {
     /**
      * Construtor de dominio.
      *
-     * @param sessao      sessao em que o voto e registrado
+     * @param sessao sessao em que o voto e registrado
      * @param associadoId CPF do associado, somente digitos
-     * @param opcao       opcao escolhida
-     * @param criadoEm    instante do registro
+     * @param opcao opcao escolhida
+     * @param criadoEm instante do registro
      */
     private Voto(SessaoVotacao sessao, String associadoId, OpcaoVoto opcao, Instant criadoEm) {
         this.id = UUID.randomUUID();
@@ -79,10 +78,10 @@ public class Voto {
     /**
      * Cria um voto pronto para persistencia.
      *
-     * @param sessao      sessao aberta em que o voto sera registrado
+     * @param sessao sessao aberta em que o voto sera registrado
      * @param associadoId CPF do associado, somente digitos
-     * @param opcao       opcao escolhida
-     * @param agora       instante do registro, vindo do relogio injetado
+     * @param opcao opcao escolhida
+     * @param agora instante do registro, vindo do relogio injetado
      * @return o novo voto, ainda nao persistido
      */
     public static Voto registrar(

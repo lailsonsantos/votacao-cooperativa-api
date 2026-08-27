@@ -13,14 +13,13 @@ import org.springframework.stereotype.Repository;
 /**
  * Adaptador JPA da porta {@link PautaRepository}.
  *
- * <p>A interface estende a porta e {@code JpaRepository} ao mesmo tempo, e os
- * metodos da porta sao {@code default} delegando ao Spring Data. Isso entrega a
- * inversao de dependencia sem escrever nenhuma classe adaptadora: o Spring Data
- * implementa a interface em tempo de execucao e o dominio segue conhecendo
- * apenas a porta.
+ * <p>A interface estende a porta e {@code JpaRepository} ao mesmo tempo, e os metodos da porta sao
+ * {@code default} delegando ao Spring Data. Isso entrega a inversao de dependencia sem escrever
+ * nenhuma classe adaptadora: o Spring Data implementa a interface em tempo de execucao e o dominio
+ * segue conhecendo apenas a porta.
  *
- * <p>A alternativa &mdash; uma classe adaptadora por repositorio &mdash; daria o
- * mesmo resultado ao custo de tres classes cujo corpo inteiro seria delegacao.
+ * <p>A alternativa &mdash; uma classe adaptadora por repositorio &mdash; daria o mesmo resultado ao
+ * custo de tres classes cujo corpo inteiro seria delegacao.
  */
 @Repository
 public interface PautaJpaRepository extends PautaRepository, JpaRepository<Pauta, UUID> {

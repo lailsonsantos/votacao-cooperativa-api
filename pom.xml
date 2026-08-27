@@ -99,6 +99,13 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
+    <!-- Sem este registry o endpoint /actuator/prometheus simplesmente nao existe,
+         ainda que esteja declarado na lista de exposicao. -->
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+      <scope>runtime</scope>
+    </dependency>
     <dependency>
       <groupId>net.logstash.logback</groupId>
       <artifactId>logstash-logback-encoder</artifactId>
@@ -212,6 +219,53 @@
               <goal>integration-test</goal>
               <goal>verify</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Formatacao. O padrao google-java-format elimina discussao de estilo em
+           revisao: ou o codigo esta no formato, ou o build falha. `./mvnw
+           spotless:apply` corrige tudo de uma vez. -->
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.43.0</version>
+        <configuration>
+          <java>
+            <googleJavaFormat>
+              <version>1.22.0</version>
+              <style>AOSP</style>
+            </googleJavaFormat>
+            <removeUnusedImports/>
+            <trimTrailingWhitespace/>
+            <endWithNewline/>
+          </java>
+        </configuration>
+        <executions>
+          <execution>
+            <id>verificar-formatacao</id>
+            <phase>verify</phase>
+            <goals><goal>check</goal></goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Analise estatica. Encontra a classe de defeito que teste nao pega:
+           exposicao de estado mutavel, recurso nao fechado, comparacao suspeita. -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.8.6.4</version>
+        <configuration>
+          <effort>Max</effort>
+          <threshold>Medium</threshold>
+          <excludeFilterFile>${project.basedir}/spotbugs-exclusoes.xml</excludeFilterFile>
+        </configuration>
+        <executions>
+          <execution>
+            <id>analise-estatica</id>
+            <phase>verify</phase>
+            <goals><goal>check</goal></goals>
           </execution>
         </executions>
       </plugin>

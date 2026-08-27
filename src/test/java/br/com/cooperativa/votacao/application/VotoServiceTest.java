@@ -1,7 +1,5 @@
 package br.com.cooperativa.votacao.application;
 
-import br.com.cooperativa.votacao.application.impl.VotoServiceImpl;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -9,6 +7,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import br.com.cooperativa.votacao.application.impl.VotoServiceImpl;
 import br.com.cooperativa.votacao.domain.exception.SessaoEncerradaException;
 import br.com.cooperativa.votacao.domain.exception.VotoDuplicadoException;
 import br.com.cooperativa.votacao.domain.model.Cpf;
@@ -33,9 +32,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 /**
  * Testes das regras de registro de voto.
  *
- * <p>O {@link Clock} e fixo: simular o fim de uma sessao e trocar o instante do
- * relogio, e nao esperar tempo real. Sem isso, este arquivo levaria minutos para
- * rodar e seria intermitente.
+ * <p>O {@link Clock} e fixo: simular o fim de uma sessao e trocar o instante do relogio, e nao
+ * esperar tempo real. Sem isso, este arquivo levaria minutos para rodar e seria intermitente.
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("VotoService")

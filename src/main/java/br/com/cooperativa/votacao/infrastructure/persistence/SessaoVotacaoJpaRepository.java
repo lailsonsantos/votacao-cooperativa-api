@@ -8,9 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-/**
- * Adaptador JPA da porta {@link SessaoVotacaoRepository}.
- */
+/** Adaptador JPA da porta {@link SessaoVotacaoRepository}. */
 @Repository
 public interface SessaoVotacaoJpaRepository
         extends SessaoVotacaoRepository, JpaRepository<SessaoVotacao, UUID> {
@@ -24,9 +22,9 @@ public interface SessaoVotacaoJpaRepository
     /**
      * {@inheritDoc}
      *
-     * <p>O {@code join fetch} traz a pauta na mesma consulta porque praticamente
-     * todo consumidor do resultado precisa do titulo dela; sem isso, cada chamada
-     * dispararia um segundo {@code SELECT} pelo carregamento tardio.
+     * <p>O {@code join fetch} traz a pauta na mesma consulta porque praticamente todo consumidor do
+     * resultado precisa do titulo dela; sem isso, cada chamada dispararia um segundo {@code SELECT}
+     * pelo carregamento tardio.
      */
     @Override
     @Query("select s from SessaoVotacao s join fetch s.pauta p where p.id = :pautaId")

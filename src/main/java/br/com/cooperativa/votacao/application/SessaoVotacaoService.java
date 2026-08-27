@@ -17,15 +17,15 @@ public interface SessaoVotacaoService {
     /**
      * Abre a sessao de votacao de uma pauta.
      *
-     * <p>Quando a chamada nao informa duracao, aplica-se o padrao de 1 minuto
-     * definido no enunciado. O valor vem de configuracao para que nao exista
-     * numero magico no codigo e para permitir ajuste por ambiente.
+     * <p>Quando a chamada nao informa duracao, aplica-se o padrao de 1 minuto definido no
+     * enunciado. O valor vem de configuracao para que nao exista numero magico no codigo e para
+     * permitir ajuste por ambiente.
      *
-     * @param pautaId        identificador da pauta
+     * @param pautaId identificador da pauta
      * @param duracaoMinutos duracao solicitada, ou {@code null} para usar o padrao
      * @return a sessao aberta
      * @throws RecursoNaoEncontradoException se a pauta nao existir
-     * @throws SessaoJaAbertaException       se a pauta ja possuir uma sessao
+     * @throws SessaoJaAbertaException se a pauta ja possuir uma sessao
      */
     SessaoVotacao abrir(UUID pautaId, Integer duracaoMinutos);
 
@@ -41,8 +41,8 @@ public interface SessaoVotacaoService {
     /**
      * Busca a sessao de uma pauta, se existir.
      *
-     * <p>Variante tolerante usada pelas telas, que precisam desenhar tanto o caso
-     * "sessao aberta" quanto o caso "ainda sem sessao" sem tratar excecao.
+     * <p>Variante tolerante usada pelas telas, que precisam desenhar tanto o caso "sessao aberta"
+     * quanto o caso "ainda sem sessao" sem tratar excecao.
      *
      * @param pautaId identificador da pauta
      * @return a sessao, se houver

@@ -13,9 +13,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 /**
  * Testes do objeto de valor {@link Cpf}.
  *
- * <p>A validacao acontece antes de qualquer chamada remota, entao um defeito
- * aqui gastaria rede com numeros impossiveis e permitiria persistir votos com
- * identificador invalido.
+ * <p>A validacao acontece antes de qualquer chamada remota, entao um defeito aqui gastaria rede com
+ * numeros impossiveis e permitiria persistir votos com identificador invalido.
  */
 @DisplayName("Cpf")
 class CpfTest {

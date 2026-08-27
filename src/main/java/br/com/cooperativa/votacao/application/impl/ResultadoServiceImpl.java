@@ -24,10 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Implementacao da apuracao de resultado.
  *
- * <p>A contagem e sempre feita por consulta agregada, nunca carregando entidades
- * {@code Voto} em memoria. Com centenas de milhares de votos, materializar a
- * lista para conta-la esgotaria a heap; o {@code COUNT ... GROUP BY} e resolvido
- * pelo indice {@code ix_voto_sessao_opcao}.
+ * <p>A contagem e sempre feita por consulta agregada, nunca carregando entidades {@code Voto} em
+ * memoria. Com centenas de milhares de votos, materializar a lista para conta-la esgotaria a heap;
+ * o {@code COUNT ... GROUP BY} e resolvido pelo indice {@code ix_voto_sessao_opcao}.
  */
 @Service
 @RequiredArgsConstructor
@@ -42,14 +41,13 @@ public class ResultadoServiceImpl implements ResultadoService {
     /**
      * {@inheritDoc}
      *
-     * <p>O cache e consultado e alimentado <strong>apenas</strong> para sessoes
-     * ja encerradas. Enquanto a sessao esta aberta a contagem muda a cada voto, e
-     * servir um valor cacheado devolveria numero desatualizado; depois do
-     * fechamento o resultado e imutavel, entao cachear e correto e barato.
+     * <p>O cache e consultado e alimentado <strong>apenas</strong> para sessoes ja encerradas.
+     * Enquanto a sessao esta aberta a contagem muda a cada voto, e servir um valor cacheado
+     * devolveria numero desatualizado; depois do fechamento o resultado e imutavel, entao cachear e
+     * correto e barato.
      *
-     * <p>{@code @Cacheable} nao daria conta dessa condicao, que depende do estado
-     * da sessao e nao apenas dos argumentos &mdash; por isso o cache e manipulado
-     * explicitamente.
+     * <p>{@code @Cacheable} nao daria conta dessa condicao, que depende do estado da sessao e nao
+     * apenas dos argumentos &mdash; por isso o cache e manipulado explicitamente.
      */
     @Override
     @Transactional(readOnly = true)
@@ -111,8 +109,8 @@ public class ResultadoServiceImpl implements ResultadoService {
     /**
      * Guarda o resultado no cache, se o cache estiver disponivel.
      *
-     * @param cache     cache de resultados, possivelmente nulo
-     * @param pautaId   chave de cache
+     * @param cache cache de resultados, possivelmente nulo
+     * @param pautaId chave de cache
      * @param resultado valor a guardar
      */
     private void guardar(Cache cache, UUID pautaId, ResultadoVotacao resultado) {

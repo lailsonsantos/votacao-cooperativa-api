@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-/**
- * Endpoints de abertura e consulta da sessao de votacao de uma pauta.
- */
+/** Endpoints de abertura e consulta da sessao de votacao de uma pauta. */
 @ApiV1
 @Tag(name = "Sessoes", description = "Abertura e consulta das sessoes de votacao")
 @RequiredArgsConstructor
@@ -32,10 +30,10 @@ public class SessaoVotacaoController {
     /**
      * Abre a sessao de votacao de uma pauta.
      *
-     * <p>O corpo e opcional: {@code POST} sem corpo abre a sessao com a duracao
-     * padrao de 1 minuto, conforme o enunciado.
+     * <p>O corpo e opcional: {@code POST} sem corpo abre a sessao com a duracao padrao de 1 minuto,
+     * conforme o enunciado.
      *
-     * @param id      identificador da pauta
+     * @param id identificador da pauta
      * @param request duracao solicitada, opcional
      * @return {@code 201} com os dados da sessao aberta
      */
@@ -43,8 +41,7 @@ public class SessaoVotacaoController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(
             summary = "Abre a sessao de votacao de uma pauta",
-            description =
-                    "Quando a duracao nao e informada, a sessao fica aberta por 1 minuto.")
+            description = "Quando a duracao nao e informada, a sessao fica aberta por 1 minuto.")
     @ApiResponses({
         @ApiResponse(responseCode = "201", description = "Sessao aberta"),
         @ApiResponse(responseCode = "404", description = "Pauta inexistente", content = @Content),

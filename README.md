@@ -102,7 +102,8 @@ Testcontainers).
 ./mvnw verify
 ```
 
-Executa 76 testes e o gate de cobertura. Relatório em
+Executa 103 testes, o gate de cobertura, a verificacao de formatacao (Spotless)
+e a analise estatica (SpotBugs). Relatório em
 `target/site/jacoco/index.html`.
 
 > **Docker Engine 29+** elevou a versão mínima da API aceita. O projeto já fixa
@@ -315,7 +316,7 @@ Análise completa das alternativas e da política de depreciação:
 
 ## Qualidade
 
-**76 testes**, gate de cobertura em 80% de linhas (falha o build abaixo disso).
+**103 testes**, gate de cobertura em 80% de linhas, formatacao e analise estatica — todos falham o build.
 
 | Nível | Ferramenta | Alvo |
 |---|---|---|

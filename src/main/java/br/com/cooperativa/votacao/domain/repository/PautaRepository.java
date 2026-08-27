@@ -8,14 +8,12 @@ import java.util.UUID;
 /**
  * Porta de saida para a persistencia de pautas.
  *
- * <p>Interface declarada pelo dominio e implementada pela infraestrutura: e o
- * dominio quem define de que operacoes precisa, nao a biblioteca de persistencia
- * quem define o que ele pode fazer.
+ * <p>Interface declarada pelo dominio e implementada pela infraestrutura: e o dominio quem define
+ * de que operacoes precisa, nao a biblioteca de persistencia quem define o que ele pode fazer.
  *
- * <p>A porta declara apenas os quatro metodos efetivamente usados. Herdar
- * {@code JpaRepository} traria mais de vinte metodos que ninguem chama &mdash;
- * incluindo {@code deleteAll()}, que jamais deveria estar ao alcance de um caso
- * de uso desta aplicacao.
+ * <p>A porta declara apenas os quatro metodos efetivamente usados. Herdar {@code JpaRepository}
+ * traria mais de vinte metodos que ninguem chama &mdash; incluindo {@code deleteAll()}, que jamais
+ * deveria estar ao alcance de um caso de uso desta aplicacao.
  */
 public interface PautaRepository {
 
@@ -38,7 +36,7 @@ public interface PautaRepository {
     /**
      * Lista as pautas da mais recente para a mais antiga.
      *
-     * @param pagina  indice da pagina, iniciando em zero
+     * @param pagina indice da pagina, iniciando em zero
      * @param tamanho quantidade de itens por pagina
      * @return os itens da pagina solicitada
      */

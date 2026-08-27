@@ -21,9 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-/**
- * Endpoints de registro de voto e apuracao de resultado.
- */
+/** Endpoints de registro de voto e apuracao de resultado. */
 @ApiV1
 @Tag(name = "Votos", description = "Registro de votos e apuracao do resultado")
 @RequiredArgsConstructor
@@ -34,7 +32,7 @@ public class VotoController {
     /**
      * Registra o voto de um associado.
      *
-     * @param id      identificador da pauta
+     * @param id identificador da pauta
      * @param request CPF do associado e opcao escolhida
      * @return {@code 201} com a confirmacao do voto
      */
@@ -64,8 +62,8 @@ public class VotoController {
     /**
      * Apura o resultado de uma pauta.
      *
-     * <p>A consulta e permitida com a sessao aberta; nesse caso a resposta vem
-     * marcada como parcial.
+     * <p>A consulta e permitida com a sessao aberta; nesse caso a resposta vem marcada como
+     * parcial.
      *
      * @param id identificador da pauta
      * @return {@code 200} com o resultado apurado

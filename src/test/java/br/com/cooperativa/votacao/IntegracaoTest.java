@@ -12,12 +12,12 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 /**
  * Base dos testes de integracao, executados sobre PostgreSQL real.
  *
- * <p>O container e {@code static}: uma unica instancia atende a todas as classes
- * que herdam desta, em vez de subir um banco por classe. Isso mantem a suite
- * rapida sem abrir mao de testar contra o banco de producao de verdade.
+ * <p>O container e {@code static}: uma unica instancia atende a todas as classes que herdam desta,
+ * em vez de subir um banco por classe. Isso mantem a suite rapida sem abrir mao de testar contra o
+ * banco de producao de verdade.
  *
- * <p>Testar apuracao e unicidade em H2 daria falsa seguranca: sao exatamente os
- * pontos em que a semantica de constraint e de tipos diverge entre bancos.
+ * <p>Testar apuracao e unicidade em H2 daria falsa seguranca: sao exatamente os pontos em que a
+ * semantica de constraint e de tipos diverge entre bancos.
  */
 @SpringBootTest
 @AutoConfigureMockMvc

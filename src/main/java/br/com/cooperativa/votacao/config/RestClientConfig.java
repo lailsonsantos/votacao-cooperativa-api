@@ -11,20 +11,20 @@ import org.springframework.web.client.RestClient;
 /**
  * Constroi o cliente HTTP usado na integracao com o servico externo de CPF.
  *
- * <p>Optou-se por {@link RestClient} (Spring 6.1) em vez de {@code WebClient}
- * para nao trazer a stack reativa inteira para uma aplicacao MVC bloqueante que
- * faz uma unica chamada remota &mdash; seria complexidade sem contrapartida.
+ * <p>Optou-se por {@link RestClient} (Spring 6.1) em vez de {@code WebClient} para nao trazer a
+ * stack reativa inteira para uma aplicacao MVC bloqueante que faz uma unica chamada remota &mdash;
+ * seria complexidade sem contrapartida.
  */
 @Configuration
 public class RestClientConfig {
     /**
      * Cliente HTTP dedicado ao servico de consulta de associados.
      *
-     * <p>Os timeouts sao curtos e explicitos de proposito: sem eles, o valor
-     * padrao e "esperar para sempre", e uma indisponibilidade do terceiro
-     * seguraria threads do servidor ate esgotar o pool durante uma assembleia.
+     * <p>Os timeouts sao curtos e explicitos de proposito: sem eles, o valor padrao e "esperar para
+     * sempre", e uma indisponibilidade do terceiro seguraria threads do servidor ate esgotar o pool
+     * durante uma assembleia.
      *
-     * @param properties  configuracao do servico externo
+     * @param properties configuracao do servico externo
      * @param customizers customizacoes aplicadas pelo Spring Boot (observabilidade)
      * @return o cliente configurado com URL base e timeouts
      */

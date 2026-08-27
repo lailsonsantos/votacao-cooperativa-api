@@ -9,9 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-/**
- * Adaptador JPA da porta {@link VotoRepository}.
- */
+/** Adaptador JPA da porta {@link VotoRepository}. */
 @Repository
 public interface VotoJpaRepository extends VotoRepository, JpaRepository<Voto, UUID> {
 
@@ -24,10 +22,10 @@ public interface VotoJpaRepository extends VotoRepository, JpaRepository<Voto, U
     /**
      * {@inheritDoc}
      *
-     * <p>Esta e a unica consulta usada na apuracao. Ela e servida integralmente
-     * pelo indice {@code ix_voto_sessao_opcao}, entao o custo cresce com o numero
-     * de opcoes (duas) e nao com o numero de votos &mdash; que e o que permite
-     * apurar centenas de milhares de votos sem carregar nenhum deles em memoria.
+     * <p>Esta e a unica consulta usada na apuracao. Ela e servida integralmente pelo indice {@code
+     * ix_voto_sessao_opcao}, entao o custo cresce com o numero de opcoes (duas) e nao com o numero
+     * de votos &mdash; que e o que permite apurar centenas de milhares de votos sem carregar nenhum
+     * deles em memoria.
      */
     @Override
     @Query(

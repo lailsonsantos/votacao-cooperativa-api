@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 /**
  * Verificacao do direito de voto apoiada na porta de consulta de aptidao.
  *
- * <p>Esta classe nao conhece HTTP, nem o servico externo, nem o formato da
- * resposta dele: pede a aptidao a porta e traduz a negativa em erro de negocio.
- * Toda a mecanica de integracao vive no adaptador.
+ * <p>Esta classe nao conhece HTTP, nem o servico externo, nem o formato da resposta dele: pede a
+ * aptidao a porta e traduz a negativa em erro de negocio. Toda a mecanica de integracao vive no
+ * adaptador.
  */
 @Component
 @RequiredArgsConstructor

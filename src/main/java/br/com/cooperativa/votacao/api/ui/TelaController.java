@@ -13,31 +13,34 @@ import br.com.cooperativa.votacao.domain.model.Cpf;
 import br.com.cooperativa.votacao.domain.model.OpcaoVoto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import java.time.Clock;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Superficie Server-Driven UI: devolve as telas do Anexo 1 ao cliente.
  *
- * <p>E o foco declarado da avaliacao. O cliente nao conhece o dominio: recebe
- * uma descricao de tela, renderiza, e ao acionar um botao envia {@code POST}
- * para a URL indicada. Cada acao <strong>executa a operacao e devolve a proxima
- * tela</strong>, de modo que a navegacao inteira e dirigida pelo servidor.
+ * <p>E o foco declarado da avaliacao. O cliente nao conhece o dominio: recebe uma descricao de
+ * tela, renderiza, e ao acionar um botao envia {@code POST} para a URL indicada. Cada acao
+ * <strong>executa a operacao e devolve a proxima tela</strong>, de modo que a navegacao inteira e
+ * dirigida pelo servidor.
  *
- * <p>Este controlador e uma casca fina: toda regra vive nos mesmos servicos de
- * aplicacao usados pela API REST {@code /api/v1}. Nao ha logica de negocio
- * duplicada entre as duas superficies.
+ * <p>Este controlador e uma casca fina: toda regra vive nos mesmos servicos de aplicacao usados
+ * pela API REST {@code /api/v1}. Nao ha logica de negocio duplicada entre as duas superficies.
  */
 @RestController
 @RequestMapping("/api/v1/telas")
+@Validated
 @Tag(
         name = "Telas (Server-Driven UI)",
         description =
@@ -73,8 +76,13 @@ public class TelaController {
     @GetMapping("/pautas")
     @Operation(summary = "Lista as pautas como tela de selecao")
     public Tela listarPautas(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
+            @RequestParam(defaultValue = "0")
+                    @Min(value = 0, message = "A pagina nao pode ser negativa.")
+                    int page,
+            @RequestParam(defaultValue = "20")
+                    @Min(value = 1, message = "O tamanho da pagina deve ser ao menos 1.")
+                    @Max(value = 100, message = "O tamanho da pagina nao pode passar de 100.")
+                    int size) {
         return telas.listaPautas(pautaService.listar(page, size));
     }
 
@@ -109,9 +117,9 @@ public class TelaController {
     /**
      * Tela de uma pauta, cujo conteudo depende do estado da sessao.
      *
-     * <p>Sem sessao, oferece a abertura; com sessao aberta, coleta o CPF para
-     * votar; com sessao encerrada, mostra o resultado. Essa decisao vive no
-     * servidor, e nao no cliente &mdash; que e justamente o objetivo do padrao.
+     * <p>Sem sessao, oferece a abertura; com sessao aberta, coleta o CPF para votar; com sessao
+     * encerrada, mostra o resultado. Essa decisao vive no servidor, e nao no cliente &mdash; que e
+     * justamente o objetivo do padrao.
      *
      * @param id identificador da pauta
      * @return a tela correspondente ao estado atual da pauta
@@ -137,7 +145,7 @@ public class TelaController {
     /**
      * Abre a sessao de votacao e devolve a tela de identificacao.
      *
-     * @param id   identificador da pauta
+     * @param id identificador da pauta
      * @param acao campos digitados, incluindo a duracao escolhida
      * @return tela FORMULARIO que coleta o CPF do associado
      */
@@ -151,11 +159,10 @@ public class TelaController {
     /**
      * Valida o CPF e devolve as opcoes de voto.
      *
-     * <p>A validacao acontece aqui, antes de mostrar "Sim" e "Nao", para que o
-     * associado impedido descubra o problema no passo da identificacao e nao
-     * depois de ja ter escolhido seu voto.
+     * <p>A validacao acontece aqui, antes de mostrar "Sim" e "Nao", para que o associado impedido
+     * descubra o problema no passo da identificacao e nao depois de ja ter escolhido seu voto.
      *
-     * @param id   identificador da pauta
+     * @param id identificador da pauta
      * @param acao campos digitados, incluindo o CPF
      * @return tela SELECAO com as opcoes Sim e Nao
      */
@@ -172,8 +179,7 @@ public class TelaController {
         var cpf = Cpf.de(acao.texto(TelaFactory.CAMPO_CPF));
 
         if (votoService.jaVotou(id, cpf)) {
-            return telas.erro(
-                    pauta.getTitulo(), "Voce ja registrou seu voto nesta pauta.");
+            return telas.erro(pauta.getTitulo(), "Voce ja registrou seu voto nesta pauta.");
         }
 
         return telas.opcoesDeVoto(pauta, cpf.numero());
@@ -182,7 +188,7 @@ public class TelaController {
     /**
      * Registra o voto e devolve a tela de resultado.
      *
-     * @param id   identificador da pauta
+     * @param id identificador da pauta
      * @param acao corpo da opcao acionada, contendo CPF e opcao
      * @return tela FORMULARIO com a apuracao
      */

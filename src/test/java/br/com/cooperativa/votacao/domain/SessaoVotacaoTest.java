@@ -13,9 +13,8 @@ import org.junit.jupiter.api.Test;
 /**
  * Testes do comportamento temporal de {@link SessaoVotacao}.
  *
- * <p>Todos usam instantes fixos em vez de {@code Thread.sleep}: o status e
- * derivado de um {@code Instant} recebido como parametro, entao "avancar o
- * relogio" custa zero milissegundo de execucao.
+ * <p>Todos usam instantes fixos em vez de {@code Thread.sleep}: o status e derivado de um {@code
+ * Instant} recebido como parametro, entao "avancar o relogio" custa zero milissegundo de execucao.
  */
 @DisplayName("SessaoVotacao")
 class SessaoVotacaoTest {
@@ -52,7 +51,8 @@ class SessaoVotacaoTest {
         var sessao = SessaoVotacao.abrir(pauta, ABERTURA, Duration.ofMinutes(1));
 
         assertThat(sessao.tempoRestante(ABERTURA)).isEqualTo(Duration.ofMinutes(1));
-        assertThat(sessao.tempoRestante(ABERTURA.plusSeconds(30))).isEqualTo(Duration.ofSeconds(30));
+        assertThat(sessao.tempoRestante(ABERTURA.plusSeconds(30)))
+                .isEqualTo(Duration.ofSeconds(30));
         assertThat(sessao.tempoRestante(ABERTURA.plusSeconds(600))).isZero();
     }
 

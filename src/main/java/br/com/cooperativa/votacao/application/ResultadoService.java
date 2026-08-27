@@ -14,8 +14,8 @@ public interface ResultadoService {
     /**
      * Apura o resultado de uma pauta.
      *
-     * <p>A consulta e permitida com a sessao aberta; nesse caso o resultado vem
-     * marcado como parcial, porque o numero ainda pode mudar.
+     * <p>A consulta e permitida com a sessao aberta; nesse caso o resultado vem marcado como
+     * parcial, porque o numero ainda pode mudar.
      *
      * @param pautaId identificador da pauta
      * @return o resultado apurado

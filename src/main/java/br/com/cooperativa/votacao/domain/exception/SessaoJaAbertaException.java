@@ -5,10 +5,9 @@ import java.util.UUID;
 /**
  * Lancada ao tentar abrir uma segunda sessao para a mesma pauta.
  *
- * <p>O enunciado descreve "abrir uma sessao de votacao em uma pauta", no
- * singular. Permitir uma segunda rodada mudaria a semantica do resultado
- * apurado, entao a operacao e recusada. A premissa esta registrada no README
- * entre as duvidas levantadas.
+ * <p>O enunciado descreve "abrir uma sessao de votacao em uma pauta", no singular. Permitir uma
+ * segunda rodada mudaria a semantica do resultado apurado, entao a operacao e recusada. A premissa
+ * esta registrada no README entre as duvidas levantadas.
  */
 public class SessaoJaAbertaException extends NegocioException {
     /**

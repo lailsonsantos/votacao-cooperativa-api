@@ -11,9 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-/**
- * Testes da apuracao do desfecho de uma pauta.
- */
+/** Testes da apuracao do desfecho de uma pauta. */
 @DisplayName("ResultadoVotacao")
 class ResultadoVotacaoTest {
 
@@ -30,8 +28,7 @@ class ResultadoVotacaoTest {
     })
     @DisplayName("classifica o desfecho a partir da contagem")
     void classificaDesfecho(long sim, long nao, ResultadoApuracao esperado) {
-        var resultado =
-                ResultadoVotacao.de(PAUTA, "Pauta", StatusSessao.FECHADA, sim, nao);
+        var resultado = ResultadoVotacao.de(PAUTA, "Pauta", StatusSessao.FECHADA, sim, nao);
 
         assertThat(resultado.resultado()).isEqualTo(esperado);
         assertThat(resultado.totalVotos()).isEqualTo(sim + nao);

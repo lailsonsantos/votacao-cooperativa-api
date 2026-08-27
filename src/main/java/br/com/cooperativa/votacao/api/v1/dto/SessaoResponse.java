@@ -9,12 +9,12 @@ import java.util.UUID;
 /**
  * Representacao de uma sessao de votacao na API.
  *
- * @param id                     identificador da sessao
- * @param pautaId                identificador da pauta em deliberacao
- * @param aberturaEm             instante de abertura, em UTC
- * @param fechamentoEm           instante de encerramento, em UTC
- * @param status                 situacao derivada do relogio no momento da consulta
- * @param segundosRestantes      tempo restante de votacao, zero apos o fechamento
+ * @param id identificador da sessao
+ * @param pautaId identificador da pauta em deliberacao
+ * @param aberturaEm instante de abertura, em UTC
+ * @param fechamentoEm instante de encerramento, em UTC
+ * @param status situacao derivada do relogio no momento da consulta
+ * @param segundosRestantes tempo restante de votacao, zero apos o fechamento
  */
 @Schema(description = "Sessao de votacao de uma pauta")
 public record SessaoResponse(
@@ -27,11 +27,11 @@ public record SessaoResponse(
     /**
      * Converte a entidade para a representacao da API.
      *
-     * <p>{@code status} e {@code segundosRestantes} sao calculados no momento da
-     * resposta, e nao lidos do banco, porque ambos dependem do relogio.
+     * <p>{@code status} e {@code segundosRestantes} sao calculados no momento da resposta, e nao
+     * lidos do banco, porque ambos dependem do relogio.
      *
      * @param sessao entidade de origem
-     * @param agora  instante de referencia, vindo do relogio injetado
+     * @param agora instante de referencia, vindo do relogio injetado
      * @return a representacao correspondente
      */
     public static SessaoResponse de(SessaoVotacao sessao, Instant agora) {

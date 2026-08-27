@@ -1,6 +1,7 @@
 package br.com.cooperativa.votacao.api.v1;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -22,9 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-/**
- * Testes de integracao da API REST v1, ponta a ponta sobre PostgreSQL real.
- */
+/** Testes de integracao da API REST v1, ponta a ponta sobre PostgreSQL real. */
 @DisplayName("API v1")
 class VotacaoApiIT extends IntegracaoTest {
 
@@ -109,7 +108,9 @@ class VotacaoApiIT extends IntegracaoTest {
                 .andExpect(jsonPath("$.status").value(409))
                 .andExpect(jsonPath("$.correlationId").exists())
                 // O CPF nao pode voltar completo na mensagem de erro.
-                .andExpect(jsonPath("$.detail").value(org.hamcrest.Matchers.containsString("198******69")));
+                .andExpect(
+                        jsonPath("$.detail")
+                                .value(org.hamcrest.Matchers.containsString("198******69")));
     }
 
     @Test
@@ -196,6 +197,61 @@ class VotacaoApiIT extends IntegracaoTest {
     }
 
     @Test
+    @DisplayName("rota inexistente devolve 404, nao 500")
+    void rotaInexistente() throws Exception {
+        // Sem tratador dedicado, isto caia no catch-all e virava 500: um erro do
+        // cliente reportado como falha do servidor.
+        mockMvc.perform(get("/api/v1/inexistente"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.title").value("Rota invalida"));
+    }
+
+    @Test
+    @DisplayName("metodo nao suportado devolve 405, nao 500")
+    void metodoNaoSuportado() throws Exception {
+        mockMvc.perform(delete("/api/v1/pautas"))
+                .andExpect(status().isMethodNotAllowed())
+                .andExpect(jsonPath("$.title").value("Rota invalida"));
+    }
+
+    @Test
+    @DisplayName("limita o tamanho da pagina para impedir resposta ilimitada")
+    void limitaTamanhoDaPagina() throws Exception {
+        // A troca de Pageable por parametros simples removeu o teto que o Spring
+        // Data aplicava; sem o @Max, size=999999 devolveria a base inteira.
+        mockMvc.perform(get("/api/v1/pautas").param("size", "999999"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.title").value("Requisicao invalida"))
+                .andExpect(
+                        jsonPath("$.detail")
+                                .value(
+                                        org.hamcrest.Matchers.containsString(
+                                                "nao pode passar de 100")));
+    }
+
+    @Test
+    @DisplayName("recusa pagina negativa com 400, nao 500")
+    void recusaPaginaNegativa() throws Exception {
+        mockMvc.perform(get("/api/v1/pautas").param("page", "-1"))
+                .andExpect(status().isBadRequest())
+                .andExpect(
+                        jsonPath("$.detail")
+                                .value(
+                                        org.hamcrest.Matchers.containsString(
+                                                "nao pode ser negativa")));
+    }
+
+    @Test
+    @DisplayName("recusa tamanho de pagina zero com 400, nao 500")
+    void recusaTamanhoZero() throws Exception {
+        mockMvc.perform(get("/api/v1/pautas").param("size", "0"))
+                .andExpect(status().isBadRequest())
+                .andExpect(
+                        jsonPath("$.detail")
+                                .value(org.hamcrest.Matchers.containsString("ao menos 1")));
+    }
+
+    @Test
     @DisplayName("garante um unico voto sob 200 requisicoes simultaneas do mesmo associado")
     void unicidadeSobConcorrencia() throws Exception {
         var pautaId = criarPauta("Pauta sob concorrencia");
@@ -218,9 +274,7 @@ class VotacaoApiIT extends IntegracaoTest {
                                 largada.await();
                                 var status =
                                         mockMvc.perform(
-                                                        post(
-                                                                        "/api/v1/pautas/{id}/votos",
-                                                                        pautaId)
+                                                        post("/api/v1/pautas/{id}/votos", pautaId)
                                                                 .contentType(
                                                                         MediaType.APPLICATION_JSON)
                                                                 .content(
@@ -264,8 +318,8 @@ class VotacaoApiIT extends IntegracaoTest {
      * Registra um voto pela API.
      *
      * @param pautaId identificador da pauta
-     * @param cpf     CPF do associado
-     * @param opcao   opcao escolhida
+     * @param cpf CPF do associado
+     * @param opcao opcao escolhida
      * @return o resultado da requisicao, para encadeamento de assercoes
      * @throws Exception se a requisicao falhar
      */

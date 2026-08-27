@@ -27,9 +27,9 @@ import org.springframework.web.client.RestClient;
 /**
  * Testes da integracao com o servico externo de CPF (Tarefa Bonus 1).
  *
- * <p>Toda a suite roda contra um WireMock local, jamais contra a rede real. Isso
- * e obrigatorio por dois motivos: o endpoint do enunciado esta fora do ar, e um
- * teste que depende de internet nao roda em CI de forma confiavel.
+ * <p>Toda a suite roda contra um WireMock local, jamais contra a rede real. Isso e obrigatorio por
+ * dois motivos: o endpoint do enunciado esta fora do ar, e um teste que depende de internet nao
+ * roda em CI de forma confiavel.
  *
  * <p>Cobre os quatro desfechos possiveis do contrato descrito no enunciado.
  */
@@ -56,8 +56,7 @@ class UserInfoClientIT {
     void prepararCliente() {
         wireMock.resetAll();
         properties =
-                new UserInfoProperties(
-                        "http://localhost:" + wireMock.port(), true, true, 500, 500);
+                new UserInfoProperties("http://localhost:" + wireMock.port(), true, true, 500, 500);
         // Os mesmos timeouts de producao precisam valer aqui: sem eles, o cenario
         // de indisponibilidade nunca dispararia e o teste passaria por engano.
         var settings =
@@ -110,8 +109,7 @@ class UserInfoClientIT {
     @DisplayName("trata 404 como CPF desconhecido, e nao como falha de comunicacao")
     void desconhecido() {
         wireMock.stubFor(
-                get(urlPathEqualTo("/users/11144477735"))
-                        .willReturn(aResponse().withStatus(404)));
+                get(urlPathEqualTo("/users/11144477735")).willReturn(aResponse().withStatus(404)));
 
         // 404 e uma resposta legitima do contrato. Traduzi-la em excecao
         // acionaria retry e circuit breaker para algo que nunca vai mudar.

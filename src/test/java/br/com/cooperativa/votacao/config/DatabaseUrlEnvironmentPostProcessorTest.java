@@ -13,9 +13,9 @@ import org.springframework.mock.env.MockEnvironment;
 /**
  * Testes da conversao de {@code DATABASE_URL} para propriedades do Spring.
  *
- * <p>Um defeito aqui so apareceria no deploy, com a aplicacao falhando ao subir e
- * sem banco para consultar &mdash; o pior momento possivel para descobrir. Daí a
- * cobertura detalhada de um trecho de codigo tao curto.
+ * <p>Um defeito aqui so apareceria no deploy, com a aplicacao falhando ao subir e sem banco para
+ * consultar &mdash; o pior momento possivel para descobrir. Daí a cobertura detalhada de um trecho
+ * de codigo tao curto.
  */
 @DisplayName("DatabaseUrlEnvironmentPostProcessor")
 class DatabaseUrlEnvironmentPostProcessorTest {
@@ -128,8 +128,7 @@ class DatabaseUrlEnvironmentPostProcessorTest {
     void respeitaConfiguracaoExplicita() {
         var environment = new MockEnvironment();
         environment.setProperty(
-                DatabaseUrlEnvironmentPostProcessor.DATABASE_URL,
-                "postgres://u:p@host/plataforma");
+                DatabaseUrlEnvironmentPostProcessor.DATABASE_URL, "postgres://u:p@host/plataforma");
         environment.setProperty(
                 DatabaseUrlEnvironmentPostProcessor.URL_EXPLICITA, "jdbc:postgresql://outro/banco");
 

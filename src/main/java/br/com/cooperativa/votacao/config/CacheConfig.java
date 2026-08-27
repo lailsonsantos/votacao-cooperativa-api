@@ -10,10 +10,9 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Configura o cache em memoria usado na apuracao de resultados.
  *
- * <p>Apenas o resultado de sessoes <strong>ja encerradas</strong> e cacheado:
- * uma vez fechada, a contagem de uma sessao e imutavel, entao nao existe risco
- * de servir dado desatualizado. Resultados de sessoes abertas nunca entram no
- * cache &mdash; ver {@code ResultadoService}.
+ * <p>Apenas o resultado de sessoes <strong>ja encerradas</strong> e cacheado: uma vez fechada, a
+ * contagem de uma sessao e imutavel, entao nao existe risco de servir dado desatualizado.
+ * Resultados de sessoes abertas nunca entram no cache &mdash; ver {@code ResultadoService}.
  */
 @Configuration
 public class CacheConfig {
@@ -23,9 +22,9 @@ public class CacheConfig {
     /**
      * Gerenciador de cache baseado em Caffeine.
      *
-     * <p>O limite de entradas evita crescimento ilimitado de memoria em uma
-     * cooperativa com muitas pautas; o TTL existe apenas como rede de seguranca,
-     * ja que o dado cacheado e imutavel por natureza.
+     * <p>O limite de entradas evita crescimento ilimitado de memoria em uma cooperativa com muitas
+     * pautas; o TTL existe apenas como rede de seguranca, ja que o dado cacheado e imutavel por
+     * natureza.
      *
      * @return o gerenciador de cache da aplicacao
      */

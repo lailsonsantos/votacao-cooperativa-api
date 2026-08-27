@@ -18,9 +18,9 @@ import org.springframework.test.web.servlet.MockMvc;
 /**
  * Verifica o contrato das telas contra os exemplos do Anexo 1 do enunciado.
  *
- * <p>Este e o conjunto de testes que protege o foco declarado da avaliacao: a
- * comunicacao entre o backend e o cliente. Uma renomeacao de campo que passasse
- * despercebida aqui quebraria o app em producao sem quebrar nenhum outro teste.
+ * <p>Este e o conjunto de testes que protege o foco declarado da avaliacao: a comunicacao entre o
+ * backend e o cliente. Uma renomeacao de campo que passasse despercebida aqui quebraria o app em
+ * producao sem quebrar nenhum outro teste.
  */
 @DisplayName("Contrato das telas (Anexo 1)")
 class TelaContratoIT extends IntegracaoTest {
@@ -194,8 +194,7 @@ class TelaContratoIT extends IntegracaoTest {
                 .andExpect(jsonPath("$.tipo").value("FORMULARIO"))
                 .andExpect(jsonPath("$.titulo").value("CPF invalido"))
                 .andExpect(
-                        jsonPath("$.itens[0].texto")
-                                .value(Matchers.containsString("111******11")));
+                        jsonPath("$.itens[0].texto").value(Matchers.containsString("111******11")));
     }
 
     @Test

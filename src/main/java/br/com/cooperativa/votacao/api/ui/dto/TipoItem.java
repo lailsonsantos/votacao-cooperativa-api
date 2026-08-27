@@ -3,9 +3,9 @@ package br.com.cooperativa.votacao.api.ui.dto;
 /**
  * Tipos de item que podem compor uma tela {@link TipoTela#FORMULARIO}.
  *
- * <p>Conjunto fechado, exatamente o documentado no Anexo 1. Se o catalogo do
- * cliente crescer, novos valores entram aqui e a camada de telas passa a
- * emiti-los &mdash; sem alterar dominio nem API REST.
+ * <p>Conjunto fechado, exatamente o documentado no Anexo 1. Se o catalogo do cliente crescer, novos
+ * valores entram aqui e a camada de telas passa a emiti-los &mdash; sem alterar dominio nem API
+ * REST.
  */
 public enum TipoItem {
     /** Texto somente leitura. */

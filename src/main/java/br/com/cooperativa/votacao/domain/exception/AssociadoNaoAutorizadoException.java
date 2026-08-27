@@ -1,12 +1,10 @@
 package br.com.cooperativa.votacao.domain.exception;
 
-
 /**
  * Lancada quando o servico externo nega o direito de voto do associado.
  *
- * <p>Cobre os dois desfechos negativos da Tarefa Bonus 1: CPF desconhecido
- * ({@code 404} no servico externo) e CPF conhecido porem sem permissao
- * ({@code UNABLE_TO_VOTE}).
+ * <p>Cobre os dois desfechos negativos da Tarefa Bonus 1: CPF desconhecido ({@code 404} no servico
+ * externo) e CPF conhecido porem sem permissao ({@code UNABLE_TO_VOTE}).
  */
 public class AssociadoNaoAutorizadoException extends NegocioException {
     /**

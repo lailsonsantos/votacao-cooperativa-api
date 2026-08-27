@@ -5,9 +5,8 @@ import br.com.cooperativa.votacao.domain.model.Cpf;
 /**
  * Lancada quando o CPF informado nao passa na validacao dos digitos verificadores.
  *
- * <p>A verificacao acontece antes de qualquer chamada remota: um numero que nao
- * pode existir nao merece uma ida a rede, e o cliente recebe {@code 400}
- * imediatamente.
+ * <p>A verificacao acontece antes de qualquer chamada remota: um numero que nao pode existir nao
+ * merece uma ida a rede, e o cliente recebe {@code 400} imediatamente.
  */
 public class CpfInvalidoException extends NegocioException {
     /**

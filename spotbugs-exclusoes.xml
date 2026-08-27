@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Exclusoes da analise estatica.
+
+  A lista e curta de proposito. Os apontamentos de exposicao de representacao nos
+  DTOs foram corrigidos com copia defensiva, e nao silenciados: um relatorio
+  cheio de exclusoes deixa de ser lido, e o proximo achado real passa despercebido.
+-->
+<FindBugsFilter>
+
+  <!--
+    Beans injetados pelo Spring. O container entrega a instancia, e "copiar
+    defensivamente" um RestClient ou o array de origens de CORS nao faz sentido:
+    sao singletons de infraestrutura com ciclo de vida gerenciado, nao dados de
+    dominio que alguem possa alterar por engano.
+  -->
+  <Match>
+    <Class name="br.com.cooperativa.votacao.config.WebConfig"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+  <Match>
+    <Class name="br.com.cooperativa.votacao.infrastructure.integration.userinfo.UserInfoClient"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
+</FindBugsFilter>

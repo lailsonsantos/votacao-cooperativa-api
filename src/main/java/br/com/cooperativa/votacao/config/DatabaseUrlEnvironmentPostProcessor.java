@@ -12,14 +12,12 @@ import org.springframework.util.StringUtils;
 /**
  * Converte a variavel {@code DATABASE_URL} para o formato que o Spring espera.
  *
- * <p>Praticamente todas as plataformas de nuvem gerenciada &mdash; Render,
- * Railway, Fly.io, Neon, Supabase &mdash; injetam a conexao do banco como uma
- * URI no formato:
+ * <p>Praticamente todas as plataformas de nuvem gerenciada &mdash; Render, Railway, Fly.io, Neon,
+ * Supabase &mdash; injetam a conexao do banco como uma URI no formato:
  *
  * <pre>postgresql://usuario:senha@host:5432/banco?sslmode=require</pre>
  *
- * <p>O Spring, por sua vez, exige a URL no formato JDBC e as credenciais em
- * propriedades separadas:
+ * <p>O Spring, por sua vez, exige a URL no formato JDBC e as credenciais em propriedades separadas:
  *
  * <pre>
  * spring.datasource.url      = jdbc:postgresql://host:5432/banco?sslmode=require
@@ -27,19 +25,17 @@ import org.springframework.util.StringUtils;
  * spring.datasource.password = senha
  * </pre>
  *
- * <p>Esta classe faz a ponte. A alternativa seria montar a URL JDBC na
- * configuracao da plataforma, mas nem todas expoem host e porta como variaveis
- * separadas &mdash; o blueprint do Render, por exemplo, so oferece a URI
- * completa. Resolver aqui torna a mesma imagem implantavel em qualquer uma
- * dessas plataformas sem alteracao.
+ * <p>Esta classe faz a ponte. A alternativa seria montar a URL JDBC na configuracao da plataforma,
+ * mas nem todas expoem host e porta como variaveis separadas &mdash; o blueprint do Render, por
+ * exemplo, so oferece a URI completa. Resolver aqui torna a mesma imagem implantavel em qualquer
+ * uma dessas plataformas sem alteracao.
  *
- * <p>A conversao roda como {@link EnvironmentPostProcessor} porque precisa
- * acontecer <strong>antes</strong> da criacao do {@code DataSource}, ou seja,
- * antes de qualquer bean existir.
+ * <p>A conversao roda como {@link EnvironmentPostProcessor} porque precisa acontecer
+ * <strong>antes</strong> da criacao do {@code DataSource}, ou seja, antes de qualquer bean existir.
  *
- * <p><strong>Precedencia:</strong> se {@code SPRING_DATASOURCE_URL} estiver
- * definida explicitamente, ela vence e a conversao nao acontece. Isso preserva a
- * capacidade de apontar para outro banco sem mexer na variavel da plataforma.
+ * <p><strong>Precedencia:</strong> se {@code SPRING_DATASOURCE_URL} estiver definida
+ * explicitamente, ela vence e a conversao nao acontece. Isso preserva a capacidade de apontar para
+ * outro banco sem mexer na variavel da plataforma.
  */
 public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProcessor {
     /** Nome da fonte de propriedades acrescentada ao ambiente. */
@@ -118,7 +114,8 @@ public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProce
         // qual a conexao e recusada.
         var query = StringUtils.hasText(uri.getQuery()) ? "?" + uri.getQuery() : "";
 
-        propriedades.put(URL_EXPLICITA, "jdbc:postgresql://%s:%d%s%s".formatted(host, porta, banco, query));
+        propriedades.put(
+                URL_EXPLICITA, "jdbc:postgresql://%s:%d%s%s".formatted(host, porta, banco, query));
 
         var credenciais = uri.getUserInfo();
         if (StringUtils.hasText(credenciais)) {

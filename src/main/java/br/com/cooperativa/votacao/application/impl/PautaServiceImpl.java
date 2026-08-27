@@ -15,14 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Implementacao dos casos de uso de pautas.
  *
- * <p>O contrato, com {@code @param}, {@code @return} e {@code @throws}, vive na
- * interface {@link PautaService}. Aqui documenta-se apenas <em>como</em> e
- * <em>por que</em> cada operacao e feita desta forma &mdash; a duplicacao do
- * contrato nos dois arquivos so criaria duas versoes para divergir.
+ * <p>O contrato, com {@code @param}, {@code @return} e {@code @throws}, vive na interface {@link
+ * PautaService}. Aqui documenta-se apenas <em>como</em> e <em>por que</em> cada operacao e feita
+ * desta forma &mdash; a duplicacao do contrato nos dois arquivos so criaria duas versoes para
+ * divergir.
  *
- * <p>{@code @Transactional} fica na implementacao, e nao na interface: a
- * demarcacao transacional e uma decisao de infraestrutura, nao parte do contrato
- * que a camada de API enxerga.
+ * <p>{@code @Transactional} fica na implementacao, e nao na interface: a demarcacao transacional e
+ * uma decisao de infraestrutura, nao parte do contrato que a camada de API enxerga.
  */
 @Service
 @RequiredArgsConstructor

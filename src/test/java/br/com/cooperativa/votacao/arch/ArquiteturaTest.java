@@ -12,14 +12,12 @@ import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition;
 /**
  * Regras de arquitetura verificadas automaticamente.
  *
- * <p>Documento nao impede ninguem de importar a classe errada; teste impede.
- * Estas regras fazem o build falhar quando a direcao das dependencias e
- * invertida, que e a forma mais barata de manter a arquitetura viva depois que o
- * projeto cresce.
+ * <p>Documento nao impede ninguem de importar a classe errada; teste impede. Estas regras fazem o
+ * build falhar quando a direcao das dependencias e invertida, que e a forma mais barata de manter a
+ * arquitetura viva depois que o projeto cresce.
  *
- * <p>Elas tambem servem de contraprova do que o README afirma: qualquer pessoa
- * pode conferir que a independencia do dominio e um fato verificado, e nao uma
- * intencao declarada.
+ * <p>Elas tambem servem de contraprova do que o README afirma: qualquer pessoa pode conferir que a
+ * independencia do dominio e um fato verificado, e nao uma intencao declarada.
  */
 @AnalyzeClasses(
         packages = "br.com.cooperativa.votacao",
@@ -29,40 +27,45 @@ class ArquiteturaTest {
     /**
      * As camadas so podem ser acessadas de fora para dentro.
      *
-     * <p>A infraestrutura nao e acessada por ninguem: ela <em>implementa</em>
-     * portas declaradas nas camadas internas, e o Spring faz a ligacao em tempo
-     * de execucao. E esse detalhe que caracteriza a inversao de dependencia
-     * &mdash; sem ele, a aplicacao chamaria a integracao concreta e a seta
-     * apontaria para o lado errado.
+     * <p>A infraestrutura nao e acessada por ninguem: ela <em>implementa</em> portas declaradas nas
+     * camadas internas, e o Spring faz a ligacao em tempo de execucao. E esse detalhe que
+     * caracteriza a inversao de dependencia &mdash; sem ele, a aplicacao chamaria a integracao
+     * concreta e a seta apontaria para o lado errado.
      *
-     * <p>A camada de aplicacao aparece como acessivel pela infraestrutura
-     * justamente por isso: o adaptador precisa enxergar a porta que implementa.
-     * A regra {@link #infraestruturaSoEnxergaPortas} restringe esse acesso ao
-     * pacote de portas, impedindo que um adaptador chame um caso de uso.
+     * <p>A camada de aplicacao aparece como acessivel pela infraestrutura justamente por isso: o
+     * adaptador precisa enxergar a porta que implementa. A regra {@link
+     * #infraestruturaSoEnxergaPortas} restringe esse acesso ao pacote de portas, impedindo que um
+     * adaptador chame um caso de uso.
      */
     @ArchTest
     static final ArchRule camadas =
             Architectures.layeredArchitecture()
                     .consideringOnlyDependenciesInLayers()
-                    .layer("Api").definedBy("..api..")
-                    .layer("Aplicacao").definedBy("..application..")
-                    .layer("Dominio").definedBy("..domain..")
-                    .layer("Infraestrutura").definedBy("..infrastructure..")
-                    .whereLayer("Api").mayNotBeAccessedByAnyLayer()
-                    .whereLayer("Infraestrutura").mayNotBeAccessedByAnyLayer()
-                    .whereLayer("Aplicacao").mayOnlyBeAccessedByLayers("Api", "Infraestrutura");
+                    .layer("Api")
+                    .definedBy("..api..")
+                    .layer("Aplicacao")
+                    .definedBy("..application..")
+                    .layer("Dominio")
+                    .definedBy("..domain..")
+                    .layer("Infraestrutura")
+                    .definedBy("..infrastructure..")
+                    .whereLayer("Api")
+                    .mayNotBeAccessedByAnyLayer()
+                    .whereLayer("Infraestrutura")
+                    .mayNotBeAccessedByAnyLayer()
+                    .whereLayer("Aplicacao")
+                    .mayOnlyBeAccessedByLayers("Api", "Infraestrutura");
 
     /**
      * O dominio nao depende de nenhum framework de aplicacao.
      *
-     * <p>Inclui {@code org.springframework.http}: HTTP e transporte, e uma regra
-     * de negocio exposta por mensageria continuaria valendo sem status algum.
-     * Foi exatamente por essa brecha que {@code HttpStatus} chegou a viver nas
-     * excecoes de dominio; a regra existe para que nao volte.
+     * <p>Inclui {@code org.springframework.http}: HTTP e transporte, e uma regra de negocio exposta
+     * por mensageria continuaria valendo sem status algum. Foi exatamente por essa brecha que
+     * {@code HttpStatus} chegou a viver nas excecoes de dominio; a regra existe para que nao volte.
      *
-     * <p>As anotacoes de persistencia e de validacao seguem permitidas: sao
-     * especificacoes declarativas, sem modelo de programacao proprio, e a
-     * decisao esta registrada em {@code docs/adr/0001}.
+     * <p>As anotacoes de persistencia e de validacao seguem permitidas: sao especificacoes
+     * declarativas, sem modelo de programacao proprio, e a decisao esta registrada em {@code
+     * docs/adr/0001}.
      */
     @ArchTest
     static final ArchRule dominioIndependenteDeFramework =
@@ -83,9 +86,9 @@ class ArquiteturaTest {
     /**
      * A camada de aplicacao nao conhece implementacoes de integracao.
      *
-     * <p>Ela depende de portas declaradas em {@code application.port}, nunca do
-     * cliente HTTP que hoje as satisfaz. Substituir o servico externo por um
-     * cadastro proprio nao pode exigir mudanca em regra de negocio.
+     * <p>Ela depende de portas declaradas em {@code application.port}, nunca do cliente HTTP que
+     * hoje as satisfaz. Substituir o servico externo por um cadastro proprio nao pode exigir
+     * mudanca em regra de negocio.
      */
     @ArchTest
     static final ArchRule aplicacaoDependeDeAbstracoes =
@@ -100,9 +103,9 @@ class ArquiteturaTest {
     /**
      * A infraestrutura enxerga apenas as portas, nunca os casos de uso.
      *
-     * <p>Sem esta regra, o acesso liberado no teste de camadas permitiria que um
-     * adaptador chamasse um servico de aplicacao, criando um caminho de volta
-     * que anularia a inversao que as portas existem para garantir.
+     * <p>Sem esta regra, o acesso liberado no teste de camadas permitiria que um adaptador chamasse
+     * um servico de aplicacao, criando um caminho de volta que anularia a inversao que as portas
+     * existem para garantir.
      */
     @ArchTest
     static final ArchRule infraestruturaSoEnxergaPortas =
@@ -117,10 +120,10 @@ class ArquiteturaTest {
     /**
      * Ninguem depende de uma implementacao de caso de uso.
      *
-     * <p>As classes de {@code application.impl} sao detalhe: quem as consome
-     * depende da interface correspondente, e o Spring resolve a ligacao. Sem esta
-     * regra, um import descuidado reintroduziria o acoplamento que as abstracoes
-     * existem para evitar, e ninguem perceberia ate a proxima troca.
+     * <p>As classes de {@code application.impl} sao detalhe: quem as consome depende da interface
+     * correspondente, e o Spring resolve a ligacao. Sem esta regra, um import descuidado
+     * reintroduziria o acoplamento que as abstracoes existem para evitar, e ninguem perceberia ate
+     * a proxima troca.
      */
     @ArchTest
     static final ArchRule ninguemDependeDeImplementacao =
@@ -135,9 +138,8 @@ class ArquiteturaTest {
     /**
      * Nenhuma regra de negocio mora em controlador.
      *
-     * <p>E o que permite que as duas superficies HTTP compartilhem o mesmo
-     * nucleo, e o que tornaria barata a criacao de uma {@code /api/v2}: apenas a
-     * camada de API seria duplicada.
+     * <p>E o que permite que as duas superficies HTTP compartilhem o mesmo nucleo, e o que tornaria
+     * barata a criacao de uma {@code /api/v2}: apenas a camada de API seria duplicada.
      */
     @ArchTest
     static final ArchRule controladoresNaoAcessamRepositorios =
@@ -160,9 +162,8 @@ class ArquiteturaTest {
     /**
      * Log e feito por SLF4J, nunca por {@code System.out}.
      *
-     * <p>{@code System.out} escapa da configuracao de nivel, do formato JSON e do
-     * mascaramento de CPF &mdash; ou seja, escapa de tudo que faz o log ser util
-     * e seguro em producao.
+     * <p>{@code System.out} escapa da configuracao de nivel, do formato JSON e do mascaramento de
+     * CPF &mdash; ou seja, escapa de tudo que faz o log ser util e seguro em producao.
      */
     @ArchTest
     static final ArchRule semSystemOut =

@@ -8,14 +8,13 @@ import org.springframework.stereotype.Component;
 /**
  * Monta as URLs absolutas usadas nas telas.
  *
- * <p>Atende diretamente a dica do enunciado: <em>"Deixe o dominio das URLs de
- * callback passiveis de alteracao via configuracao, para facilitar o teste tanto
- * no emulador, quanto em dispositivos fisicos."</em>
+ * <p>Atende diretamente a dica do enunciado: <em>"Deixe o dominio das URLs de callback passiveis de
+ * alteracao via configuracao, para facilitar o teste tanto no emulador, quanto em dispositivos
+ * fisicos."</em>
  *
- * <p>Toda URL de tela passa por aqui. Concentrar a montagem em um unico
- * componente e o que permite trocar emulador, dispositivo fisico e nuvem
- * mudando uma unica variavel de ambiente &mdash; e o que garante que nenhuma URL
- * escape com {@code localhost} embutido no codigo.
+ * <p>Toda URL de tela passa por aqui. Concentrar a montagem em um unico componente e o que permite
+ * trocar emulador, dispositivo fisico e nuvem mudando uma unica variavel de ambiente &mdash; e o
+ * que garante que nenhuma URL escape com {@code localhost} embutido no codigo.
  */
 @Component
 @RequiredArgsConstructor

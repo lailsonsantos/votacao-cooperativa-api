@@ -20,9 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Implementacao do registro de voto.
  *
- * <p>O contrato vive em {@link VotoService}; aqui documenta-se apenas o porque
- * de cada escolha &mdash; e a mais importante delas e delegar a unicidade ao
- * banco em vez de checar antes de gravar.
+ * <p>O contrato vive em {@link VotoService}; aqui documenta-se apenas o porque de cada escolha
+ * &mdash; e a mais importante delas e delegar a unicidade ao banco em vez de checar antes de
+ * gravar.
  */
 @Service
 @RequiredArgsConstructor
@@ -37,12 +37,11 @@ public class VotoServiceImpl implements VotoService {
     /**
      * {@inheritDoc}
      *
-     * <p>A unicidade do voto e garantida pela constraint
-     * {@code uk_voto_sessao_associado}, e nao por consulta previa: sob a
-     * concorrencia prevista na Tarefa Bonus 2, um {@code SELECT} seguido de
-     * {@code INSERT} abre uma janela entre a verificacao e a gravacao na qual
-     * duas requisicoes simultaneas do mesmo associado passariam ambas pela
-     * checagem. Delegar ao banco tambem elimina uma ida de rede por voto.
+     * <p>A unicidade do voto e garantida pela constraint {@code uk_voto_sessao_associado}, e nao
+     * por consulta previa: sob a concorrencia prevista na Tarefa Bonus 2, um {@code SELECT} seguido
+     * de {@code INSERT} abre uma janela entre a verificacao e a gravacao na qual duas requisicoes
+     * simultaneas do mesmo associado passariam ambas pela checagem. Delegar ao banco tambem elimina
+     * uma ida de rede por voto.
      */
     @Override
     @Transactional

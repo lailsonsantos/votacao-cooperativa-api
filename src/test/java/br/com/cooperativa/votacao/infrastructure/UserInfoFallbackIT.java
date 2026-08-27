@@ -22,13 +22,13 @@ import org.springframework.test.context.DynamicPropertySource;
 /**
  * Verifica o fallback da integracao de CPF com a fiacao real do Spring.
  *
- * <p>O fallback do Resilience4j so existe atraves do proxy criado pelo
- * contexto: um cliente instanciado com {@code new} ignora a anotacao. Por isso
- * este cenario sobe a aplicacao, em vez de montar o objeto na mao &mdash; caso
- * contrario o teste passaria mesmo que a anotacao fosse removida por engano.
+ * <p>O fallback do Resilience4j so existe atraves do proxy criado pelo contexto: um cliente
+ * instanciado com {@code new} ignora a anotacao. Por isso este cenario sobe a aplicacao, em vez de
+ * montar o objeto na mao &mdash; caso contrario o teste passaria mesmo que a anotacao fosse
+ * removida por engano.
  *
- * <p>Usa o perfil {@code local} (H2 em memoria) para nao depender de Docker:
- * o objeto do teste e a resiliencia, nao o banco.
+ * <p>Usa o perfil {@code local} (H2 em memoria) para nao depender de Docker: o objeto do teste e a
+ * resiliencia, nao o banco.
  */
 @SpringBootTest
 @ActiveProfiles("local")
