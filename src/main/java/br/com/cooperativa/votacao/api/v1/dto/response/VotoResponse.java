@@ -1,4 +1,4 @@
-package br.com.cooperativa.votacao.api.v1.dto;
+package br.com.cooperativa.votacao.api.v1.dto.response;
 
 import br.com.cooperativa.votacao.domain.enums.OpcaoVoto;
 import br.com.cooperativa.votacao.domain.model.Cpf;

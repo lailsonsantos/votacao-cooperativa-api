@@ -1,8 +1,8 @@
 package br.com.cooperativa.votacao.api.v1;
 
-import br.com.cooperativa.votacao.api.v1.dto.CriarPautaRequest;
-import br.com.cooperativa.votacao.api.v1.dto.PaginaResponse;
-import br.com.cooperativa.votacao.api.v1.dto.PautaResponse;
+import br.com.cooperativa.votacao.api.v1.dto.request.CriarPautaRequest;
+import br.com.cooperativa.votacao.api.v1.dto.response.PaginaResponse;
+import br.com.cooperativa.votacao.api.v1.dto.response.PautaResponse;
 import br.com.cooperativa.votacao.application.PautaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,12 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class PautaController {
     private final PautaService pautaService;
 
-    /**
-     * Cadastra uma nova pauta.
-     *
-     * @param request dados da pauta
-     * @return {@code 201} com a pauta criada e o cabecalho {@code Location}
-     */
     @PostMapping("/pautas")
     @Operation(summary = "Cadastra uma nova pauta")
     @ApiResponses({
@@ -50,12 +44,6 @@ public class PautaController {
         return ResponseEntity.created(location).body(PautaResponse.de(pauta));
     }
 
-    /**
-     * Lista as pautas cadastradas, da mais recente para a mais antiga.
-     *
-     * @param pageable pagina solicitada; o tamanho padrao evita resposta ilimitada
-     * @return {@code 200} com a pagina de pautas
-     */
     @GetMapping("/pautas")
     @Operation(summary = "Lista as pautas cadastradas, de forma paginada")
     public PaginaResponse<PautaResponse> listar(
@@ -69,12 +57,6 @@ public class PautaController {
         return PaginaResponse.de(pautaService.listar(page, size), PautaResponse::de);
     }
 
-    /**
-     * Detalha uma pauta.
-     *
-     * @param id identificador da pauta
-     * @return {@code 200} com a pauta encontrada
-     */
     @GetMapping("/pautas/{id}")
     @Operation(summary = "Detalha uma pauta")
     @ApiResponses({

@@ -1,4 +1,4 @@
-package br.com.cooperativa.votacao.api.v1.dto;
+package br.com.cooperativa.votacao.api.v1.dto.response;
 
 import br.com.cooperativa.votacao.domain.model.Pagina;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,7 +14,6 @@ public record PaginaResponse<T>(
         int totalPaginas,
         boolean ultima) {
 
-    /** Copia defensiva das colecoes recebidas. */
     public PaginaResponse {
         conteudo = conteudo == null ? List.of() : List.copyOf(conteudo);
     }

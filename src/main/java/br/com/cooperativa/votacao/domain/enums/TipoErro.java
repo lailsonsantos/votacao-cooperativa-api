@@ -1,7 +1,9 @@
 package br.com.cooperativa.votacao.domain.enums;
 
 import java.util.Arrays;
+import lombok.Getter;
 
+@Getter
 public enum TipoErro {
     ENTRADA_INVALIDA(1, "Entrada invalida"),
     NAO_ENCONTRADO(2, "Recurso nao encontrado"),
@@ -14,14 +16,6 @@ public enum TipoErro {
     TipoErro(int id, String descricao) {
         this.id = id;
         this.descricao = descricao;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getDescricao() {
-        return descricao;
     }
 
     public static TipoErro porId(int id) {

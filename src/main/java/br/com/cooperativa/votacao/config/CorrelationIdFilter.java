@@ -17,13 +17,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorrelationIdFilter extends OncePerRequestFilter {
-    /** Cabecalho HTTP que transporta o identificador de correlacao. */
+
     public static final String HEADER = "X-Correlation-Id";
 
-    /** Chave usada no contexto de diagnostico do SLF4J. */
     public static final String MDC_KEY = "correlationId";
 
-    /** Formato aceito para um identificador vindo do cliente. */
     private static final Pattern FORMATO_ACEITO = Pattern.compile("[A-Za-z0-9_-]{1,64}");
 
     /**
@@ -58,21 +56,10 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
         }
     }
 
-    /**
-     * Verifica se o identificador recebido do cliente pode ser reaproveitado.
-     *
-     * @param valor conteudo do cabecalho, possivelmente nulo
-     * @return {@code true} se o valor existir e obedecer ao formato aceito
-     */
     private static boolean aceitavel(String valor) {
         return StringUtils.hasText(valor) && FORMATO_ACEITO.matcher(valor).matches();
     }
 
-    /**
-     * Recupera o identificador de correlacao da requisicao em andamento.
-     *
-     * @return o identificador atual, ou {@code null} fora do escopo de uma requisicao
-     */
     public static String atual() {
         return MDC.get(MDC_KEY);
     }

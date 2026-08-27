@@ -7,18 +7,15 @@ import org.springframework.http.HttpStatus;
 
 final class MapeadorDeStatus {
 
-    /** Correspondencia entre natureza da falha e status HTTP. */
     private static final Map<TipoErro, HttpStatus> STATUS = new EnumMap<>(TipoErro.class);
 
     static {
-        // O cliente enviou algo que nao satisfaz o formato exigido.
         STATUS.put(TipoErro.ENTRADA_INVALIDA, HttpStatus.BAD_REQUEST);
-        // O recurso referenciado nao existe.
+
         STATUS.put(TipoErro.NAO_ENCONTRADO, HttpStatus.NOT_FOUND);
-        // A operacao conflita com o estado atual do recurso.
+
         STATUS.put(TipoErro.CONFLITO, HttpStatus.CONFLICT);
-        // A requisicao esta bem formada, mas uma regra impede o processamento —
-        // que e exatamente a semantica de 422, e nao de 400.
+
         STATUS.put(TipoErro.REGRA_VIOLADA, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 

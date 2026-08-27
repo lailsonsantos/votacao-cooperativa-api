@@ -1,7 +1,6 @@
 package br.com.cooperativa.votacao.api.error;
 
 import br.com.cooperativa.votacao.api.ui.builder.TelaFactory;
-import br.com.cooperativa.votacao.api.ui.dto.Tela;
 import br.com.cooperativa.votacao.config.CorrelationIdFilter;
 import br.com.cooperativa.votacao.domain.exception.NegocioException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -48,7 +47,7 @@ public class GlobalExceptionHandler {
         log.warn("Regra de negocio violada: [{}] {}", e.getTipo(), e.getMessage());
 
         if (ehTela(request)) {
-            return ResponseEntity.ok(telaDeErro(e.getTitulo(), e.getMessage()));
+            return ResponseEntity.ok(telas.erro(e.getTitulo(), e.getMessage()));
         }
 
         // A traducao de natureza de falha para status HTTP vive em um unico
@@ -76,7 +75,7 @@ public class GlobalExceptionHandler {
         log.warn("Requisicao invalida: {}", detalhe);
 
         if (ehTela(request)) {
-            return ResponseEntity.ok(telaDeErro("Dados invalidos", detalhe));
+            return ResponseEntity.ok(telas.erro("Dados invalidos", detalhe));
         }
 
         return ResponseEntity.badRequest()
@@ -108,7 +107,7 @@ public class GlobalExceptionHandler {
         log.warn("Corpo de requisicao invalido: {}", e.getMessage());
 
         if (ehTela(request)) {
-            return ResponseEntity.ok(telaDeErro("Dados invalidos", detalhe));
+            return ResponseEntity.ok(telas.erro("Dados invalidos", detalhe));
         }
 
         return ResponseEntity.badRequest()
@@ -136,7 +135,7 @@ public class GlobalExceptionHandler {
         var detalhe = "A operacao conflita com dados ja registrados.";
 
         if (ehTela(request)) {
-            return ResponseEntity.ok(telaDeErro("Conflito", detalhe));
+            return ResponseEntity.ok(telas.erro("Conflito", detalhe));
         }
 
         return ResponseEntity.status(HttpStatus.CONFLICT)
@@ -175,7 +174,7 @@ public class GlobalExceptionHandler {
                 request.getRequestURI());
 
         if (ehTela(request)) {
-            return ResponseEntity.ok(telaDeErro("Tela nao encontrada", detalhe));
+            return ResponseEntity.ok(telas.erro("Tela nao encontrada", detalhe));
         }
 
         return ResponseEntity.status(status)
@@ -201,7 +200,7 @@ public class GlobalExceptionHandler {
         log.warn("Parametro de requisicao invalido: {}", detalhe);
 
         if (ehTela(request)) {
-            return ResponseEntity.ok(telaDeErro("Dados invalidos", detalhe));
+            return ResponseEntity.ok(telas.erro("Dados invalidos", detalhe));
         }
 
         return ResponseEntity.badRequest()
@@ -245,7 +244,7 @@ public class GlobalExceptionHandler {
                 "Ocorreu um erro inesperado. Informe o identificador de correlacao ao suporte.";
 
         if (ehTela(request)) {
-            return ResponseEntity.ok(telaDeErro("Erro inesperado", detalhe));
+            return ResponseEntity.ok(telas.erro("Erro inesperado", detalhe));
         }
 
         return ResponseEntity.internalServerError()
@@ -275,9 +274,6 @@ public class GlobalExceptionHandler {
      * @param mensagem explicacao ao usuario
      * @return a tela de erro
      */
-    private Tela telaDeErro(String titulo, String mensagem) {
-        return telas.erro(titulo, mensagem);
-    }
 
     /**
      * Monta o corpo de erro no padrao RFC 7807.

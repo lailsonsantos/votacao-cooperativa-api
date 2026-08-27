@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/** Superficie Server-Driven UI: devolve as telas do Anexo 1 ao cliente. */
 @RestController
 @RequestMapping("/api/v1/telas")
 @Validated
@@ -46,23 +45,12 @@ public class TelaController {
     private final AppProperties appProperties;
     private final Clock clock;
 
-    /**
-     * Menu inicial.
-     *
-     * @return tela SELECAO com as acoes disponiveis
-     */
     @GetMapping
     @Operation(summary = "Menu inicial da aplicacao")
     public Tela menu() {
         return telas.menu();
     }
 
-    /**
-     * Lista as pautas cadastradas.
-     *
-     * @param pageable pagina solicitada
-     * @return tela SELECAO com uma opcao por pauta
-     */
     @GetMapping("/pautas")
     @Operation(summary = "Lista as pautas como tela de selecao")
     public Tela listarPautas(
@@ -76,23 +64,12 @@ public class TelaController {
         return telas.listaPautas(pautaService.listar(page, size));
     }
 
-    /**
-     * Formulario de cadastro de pauta.
-     *
-     * @return tela FORMULARIO com os campos de titulo e descricao
-     */
     @GetMapping("/pautas/nova")
     @Operation(summary = "Formulario de cadastro de pauta")
     public Tela formularioNovaPauta() {
         return telas.novaPauta();
     }
 
-    /**
-     * Cadastra a pauta e devolve a tela da pauta recem-criada.
-     *
-     * @param acao campos digitados no formulario
-     * @return tela FORMULARIO da pauta criada, pronta para abrir a sessao
-     */
     @PostMapping("/pautas")
     @Operation(summary = "Cadastra a pauta e devolve a tela da pauta criada")
     public Tela criarPauta(@RequestBody AcaoTelaRequest acao) {
@@ -104,12 +81,6 @@ public class TelaController {
         return telas.pautaSemSessao(pauta, appProperties.sessao().duracaoPadraoMinutos());
     }
 
-    /**
-     * Tela de uma pauta, cujo conteudo depende do estado da sessao.
-     *
-     * @param id identificador da pauta
-     * @return a tela correspondente ao estado atual da pauta
-     */
     @GetMapping("/pautas/{id}")
     @Operation(summary = "Tela da pauta, variando conforme o estado da sessao")
     public Tela pauta(@PathVariable UUID id) {
@@ -128,13 +99,6 @@ public class TelaController {
         return telas.resultado(resultadoService.apurar(id));
     }
 
-    /**
-     * Abre a sessao de votacao e devolve a tela de identificacao.
-     *
-     * @param id identificador da pauta
-     * @param acao campos digitados, incluindo a duracao escolhida
-     * @return tela FORMULARIO que coleta o CPF do associado
-     */
     @PostMapping("/pautas/{id}/sessao")
     @Operation(summary = "Abre a sessao e devolve a tela de votacao")
     public Tela abrirSessao(@PathVariable UUID id, @RequestBody AcaoTelaRequest acao) {
@@ -142,13 +106,6 @@ public class TelaController {
         return telas.identificacao(sessao, clock.instant());
     }
 
-    /**
-     * Valida o CPF e devolve as opcoes de voto.
-     *
-     * @param id identificador da pauta
-     * @param acao campos digitados, incluindo o CPF
-     * @return tela SELECAO com as opcoes Sim e Nao
-     */
     @PostMapping("/pautas/{id}/votos/identificacao")
     @Operation(summary = "Valida o CPF e devolve as opcoes de voto")
     public Tela identificar(@PathVariable UUID id, @RequestBody AcaoTelaRequest acao) {
@@ -168,13 +125,6 @@ public class TelaController {
         return telas.opcoesDeVoto(pauta, cpf.numero());
     }
 
-    /**
-     * Registra o voto e devolve a tela de resultado.
-     *
-     * @param id identificador da pauta
-     * @param acao corpo da opcao acionada, contendo CPF e opcao
-     * @return tela FORMULARIO com a apuracao
-     */
     @PostMapping("/pautas/{id}/votos")
     @Operation(summary = "Registra o voto e devolve a tela de resultado")
     public Tela votar(@PathVariable UUID id, @RequestBody AcaoTelaRequest acao) {
@@ -185,12 +135,6 @@ public class TelaController {
         return telas.resultado(resultadoService.apurar(id));
     }
 
-    /**
-     * Tela de resultado da apuracao.
-     *
-     * @param id identificador da pauta
-     * @return tela FORMULARIO com os numeros e o desfecho
-     */
     @GetMapping("/pautas/{id}/resultado")
     @Operation(summary = "Tela de resultado da apuracao")
     public Tela resultado(@PathVariable UUID id) {

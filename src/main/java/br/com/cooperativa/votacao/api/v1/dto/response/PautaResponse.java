@@ -1,4 +1,4 @@
-package br.com.cooperativa.votacao.api.v1.dto;
+package br.com.cooperativa.votacao.api.v1.dto.response;
 
 import br.com.cooperativa.votacao.domain.model.Pauta;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,7 +1,9 @@
-package br.com.cooperativa.votacao.api.ui.dto;
+package br.com.cooperativa.votacao.api.ui.dto.enums;
 
 import java.util.Arrays;
+import lombok.Getter;
 
+@Getter
 public enum TipoItem {
     TEXTO(1, "Texto"),
     INPUT_TEXTO(2, "Campo de texto"),
@@ -14,14 +16,6 @@ public enum TipoItem {
     TipoItem(int id, String descricao) {
         this.id = id;
         this.descricao = descricao;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getDescricao() {
-        return descricao;
     }
 
     public static TipoItem porId(int id) {

@@ -1,7 +1,7 @@
 package br.com.cooperativa.votacao.api.v1;
 
-import br.com.cooperativa.votacao.api.v1.dto.AbrirSessaoRequest;
-import br.com.cooperativa.votacao.api.v1.dto.SessaoResponse;
+import br.com.cooperativa.votacao.api.v1.dto.request.AbrirSessaoRequest;
+import br.com.cooperativa.votacao.api.v1.dto.response.SessaoResponse;
 import br.com.cooperativa.votacao.application.SessaoVotacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-/** Endpoints de abertura e consulta da sessao de votacao de uma pauta. */
 @ApiV1
 @Tag(name = "Sessoes", description = "Abertura e consulta das sessoes de votacao")
 @RequiredArgsConstructor
@@ -27,13 +26,6 @@ public class SessaoVotacaoController {
     private final SessaoVotacaoService sessaoService;
     private final Clock clock;
 
-    /**
-     * Abre a sessao de votacao de uma pauta.
-     *
-     * @param id identificador da pauta
-     * @param request duracao solicitada, opcional
-     * @return {@code 201} com os dados da sessao aberta
-     */
     @PostMapping("/pautas/{id}/sessao")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(
@@ -54,12 +46,6 @@ public class SessaoVotacaoController {
         return SessaoResponse.de(sessaoService.abrir(id, duracao), clock.instant());
     }
 
-    /**
-     * Consulta a sessao de votacao de uma pauta.
-     *
-     * @param id identificador da pauta
-     * @return {@code 200} com os dados da sessao
-     */
     @GetMapping("/pautas/{id}/sessao")
     @Operation(summary = "Consulta a sessao de votacao de uma pauta")
     @ApiResponses({

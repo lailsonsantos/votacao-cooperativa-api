@@ -5,13 +5,7 @@ import br.com.cooperativa.votacao.domain.model.Cpf;
 import java.util.UUID;
 
 public class VotoDuplicadoException extends NegocioException {
-    /**
-     * Cria a excecao.
-     *
-     * @param pautaId identificador da pauta
-     * @param associadoId CPF do associado, mascarado na mensagem
-     * @param causa violacao de integridade que originou a falha
-     */
+
     public VotoDuplicadoException(UUID pautaId, String associadoId, Throwable causa) {
         super(
                 TipoErro.CONFLITO,

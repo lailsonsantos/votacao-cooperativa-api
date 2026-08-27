@@ -1,7 +1,9 @@
 package br.com.cooperativa.votacao.domain.enums;
 
 import java.util.Arrays;
+import lombok.Getter;
 
+@Getter
 public enum ResultadoApuracao {
     APROVADA(1, "APROVADA"),
     REPROVADA(2, "REPROVADA"),
@@ -14,14 +16,6 @@ public enum ResultadoApuracao {
     ResultadoApuracao(int id, String descricao) {
         this.id = id;
         this.descricao = descricao;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getDescricao() {
-        return descricao;
     }
 
     public static ResultadoApuracao porId(int id) {

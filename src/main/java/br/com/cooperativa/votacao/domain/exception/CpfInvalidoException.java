@@ -4,11 +4,7 @@ import br.com.cooperativa.votacao.domain.enums.TipoErro;
 import br.com.cooperativa.votacao.domain.model.Cpf;
 
 public class CpfInvalidoException extends NegocioException {
-    /**
-     * Cria a excecao.
-     *
-     * @param valor CPF recusado, mascarado na mensagem devolvida
-     */
+
     public CpfInvalidoException(String valor) {
         super(
                 TipoErro.ENTRADA_INVALIDA,

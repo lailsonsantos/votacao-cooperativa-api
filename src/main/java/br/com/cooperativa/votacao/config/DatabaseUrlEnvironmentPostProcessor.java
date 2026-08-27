@@ -10,13 +10,11 @@ import org.springframework.core.env.MapPropertySource;
 import org.springframework.util.StringUtils;
 
 public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProcessor {
-    /** Nome da fonte de propriedades acrescentada ao ambiente. */
+
     static final String FONTE = "databaseUrlConvertida";
 
-    /** Variavel injetada pelas plataformas de nuvem. */
     static final String DATABASE_URL = "DATABASE_URL";
 
-    /** Propriedade que, se ja definida, tem precedencia sobre a conversao. */
     static final String URL_EXPLICITA = "spring.datasource.url";
 
     /**

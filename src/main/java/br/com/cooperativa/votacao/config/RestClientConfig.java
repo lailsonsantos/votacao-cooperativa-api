@@ -10,13 +10,7 @@ import org.springframework.web.client.RestClient;
 
 @Configuration
 public class RestClientConfig {
-    /**
-     * Cliente HTTP dedicado ao servico de consulta de associados.
-     *
-     * @param properties configuracao do servico externo
-     * @param customizers customizacoes aplicadas pelo Spring Boot (observabilidade)
-     * @return o cliente configurado com URL base e timeouts
-     */
+
     @Bean
     public RestClient userInfoRestClient(
             UserInfoProperties properties, java.util.List<RestClientCustomizer> customizers) {

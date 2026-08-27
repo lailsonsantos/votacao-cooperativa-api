@@ -1,7 +1,9 @@
 package br.com.cooperativa.votacao.domain.enums;
 
 import java.util.Arrays;
+import lombok.Getter;
 
+@Getter
 public enum StatusSessao {
     ABERTA(1, "Aberta"),
     FECHADA(2, "Fechada");
@@ -12,14 +14,6 @@ public enum StatusSessao {
     StatusSessao(int id, String descricao) {
         this.id = id;
         this.descricao = descricao;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getDescricao() {
-        return descricao;
     }
 
     public static StatusSessao porId(int id) {

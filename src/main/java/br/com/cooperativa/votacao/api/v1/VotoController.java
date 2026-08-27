@@ -1,8 +1,8 @@
 package br.com.cooperativa.votacao.api.v1;
 
-import br.com.cooperativa.votacao.api.v1.dto.RegistrarVotoRequest;
-import br.com.cooperativa.votacao.api.v1.dto.ResultadoResponse;
-import br.com.cooperativa.votacao.api.v1.dto.VotoResponse;
+import br.com.cooperativa.votacao.api.v1.dto.request.RegistrarVotoRequest;
+import br.com.cooperativa.votacao.api.v1.dto.response.ResultadoResponse;
+import br.com.cooperativa.votacao.api.v1.dto.response.VotoResponse;
 import br.com.cooperativa.votacao.application.ResultadoService;
 import br.com.cooperativa.votacao.application.VotoService;
 import br.com.cooperativa.votacao.domain.model.Cpf;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-/** Endpoints de registro de voto e apuracao de resultado. */
 @ApiV1
 @Tag(name = "Votos", description = "Registro de votos e apuracao do resultado")
 @RequiredArgsConstructor
@@ -29,13 +28,6 @@ public class VotoController {
     private final VotoService votoService;
     private final ResultadoService resultadoService;
 
-    /**
-     * Registra o voto de um associado.
-     *
-     * @param id identificador da pauta
-     * @param request CPF do associado e opcao escolhida
-     * @return {@code 201} com a confirmacao do voto
-     */
     @PostMapping("/pautas/{id}/votos")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(
@@ -59,12 +51,6 @@ public class VotoController {
         return VotoResponse.de(voto);
     }
 
-    /**
-     * Apura o resultado de uma pauta.
-     *
-     * @param id identificador da pauta
-     * @return {@code 200} com o resultado apurado
-     */
     @GetMapping("/pautas/{id}/resultado")
     @Operation(
             summary = "Apura o resultado de uma pauta",

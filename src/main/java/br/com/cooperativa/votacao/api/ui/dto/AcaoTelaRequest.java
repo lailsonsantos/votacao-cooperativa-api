@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AcaoTelaRequest {
-    /** Campos recebidos do cliente, na forma bruta. */
+
     private final Map<String, Object> campos = new HashMap<>();
 
     /**

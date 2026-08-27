@@ -1,5 +1,6 @@
 package br.com.cooperativa.votacao.api.ui.dto;
 
+import br.com.cooperativa.votacao.api.ui.dto.enums.TipoTela;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;

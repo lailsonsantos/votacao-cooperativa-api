@@ -9,11 +9,7 @@ import org.springframework.cache.annotation.EnableCaching;
 @EnableCaching
 @ConfigurationPropertiesScan
 public class VotacaoApplication {
-    /**
-     * Sobe o contexto Spring.
-     *
-     * @param args argumentos de linha de comando repassados ao Spring Boot
-     */
+
     public static void main(String[] args) {
         SpringApplication.run(VotacaoApplication.class, args);
     }

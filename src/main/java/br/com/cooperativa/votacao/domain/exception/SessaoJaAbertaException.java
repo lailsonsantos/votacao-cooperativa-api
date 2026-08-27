@@ -4,11 +4,7 @@ import br.com.cooperativa.votacao.domain.enums.TipoErro;
 import java.util.UUID;
 
 public class SessaoJaAbertaException extends NegocioException {
-    /**
-     * Cria a excecao.
-     *
-     * @param pautaId identificador da pauta que ja possui sessao
-     */
+
     public SessaoJaAbertaException(UUID pautaId) {
         super(
                 TipoErro.CONFLITO,

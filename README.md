@@ -177,7 +177,9 @@ src/main/java/br/com/cooperativa/votacao
 ├── infrastructure/   Adaptadores: persistência JPA e serviço externo de CPF
 └── api/
     ├── v1/           Superfície REST
+    │   └── dto/      request/ e response/, separados
     ├── ui/           Superfície Server-Driven UI (Anexo 1)
+    │   └── dto/      Telas, itens e enums/ do catálogo
     └── error/        Tratador global
 ```
 

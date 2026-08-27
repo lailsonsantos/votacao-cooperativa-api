@@ -19,16 +19,13 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class TelaFactory {
-    /** Chave do campo de duracao no formulario de abertura de sessao. */
+
     public static final String CAMPO_DURACAO = "duracaoMinutos";
 
-    /** Chave do campo de CPF no formulario de identificacao. */
     public static final String CAMPO_CPF = "cpf";
 
-    /** Chave do campo de titulo no formulario de cadastro de pauta. */
     public static final String CAMPO_TITULO = "titulo";
 
-    /** Chave do campo de descricao no formulario de cadastro de pauta. */
     public static final String CAMPO_DESCRICAO = "descricao";
 
     private final UrlTelaFactory urls;

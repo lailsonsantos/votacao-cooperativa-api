@@ -1,4 +1,4 @@
-package br.com.cooperativa.votacao.api.v1.dto;
+package br.com.cooperativa.votacao.api.v1.dto.request;
 
 import br.com.cooperativa.votacao.domain.enums.OpcaoVoto;
 import io.swagger.v3.oas.annotations.media.Schema;

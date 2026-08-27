@@ -3,8 +3,8 @@ package br.com.cooperativa.votacao.domain.enums;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import br.com.cooperativa.votacao.api.ui.dto.TipoItem;
-import br.com.cooperativa.votacao.api.ui.dto.TipoTela;
+import br.com.cooperativa.votacao.api.ui.dto.enums.TipoItem;
+import br.com.cooperativa.votacao.api.ui.dto.enums.TipoTela;
 import br.com.cooperativa.votacao.infrastructure.integration.userinfo.StatusAssociado;
 import java.util.Arrays;
 import java.util.stream.Stream;

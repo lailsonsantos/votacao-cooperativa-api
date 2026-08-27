@@ -1,5 +1,6 @@
 package br.com.cooperativa.votacao.api.ui.dto;
 
+import br.com.cooperativa.votacao.api.ui.dto.enums.TipoItem;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

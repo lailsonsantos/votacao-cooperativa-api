@@ -2,7 +2,7 @@ package br.com.cooperativa.votacao.api.v1;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import br.com.cooperativa.votacao.api.v1.dto.PaginaResponse;
+import br.com.cooperativa.votacao.api.v1.dto.response.PaginaResponse;
 import br.com.cooperativa.votacao.domain.model.Pagina;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;

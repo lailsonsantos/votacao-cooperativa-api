@@ -101,7 +101,7 @@ class AcaoTelaRequestTest {
         // O tipo faz parte do catalogo documentado no Anexo 1, ainda que nenhuma
         // tela atual o utilize; deixa-lo sem teste esconderia uma quebra futura.
         assertThat(item.tipo())
-                .isEqualTo(br.com.cooperativa.votacao.api.ui.dto.TipoItem.INPUT_DATA);
+                .isEqualTo(br.com.cooperativa.votacao.api.ui.dto.enums.TipoItem.INPUT_DATA);
         assertThat(item.id()).isEqualTo("idCampoData");
         assertThat(item.valor()).isEqualTo("01/01/2000");
         assertThat(item.texto()).isNull();

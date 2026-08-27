@@ -1,7 +1,9 @@
-package br.com.cooperativa.votacao.api.ui.dto;
+package br.com.cooperativa.votacao.api.ui.dto.enums;
 
 import java.util.Arrays;
+import lombok.Getter;
 
+@Getter
 public enum TipoTela {
     FORMULARIO(1, "Formulario"),
     SELECAO(2, "Selecao");
@@ -12,14 +14,6 @@ public enum TipoTela {
     TipoTela(int id, String descricao) {
         this.id = id;
         this.descricao = descricao;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getDescricao() {
-        return descricao;
     }
 
     public static TipoTela porId(int id) {

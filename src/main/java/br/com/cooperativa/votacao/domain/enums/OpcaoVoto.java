@@ -1,7 +1,9 @@
 package br.com.cooperativa.votacao.domain.enums;
 
 import java.util.Arrays;
+import lombok.Getter;
 
+@Getter
 public enum OpcaoVoto {
     SIM(1, "Sim"),
     NAO(2, "Nao");
@@ -12,14 +14,6 @@ public enum OpcaoVoto {
     OpcaoVoto(int id, String descricao) {
         this.id = id;
         this.descricao = descricao;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getDescricao() {
-        return descricao;
     }
 
     public static OpcaoVoto porId(int id) {
