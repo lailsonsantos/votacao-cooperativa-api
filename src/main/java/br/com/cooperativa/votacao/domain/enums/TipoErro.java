@@ -1,0 +1,33 @@
+package br.com.cooperativa.votacao.domain.enums;
+
+import java.util.Arrays;
+
+public enum TipoErro {
+    ENTRADA_INVALIDA(1, "Entrada invalida"),
+    NAO_ENCONTRADO(2, "Recurso nao encontrado"),
+    CONFLITO(3, "Conflito com o estado atual"),
+    REGRA_VIOLADA(4, "Regra de negocio violada");
+
+    private final int id;
+    private final String descricao;
+
+    TipoErro(int id, String descricao) {
+        this.id = id;
+        this.descricao = descricao;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public static TipoErro porId(int id) {
+        return Arrays.stream(values())
+                .filter(t -> t.id == id)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Tipo de erro invalido: " + id));
+    }
+}

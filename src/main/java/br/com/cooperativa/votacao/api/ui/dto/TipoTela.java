@@ -1,10 +1,31 @@
 package br.com.cooperativa.votacao.api.ui.dto;
 
-/** Tipos de tela suportados pelo cliente, conforme o Anexo 1 do enunciado. */
-public enum TipoTela {
-    /** Colecao de itens com um ou dois botoes de acao no rodape. */
-    FORMULARIO,
+import java.util.Arrays;
 
-    /** Lista de opcoes, cada uma com sua propria acao. */
-    SELECAO
+public enum TipoTela {
+    FORMULARIO(1, "Formulario"),
+    SELECAO(2, "Selecao");
+
+    private final int id;
+    private final String descricao;
+
+    TipoTela(int id, String descricao) {
+        this.id = id;
+        this.descricao = descricao;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public static TipoTela porId(int id) {
+        return Arrays.stream(values())
+                .filter(t -> t.id == id)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Tipo de tela invalido: " + id));
+    }
 }

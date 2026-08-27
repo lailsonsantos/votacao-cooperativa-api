@@ -8,10 +8,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import br.com.cooperativa.votacao.application.impl.VotoServiceImpl;
+import br.com.cooperativa.votacao.domain.enums.OpcaoVoto;
 import br.com.cooperativa.votacao.domain.exception.SessaoEncerradaException;
 import br.com.cooperativa.votacao.domain.exception.VotoDuplicadoException;
 import br.com.cooperativa.votacao.domain.model.Cpf;
-import br.com.cooperativa.votacao.domain.model.OpcaoVoto;
 import br.com.cooperativa.votacao.domain.model.Pauta;
 import br.com.cooperativa.votacao.domain.model.SessaoVotacao;
 import br.com.cooperativa.votacao.domain.model.Voto;

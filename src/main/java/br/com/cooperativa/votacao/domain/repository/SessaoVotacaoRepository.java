@@ -4,7 +4,6 @@ import br.com.cooperativa.votacao.domain.model.SessaoVotacao;
 import java.util.Optional;
 import java.util.UUID;
 
-/** Porta de saida para a persistencia de sessoes de votacao. */
 public interface SessaoVotacaoRepository {
 
     /**

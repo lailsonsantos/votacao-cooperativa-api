@@ -2,6 +2,7 @@ package br.com.cooperativa.votacao.api.error;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import br.com.cooperativa.votacao.domain.enums.TipoErro;
 import br.com.cooperativa.votacao.domain.exception.AssociadoNaoAutorizadoException;
 import br.com.cooperativa.votacao.domain.exception.CpfInvalidoException;
 import br.com.cooperativa.votacao.domain.exception.NegocioException;
@@ -9,7 +10,6 @@ import br.com.cooperativa.votacao.domain.exception.RecursoNaoEncontradoException
 import br.com.cooperativa.votacao.domain.exception.SessaoEncerradaException;
 import br.com.cooperativa.votacao.domain.exception.SessaoJaAbertaException;
 import br.com.cooperativa.votacao.domain.exception.SessaoNaoAbertaException;
-import br.com.cooperativa.votacao.domain.exception.TipoErro;
 import br.com.cooperativa.votacao.domain.exception.VotoDuplicadoException;
 import java.util.UUID;
 import java.util.stream.Stream;

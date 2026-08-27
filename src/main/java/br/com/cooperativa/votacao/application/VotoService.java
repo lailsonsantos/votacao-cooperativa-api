@@ -1,11 +1,11 @@
 package br.com.cooperativa.votacao.application;
 
+import br.com.cooperativa.votacao.domain.enums.OpcaoVoto;
 import br.com.cooperativa.votacao.domain.exception.AssociadoNaoAutorizadoException;
 import br.com.cooperativa.votacao.domain.exception.SessaoEncerradaException;
 import br.com.cooperativa.votacao.domain.exception.SessaoNaoAbertaException;
 import br.com.cooperativa.votacao.domain.exception.VotoDuplicadoException;
 import br.com.cooperativa.votacao.domain.model.Cpf;
-import br.com.cooperativa.votacao.domain.model.OpcaoVoto;
 import br.com.cooperativa.votacao.domain.model.Voto;
 import java.util.UUID;
 

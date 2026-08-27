@@ -1,6 +1,6 @@
 package br.com.cooperativa.votacao.api.v1.dto;
 
-import br.com.cooperativa.votacao.domain.model.OpcaoVoto;
+import br.com.cooperativa.votacao.domain.enums.OpcaoVoto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

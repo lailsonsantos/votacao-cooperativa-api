@@ -4,7 +4,6 @@ import br.com.cooperativa.votacao.domain.model.Voto;
 import java.util.List;
 import java.util.UUID;
 
-/** Porta de saida para a persistencia de votos. */
 public interface VotoRepository {
 
     /**

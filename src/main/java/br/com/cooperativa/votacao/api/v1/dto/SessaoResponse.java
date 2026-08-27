@@ -1,7 +1,7 @@
 package br.com.cooperativa.votacao.api.v1.dto;
 
+import br.com.cooperativa.votacao.domain.enums.StatusSessao;
 import br.com.cooperativa.votacao.domain.model.SessaoVotacao;
-import br.com.cooperativa.votacao.domain.model.StatusSessao;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
 import java.util.UUID;

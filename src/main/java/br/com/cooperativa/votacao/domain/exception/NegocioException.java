@@ -1,5 +1,6 @@
 package br.com.cooperativa.votacao.domain.exception;
 
+import br.com.cooperativa.votacao.domain.enums.TipoErro;
 import lombok.Getter;
 
 @Getter

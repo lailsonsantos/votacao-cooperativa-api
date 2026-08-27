@@ -1,5 +1,7 @@
 package br.com.cooperativa.votacao.domain.model;
 
+import br.com.cooperativa.votacao.domain.enums.ResultadoApuracao;
+import br.com.cooperativa.votacao.domain.enums.StatusSessao;
 import java.util.UUID;
 
 public record ResultadoVotacao(

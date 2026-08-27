@@ -86,7 +86,7 @@ Testcontainers).
 ./mvnw verify
 ```
 
-Executa 202 testes, o gate de cobertura, a verificação de formatação e a análise
+Executa 212 testes, o gate de cobertura, a verificação de formatação e a análise
 estática.
 
 ### Comandos úteis
@@ -167,7 +167,8 @@ serviços de aplicação. **Nenhuma regra de negócio é duplicada.**
 src/main/java/br/com/cooperativa/votacao
 ├── config/           Beans transversais (Clock, CORS, correlationId, resiliência)
 ├── domain/           Modelo, portas e exceções — sem uma linha de Spring
-│   ├── model/
+│   ├── model/        Entidades e objetos de valor
+│   ├── enums/        Enums do domínio, cada valor com id e descrição
 │   ├── repository/   Portas de persistência, com apenas os métodos usados
 │   └── exception/
 ├── application/      Portas de entrada: o contrato dos casos de uso
@@ -516,7 +517,7 @@ padrão Server-Driven UI existe justamente para mudar tela sem publicar app.
 google-java-format) e análise estática (SpotBugs). É o mesmo comando que roda no
 CI — não existe um comando especial que passe onde o local falha.
 
-**202 testes** e **100% de cobertura** — instruções, linhas, ramos, complexidade,
+**212 testes** e **100% de cobertura** — instruções, linhas, ramos, complexidade,
 métodos e classes. O gate exige 95% de linhas e 90% de ramos: um gate exatamente
 em 100% transforma qualquer linha nova em build vermelho antes mesmo de existir o
 teste, o que empurra para escrever teste só para o número fechar.

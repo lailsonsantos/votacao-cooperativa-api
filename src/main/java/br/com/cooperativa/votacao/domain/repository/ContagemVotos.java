@@ -1,6 +1,6 @@
 package br.com.cooperativa.votacao.domain.repository;
 
-import br.com.cooperativa.votacao.domain.model.OpcaoVoto;
+import br.com.cooperativa.votacao.domain.enums.OpcaoVoto;
 
 public interface ContagemVotos {
     /**

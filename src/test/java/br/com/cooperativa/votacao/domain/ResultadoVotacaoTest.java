@@ -2,9 +2,9 @@ package br.com.cooperativa.votacao.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import br.com.cooperativa.votacao.domain.model.ResultadoApuracao;
+import br.com.cooperativa.votacao.domain.enums.ResultadoApuracao;
+import br.com.cooperativa.votacao.domain.enums.StatusSessao;
 import br.com.cooperativa.votacao.domain.model.ResultadoVotacao;
-import br.com.cooperativa.votacao.domain.model.StatusSessao;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

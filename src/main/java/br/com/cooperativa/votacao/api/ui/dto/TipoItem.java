@@ -1,15 +1,33 @@
 package br.com.cooperativa.votacao.api.ui.dto;
 
+import java.util.Arrays;
+
 public enum TipoItem {
-    /** Texto somente leitura. */
-    TEXTO,
+    TEXTO(1, "Texto"),
+    INPUT_TEXTO(2, "Campo de texto"),
+    INPUT_NUMERO(3, "Campo numerico"),
+    INPUT_DATA(4, "Campo data");
 
-    /** Campo de entrada de texto. */
-    INPUT_TEXTO,
+    private final int id;
+    private final String descricao;
 
-    /** Campo de entrada numerica. */
-    INPUT_NUMERO,
+    TipoItem(int id, String descricao) {
+        this.id = id;
+        this.descricao = descricao;
+    }
 
-    /** Campo de entrada de data, no formato {@code dd/MM/yyyy}. */
-    INPUT_DATA
+    public int getId() {
+        return id;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public static TipoItem porId(int id) {
+        return Arrays.stream(values())
+                .filter(t -> t.id == id)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Tipo de item invalido: " + id));
+    }
 }

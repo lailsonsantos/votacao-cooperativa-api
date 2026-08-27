@@ -8,11 +8,11 @@ import static org.mockito.Mockito.when;
 
 import br.com.cooperativa.votacao.application.impl.ResultadoServiceImpl;
 import br.com.cooperativa.votacao.config.CacheConfig;
-import br.com.cooperativa.votacao.domain.model.OpcaoVoto;
+import br.com.cooperativa.votacao.domain.enums.OpcaoVoto;
+import br.com.cooperativa.votacao.domain.enums.ResultadoApuracao;
+import br.com.cooperativa.votacao.domain.enums.StatusSessao;
 import br.com.cooperativa.votacao.domain.model.Pauta;
-import br.com.cooperativa.votacao.domain.model.ResultadoApuracao;
 import br.com.cooperativa.votacao.domain.model.SessaoVotacao;
-import br.com.cooperativa.votacao.domain.model.StatusSessao;
 import br.com.cooperativa.votacao.domain.repository.ContagemVotos;
 import br.com.cooperativa.votacao.domain.repository.VotoRepository;
 import java.time.Clock;

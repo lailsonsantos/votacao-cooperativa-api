@@ -16,7 +16,6 @@ import org.springframework.web.client.RestClientException;
 @RequiredArgsConstructor
 @Slf4j
 public class UserInfoClient implements ConsultaAptidaoParaVotar {
-    /** Nome da instancia de resiliencia declarada em {@code application.yml}. */
     private static final String INSTANCIA = "userInfo";
 
     private final RestClient restClient;

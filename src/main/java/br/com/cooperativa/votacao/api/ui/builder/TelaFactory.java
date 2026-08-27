@@ -161,7 +161,7 @@ public class TelaFactory {
                         ItemTela.texto("Sim: %d voto(s)".formatted(resultado.votosSim())),
                         ItemTela.texto("Nao: %d voto(s)".formatted(resultado.votosNao())),
                         ItemTela.texto("Total: %d voto(s)".formatted(resultado.totalVotos())),
-                        ItemTela.texto("Resultado: " + descrever(resultado)));
+                        ItemTela.texto("Resultado: " + resultado.resultado().getDescricao()));
 
         return Tela.formulario(
                 resultado.titulo(),
@@ -195,21 +195,6 @@ public class TelaFactory {
         if (pauta.getDescricao() != null && !pauta.getDescricao().isBlank()) {
             itens.add(ItemTela.texto(pauta.getDescricao()));
         }
-    }
-
-    /**
-     * Descreve o desfecho da apuracao em linguagem natural.
-     *
-     * @param resultado resultado apurado
-     * @return frase correspondente ao desfecho
-     */
-    private String descrever(ResultadoVotacao resultado) {
-        return switch (resultado.resultado()) {
-            case APROVADA -> "APROVADA";
-            case REPROVADA -> "REPROVADA";
-            case EMPATE -> "EMPATE";
-            case SEM_VOTOS -> "Nenhum voto registrado";
-        };
     }
 
     /**

@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-/** Adaptador JPA da porta {@link VotoRepository}. */
 @Repository
 public interface VotoJpaRepository extends VotoRepository, JpaRepository<Voto, UUID> {
 

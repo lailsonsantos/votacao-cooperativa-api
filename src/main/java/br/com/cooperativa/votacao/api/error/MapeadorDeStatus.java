@@ -1,6 +1,6 @@
 package br.com.cooperativa.votacao.api.error;
 
-import br.com.cooperativa.votacao.domain.exception.TipoErro;
+import br.com.cooperativa.votacao.domain.enums.TipoErro;
 import java.util.EnumMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
