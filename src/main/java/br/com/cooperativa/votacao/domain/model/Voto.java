@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,9 +28,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "voto")
 @Getter
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Voto {
-
     /** Identificador do voto, gerado pela aplicacao. */
     @Id
     @Column(name = "id", nullable = false, updatable = false)

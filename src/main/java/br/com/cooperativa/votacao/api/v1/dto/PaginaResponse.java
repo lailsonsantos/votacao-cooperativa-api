@@ -29,7 +29,6 @@ public record PaginaResponse<T>(
         long totalElementos,
         int totalPaginas,
         boolean ultima) {
-
     /**
      * Converte uma pagina do Spring Data aplicando um mapeador ao conteudo.
      *

@@ -23,7 +23,6 @@ public record ResultadoVotacao(
         long votosSim,
         long votosNao,
         ResultadoApuracao resultado) {
-
     /**
      * Monta o resultado a partir da contagem bruta.
      *

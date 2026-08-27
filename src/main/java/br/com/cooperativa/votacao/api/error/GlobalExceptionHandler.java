@@ -8,8 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.time.Clock;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -40,29 +40,17 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
  * esta classe.
  */
 @RestControllerAdvice
+@RequiredArgsConstructor
+@Slf4j
 public class GlobalExceptionHandler {
-
     /** Prefixo das rotas que devolvem telas em vez de ProblemDetail. */
     private static final String PREFIXO_TELAS = "/api/v1/telas";
 
     /** Base dos identificadores de tipo de erro publicados na documentacao. */
     private static final String BASE_TIPO = "https://api.cooperativa.com/erros/";
 
-    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-
     private final TelaFactory telas;
     private final Clock clock;
-
-    /**
-     * Cria o tratador.
-     *
-     * @param telas fabrica usada para montar a tela de erro
-     * @param clock relogio injetado, para carimbar o instante do erro
-     */
-    public GlobalExceptionHandler(TelaFactory telas, Clock clock) {
-        this.telas = telas;
-        this.clock = clock;
-    }
 
     /**
      * Trata as falhas previstas pelas regras de negocio.
@@ -97,7 +85,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> tratarValidacao(
             MethodArgumentNotValidException e, HttpServletRequest request) {
-
         var detalhe =
                 e.getBindingResult().getFieldErrors().stream()
                         .map(erro -> "%s: %s".formatted(erro.getField(), erro.getDefaultMessage()))
@@ -162,7 +149,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Object> tratarIntegridade(
             DataIntegrityViolationException e, HttpServletRequest request) {
-
         log.warn("Violacao de integridade nao traduzida: {}", e.getMostSpecificCause().getMessage());
         var detalhe = "A operacao conflita com dados ja registrados.";
 
@@ -250,7 +236,6 @@ public class GlobalExceptionHandler {
             String titulo,
             String detalhe,
             HttpServletRequest request) {
-
         var problema = ProblemDetail.forStatusAndDetail(status, detalhe);
         problema.setType(URI.create(BASE_TIPO + tipo));
         problema.setTitle(titulo);

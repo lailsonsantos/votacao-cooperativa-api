@@ -8,7 +8,6 @@ package br.com.cooperativa.votacao.api.ui.dto;
  * emiti-los &mdash; sem alterar dominio nem API REST.
  */
 public enum TipoItem {
-
     /** Texto somente leitura. */
     TEXTO,
 

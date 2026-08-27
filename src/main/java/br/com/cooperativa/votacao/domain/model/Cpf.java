@@ -1,31 +1,61 @@
 package br.com.cooperativa.votacao.domain.model;
 
 import br.com.cooperativa.votacao.domain.exception.CpfInvalidoException;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 
 /**
  * Objeto de valor que representa um CPF valido.
  *
  * <p>Encapsular o CPF em um tipo proprio, em vez de trafegar {@code String},
- * garante que qualquer CPF que circule pelo dominio ja passou pela validacao dos
- * digitos verificadores. Isso evita a chamada remota ao servico externo para um
- * numero que jamais poderia existir, economizando rede e devolvendo o erro mais
- * cedo.
+ * garante que qualquer CPF que circule pelo dominio ja passou pela validacao.
+ * Isso evita a chamada remota ao servico externo para um numero que jamais
+ * poderia existir, devolvendo o erro mais cedo e sem gastar rede.
+ *
+ * <p>A validacao delega ao {@link org.hibernate.validator.constraints.br.CPF} do
+ * Hibernate Validator, que ja acompanha o {@code spring-boot-starter-validation}.
+ * Reimplementar o calculo dos digitos verificadores a mao seria reescrever, com
+ * menos testes, algo que a biblioteca padrao da plataforma ja resolve.
+ *
+ * <p>A camada de telas nao pode usar Bean Validation por anotacao, porque recebe
+ * um mapa aberto de campos ({@code AcaoTelaRequest}); e por isso que a validacao
+ * tambem existe aqui, e nao apenas nos DTOs de entrada da API REST.
  *
  * @param numero os onze digitos do CPF, sem pontuacao
  */
 public record Cpf(String numero) {
-
     /** Quantidade de digitos de um CPF. */
     private static final int TAMANHO = 11;
 
     /**
-     * Valida o numero na construcao.
+     * Validador compartilhado.
+     *
+     * <p>Construir a fabrica e caro e o objeto e thread-safe, entao uma unica
+     * instancia estatica atende toda a aplicacao. Criar uma por chamada tornaria
+     * o registro de voto sensivelmente mais lento sob a carga da Tarefa Bonus 2.
+     */
+    private static final Validator VALIDADOR =
+            Validation.buildDefaultValidatorFactory().getValidator();
+
+    /**
+     * Portador da restricao, usado apenas para submeter o valor ao validador.
+     *
+     * <p>Bean Validation valida propriedades de um objeto, nao valores soltos.
+     * Este record existe para dar ao numero um lugar onde a anotacao possa ser
+     * declarada.
+     *
+     * @param valor CPF candidato, somente digitos
+     */
+    private record Candidato(@org.hibernate.validator.constraints.br.CPF String valor) {}
+
+    /**
+     * Normaliza e valida o numero na construcao.
      *
      * @throws CpfInvalidoException se o valor nao for um CPF valido
      */
     public Cpf {
         numero = somenteDigitos(numero);
-        if (!valido(numero)) {
+        if (!VALIDADOR.validate(new Candidato(numero)).isEmpty()) {
             throw new CpfInvalidoException(numero);
         }
     }
@@ -71,46 +101,15 @@ public record Cpf(String numero) {
     /**
      * Remove qualquer caractere que nao seja digito.
      *
+     * <p>A normalizacao acontece antes da validacao para que o associado possa
+     * digitar o CPF com ou sem pontuacao, e para que o valor persistido tenha
+     * sempre a mesma forma — do contrario, a constraint de unicidade do voto
+     * deixaria o mesmo associado votar duas vezes usando formatos diferentes.
+     *
      * @param valor texto de entrada
      * @return apenas os digitos, ou string vazia se a entrada for nula
      */
     private static String somenteDigitos(String valor) {
         return valor == null ? "" : valor.replaceAll("\\D", "");
-    }
-
-    /**
-     * Verifica os digitos verificadores segundo o algoritmo da Receita Federal.
-     *
-     * @param cpf CPF com exatamente onze digitos
-     * @return {@code true} se o CPF for estruturalmente valido
-     */
-    private static boolean valido(String cpf) {
-        if (cpf.length() != TAMANHO) {
-            return false;
-        }
-        // Sequencias de digitos repetidos passam no calculo dos verificadores,
-        // mas nao sao CPFs validos; precisam de checagem propria.
-        if (cpf.chars().distinct().count() == 1) {
-            return false;
-        }
-        return digitoVerificador(cpf, 9) == cpf.charAt(9) - '0'
-                && digitoVerificador(cpf, 10) == cpf.charAt(10) - '0';
-    }
-
-    /**
-     * Calcula um digito verificador do CPF.
-     *
-     * @param cpf       CPF completo
-     * @param posicao   posicao do digito a calcular (9 para o primeiro, 10 para o segundo)
-     * @return o digito verificador esperado
-     */
-    private static int digitoVerificador(String cpf, int posicao) {
-        int soma = 0;
-        int peso = posicao + 1;
-        for (int i = 0; i < posicao; i++) {
-            soma += (cpf.charAt(i) - '0') * peso--;
-        }
-        int resto = soma % TAMANHO;
-        return resto < 2 ? 0 : TAMANHO - resto;
     }
 }

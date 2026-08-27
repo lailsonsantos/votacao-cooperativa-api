@@ -11,6 +11,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,9 +26,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "sessao_votacao")
 @Getter
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SessaoVotacao {
-
     /** Identificador da sessao, gerado pela aplicacao. */
     @Id
     @Column(name = "id", nullable = false, updatable = false)

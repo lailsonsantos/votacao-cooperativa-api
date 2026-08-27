@@ -173,6 +173,32 @@ class TelaContratoIT extends IntegracaoTest {
     }
 
     @Test
+    @DisplayName("recusa CPF invalido na tela, onde Bean Validation nao alcanca")
+    void cpfInvalidoNaTela() throws Exception {
+        var pautaId = criarPautaPelaTela("Pauta com cpf invalido na tela");
+
+        mockMvc.perform(
+                        post("/api/v1/telas/pautas/{id}/sessao", pautaId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"duracaoMinutos\":10}"))
+                .andExpect(status().isOk());
+
+        // A camada de telas recebe um mapa aberto de campos, entao nao ha DTO
+        // onde declarar @CPF. A guarda e o objeto de valor Cpf, e o erro vira
+        // uma tela legivel em vez de um status cru.
+        mockMvc.perform(
+                        post("/api/v1/telas/pautas/{id}/votos/identificacao", pautaId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"cpf\":\"11111111111\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.tipo").value("FORMULARIO"))
+                .andExpect(jsonPath("$.titulo").value("CPF invalido"))
+                .andExpect(
+                        jsonPath("$.itens[0].texto")
+                                .value(Matchers.containsString("111******11")));
+    }
+
+    @Test
     @DisplayName("impede oferecer voto a quem ja votou")
     void impedeVotoRepetidoNaTela() throws Exception {
         var pautaId = criarPautaPelaTela("Pauta com voto repetido");

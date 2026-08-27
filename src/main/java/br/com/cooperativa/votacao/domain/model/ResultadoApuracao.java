@@ -9,7 +9,6 @@ package br.com.cooperativa.votacao.domain.model;
  * de quem consome a API.
  */
 public enum ResultadoApuracao {
-
     /** Mais votos "Sim" do que "Nao". */
     APROVADA,
 

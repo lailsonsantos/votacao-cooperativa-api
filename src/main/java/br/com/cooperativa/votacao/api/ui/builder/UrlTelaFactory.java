@@ -2,6 +2,7 @@ package br.com.cooperativa.votacao.api.ui.builder;
 
 import br.com.cooperativa.votacao.config.AppProperties;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,21 +18,12 @@ import org.springframework.stereotype.Component;
  * escape com {@code localhost} embutido no codigo.
  */
 @Component
+@RequiredArgsConstructor
 public class UrlTelaFactory {
-
     /** Prefixo comum de todas as rotas de tela. */
     private static final String RAIZ = "/api/v1/telas";
 
     private final AppProperties appProperties;
-
-    /**
-     * Cria a fabrica.
-     *
-     * @param appProperties configuracao que contem a URL base publica
-     */
-    public UrlTelaFactory(AppProperties appProperties) {
-        this.appProperties = appProperties;
-    }
 
     /**
      * URL do menu inicial.

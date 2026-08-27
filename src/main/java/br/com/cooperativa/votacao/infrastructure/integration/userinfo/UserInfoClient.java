@@ -5,8 +5,8 @@ import br.com.cooperativa.votacao.domain.model.Cpf;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
@@ -32,26 +32,14 @@ import org.springframework.web.client.RestClientException;
  * </ul>
  */
 @Component
+@RequiredArgsConstructor
+@Slf4j
 public class UserInfoClient {
-
     /** Nome da instancia de resiliencia declarada em {@code application.yml}. */
     private static final String INSTANCIA = "userInfo";
 
-    private static final Logger log = LoggerFactory.getLogger(UserInfoClient.class);
-
     private final RestClient restClient;
     private final UserInfoProperties properties;
-
-    /**
-     * Cria o cliente.
-     *
-     * @param userInfoRestClient cliente HTTP ja configurado com URL base e timeouts
-     * @param properties         configuracao do servico externo
-     */
-    public UserInfoClient(RestClient userInfoRestClient, UserInfoProperties properties) {
-        this.restClient = userInfoRestClient;
-        this.properties = properties;
-    }
 
     /**
      * Consulta a situacao de um CPF no servico externo.

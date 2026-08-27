@@ -8,7 +8,6 @@ package br.com.cooperativa.votacao.domain.model;
  * outro valor antes que ele chegue ao banco.
  */
 public enum OpcaoVoto {
-
     /** Voto favoravel a pauta. */
     SIM,
 

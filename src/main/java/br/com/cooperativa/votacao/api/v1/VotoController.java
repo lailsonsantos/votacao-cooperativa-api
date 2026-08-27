@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,21 +26,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @ApiV1
 @Tag(name = "Votos", description = "Registro de votos e apuracao do resultado")
+@RequiredArgsConstructor
 public class VotoController {
-
     private final VotoService votoService;
     private final ResultadoService resultadoService;
-
-    /**
-     * Cria o controlador.
-     *
-     * @param votoService      caso de uso de registro de voto
-     * @param resultadoService caso de uso de apuracao
-     */
-    public VotoController(VotoService votoService, ResultadoService resultadoService) {
-        this.votoService = votoService;
-        this.resultadoService = resultadoService;
-    }
 
     /**
      * Registra o voto de um associado.
@@ -67,7 +57,6 @@ public class VotoController {
     })
     public VotoResponse votar(
             @PathVariable UUID id, @Valid @RequestBody RegistrarVotoRequest request) {
-
         // Cpf.de valida os digitos verificadores antes de qualquer acesso a banco
         // ou chamada remota; um numero impossivel nao merece uma ida a rede.
         var voto = votoService.registrar(id, Cpf.de(request.associadoId()), request.opcao());

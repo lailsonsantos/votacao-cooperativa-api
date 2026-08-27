@@ -102,7 +102,7 @@ Testcontainers).
 ./mvnw verify
 ```
 
-Executa 71 testes e o gate de cobertura. Relatório em
+Executa 72 testes e o gate de cobertura. Relatório em
 `target/site/jacoco/index.html`.
 
 > **Docker Engine 29+** elevou a versão mínima da API aceita. O projeto já fixa
@@ -256,6 +256,8 @@ Um `409` cru deixaria o cliente sem nada para renderizar. Erros de negócio em
 | Apuração | `COUNT ... GROUP BY` | [ADR 0004](docs/adr/0004-apuracao-agregada.md). Nunca carrega votos em memória. |
 | Tempo | `Instant`/UTC + `Clock` injetado | [ADR 0005](docs/adr/0005-clock-injetado.md). Testar "sessão expirou" sem `Thread.sleep`. |
 | Duas superfícies HTTP | REST + telas sobre o mesmo núcleo | [ADR 0006](docs/adr/0006-duas-superficies-http.md). |
+| Validação de CPF | `@CPF` do Hibernate Validator | Já vem no `spring-boot-starter-validation`. Escrever o cálculo dos dígitos à mão seria reimplementar, com menos testes, o que a biblioteca padrão resolve. |
+| Boilerplate | Lombok (`@RequiredArgsConstructor`, `@Slf4j`, `@Getter`) | Construtores de injeção e declarações de logger não carregam decisão nenhuma. `lombok.addLombokGeneratedAnnotation` mantém o código gerado fora do gate de cobertura. |
 
 ---
 
@@ -313,7 +315,7 @@ Análise completa das alternativas e da política de depreciação:
 
 ## Qualidade
 
-**71 testes**, gate de cobertura em 80% de linhas (falha o build abaixo disso).
+**72 testes**, gate de cobertura em 80% de linhas (falha o build abaixo disso).
 
 | Nível | Ferramenta | Alvo |
 |---|---|---|

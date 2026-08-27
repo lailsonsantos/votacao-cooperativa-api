@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
  * imediatamente.
  */
 public class CpfInvalidoException extends NegocioException {
-
     /**
      * Cria a excecao.
      *

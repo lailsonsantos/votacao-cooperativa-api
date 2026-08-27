@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.Clock;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -44,8 +45,8 @@ import org.springframework.web.bind.annotation.RestController;
         description =
                 "Descricoes de tela no formato do Anexo 1. Cada POST executa a acao e devolve"
                         + " a proxima tela.")
+@RequiredArgsConstructor
 public class TelaController {
-
     private final PautaService pautaService;
     private final SessaoVotacaoService sessaoService;
     private final VotoService votoService;
@@ -53,34 +54,6 @@ public class TelaController {
     private final TelaFactory telas;
     private final AppProperties appProperties;
     private final Clock clock;
-
-    /**
-     * Cria o controlador de telas.
-     *
-     * @param pautaService     caso de uso de pautas
-     * @param sessaoService    caso de uso de sessoes
-     * @param votoService      caso de uso de votos
-     * @param resultadoService caso de uso de apuracao
-     * @param telas            fabrica que traduz o dominio em telas
-     * @param appProperties    configuracao de negocio
-     * @param clock            relogio injetado
-     */
-    public TelaController(
-            PautaService pautaService,
-            SessaoVotacaoService sessaoService,
-            VotoService votoService,
-            ResultadoService resultadoService,
-            TelaFactory telas,
-            AppProperties appProperties,
-            Clock clock) {
-        this.pautaService = pautaService;
-        this.sessaoService = sessaoService;
-        this.votoService = votoService;
-        this.resultadoService = resultadoService;
-        this.telas = telas;
-        this.appProperties = appProperties;
-        this.clock = clock;
-    }
 
     /**
      * Menu inicial.

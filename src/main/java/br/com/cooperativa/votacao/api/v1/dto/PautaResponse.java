@@ -15,7 +15,6 @@ import java.util.UUID;
  */
 @Schema(description = "Pauta cadastrada")
 public record PautaResponse(UUID id, String titulo, String descricao, Instant criadaEm) {
-
     /**
      * Converte a entidade de dominio para a representacao da API.
      *

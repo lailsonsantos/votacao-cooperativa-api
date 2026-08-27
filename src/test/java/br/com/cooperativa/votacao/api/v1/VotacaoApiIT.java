@@ -156,9 +156,19 @@ class VotacaoApiIT extends IntegracaoTest {
         var pautaId = criarPauta("Pauta com cpf invalido");
         abrirSessao(pautaId, 5);
 
+        // 11111111111 tem onze digitos e ainda assim nao e um CPF valido. A
+        // restricao @CPF do Hibernate Validator recusa na borda, antes de o
+        // controlador rodar, e a resposta nomeia o campo — mais util para o
+        // cliente do que uma mensagem generica.
         votar(pautaId, "11111111111", "SIM")
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.title").value("CPF invalido"));
+                .andExpect(jsonPath("$.title").value("Requisicao invalida"))
+                .andExpect(
+                        jsonPath("$.detail")
+                                .value(org.hamcrest.Matchers.containsString("associadoId")))
+                .andExpect(
+                        jsonPath("$.detail")
+                                .value(org.hamcrest.Matchers.containsString("nao e valido")));
     }
 
     @Test

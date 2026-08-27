@@ -24,7 +24,6 @@ public record SessaoResponse(
         Instant fechamentoEm,
         StatusSessao status,
         long segundosRestantes) {
-
     /**
      * Converte a entidade para a representacao da API.
      *

@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -26,8 +27,8 @@ import org.springframework.stereotype.Component;
  * entregar.
  */
 @Component
+@RequiredArgsConstructor
 public class TelaFactory {
-
     /** Chave do campo de duracao no formulario de abertura de sessao. */
     public static final String CAMPO_DURACAO = "duracaoMinutos";
 
@@ -41,15 +42,6 @@ public class TelaFactory {
     public static final String CAMPO_DESCRICAO = "descricao";
 
     private final UrlTelaFactory urls;
-
-    /**
-     * Cria a fabrica de telas.
-     *
-     * @param urls fabrica das URLs absolutas de callback
-     */
-    public TelaFactory(UrlTelaFactory urls) {
-        this.urls = urls;
-    }
 
     /**
      * Menu inicial da aplicacao.

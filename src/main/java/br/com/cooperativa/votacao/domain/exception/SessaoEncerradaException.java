@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
  * ser processada porque a janela de votacao ja expirou.
  */
 public class SessaoEncerradaException extends NegocioException {
-
     /**
      * Cria a excecao.
      *

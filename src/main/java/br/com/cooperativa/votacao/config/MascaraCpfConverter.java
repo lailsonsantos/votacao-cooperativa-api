@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
  * acesso e de qualquer politica de retencao.
  */
 public class MascaraCpfConverter extends MessageConverter {
-
     /**
      * Sequencias de 11 digitos, com ou sem a pontuacao usual de CPF.
      *

@@ -8,8 +8,8 @@ import br.com.cooperativa.votacao.domain.model.Voto;
 import br.com.cooperativa.votacao.domain.repository.VotoRepository;
 import java.time.Clock;
 import java.util.UUID;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,33 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
  * Caso de uso de registro de voto.
  */
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class VotoService {
-
-    private static final Logger log = LoggerFactory.getLogger(VotoService.class);
-
     private final VotoRepository votoRepository;
     private final SessaoVotacaoService sessaoService;
     private final AssociadoValidator associadoValidator;
     private final Clock clock;
-
-    /**
-     * Cria o servico.
-     *
-     * @param votoRepository     acesso aos votos
-     * @param sessaoService      consulta de sessoes
-     * @param associadoValidator verificacao do direito de voto
-     * @param clock              relogio injetado
-     */
-    public VotoService(
-            VotoRepository votoRepository,
-            SessaoVotacaoService sessaoService,
-            AssociadoValidator associadoValidator,
-            Clock clock) {
-        this.votoRepository = votoRepository;
-        this.sessaoService = sessaoService;
-        this.associadoValidator = associadoValidator;
-        this.clock = clock;
-    }
 
     /**
      * Registra o voto de um associado em uma pauta.

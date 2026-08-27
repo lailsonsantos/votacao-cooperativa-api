@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
  * erroneamente que a pauta foi removida.
  */
 public class SessaoNaoAbertaException extends NegocioException {
-
     /**
      * Cria a excecao.
      *

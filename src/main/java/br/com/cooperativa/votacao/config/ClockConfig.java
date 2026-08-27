@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class ClockConfig {
-
     /**
      * Relogio de sistema em UTC.
      *

@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -29,18 +30,9 @@ import org.springframework.web.bind.annotation.RequestBody;
  */
 @ApiV1
 @Tag(name = "Pautas", description = "Cadastro e consulta das pautas da assembleia")
+@RequiredArgsConstructor
 public class PautaController {
-
     private final PautaService pautaService;
-
-    /**
-     * Cria o controlador.
-     *
-     * @param pautaService caso de uso de pautas
-     */
-    public PautaController(PautaService pautaService) {
-        this.pautaService = pautaService;
-    }
 
     /**
      * Cadastra uma nova pauta.

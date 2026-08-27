@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class CacheConfig {
-
     /** Nome do cache que guarda o resultado de sessoes encerradas. */
     public static final String CACHE_RESULTADO = "resultadoVotacao";
 

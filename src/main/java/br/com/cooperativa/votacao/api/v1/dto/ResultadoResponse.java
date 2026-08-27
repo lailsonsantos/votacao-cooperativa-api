@@ -28,7 +28,6 @@ public record ResultadoResponse(
         long votosSim,
         long votosNao,
         ResultadoApuracao resultado) {
-
     /**
      * Converte o resultado de dominio para a representacao da API.
      *

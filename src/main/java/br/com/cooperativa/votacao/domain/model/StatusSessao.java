@@ -7,7 +7,6 @@ package br.com.cooperativa.votacao.domain.model;
  * e o fechamento da sessao. Ver {@link SessaoVotacao#status(java.time.Instant)}.
  */
 public enum StatusSessao {
-
     /** A sessao ainda aceita votos. */
     ABERTA,
 

@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
  * Acesso as sessoes de votacao.
  */
 public interface SessaoVotacaoRepository extends JpaRepository<SessaoVotacao, UUID> {
-
     /**
      * Busca a sessao de uma pauta.
      *

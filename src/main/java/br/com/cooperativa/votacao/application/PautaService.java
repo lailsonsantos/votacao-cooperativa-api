@@ -5,8 +5,8 @@ import br.com.cooperativa.votacao.domain.model.Pauta;
 import br.com.cooperativa.votacao.domain.repository.PautaRepository;
 import java.time.Clock;
 import java.util.UUID;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,23 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
  * Casos de uso de cadastro e consulta de pautas.
  */
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class PautaService {
-
-    private static final Logger log = LoggerFactory.getLogger(PautaService.class);
-
     private final PautaRepository pautaRepository;
     private final Clock clock;
-
-    /**
-     * Cria o servico.
-     *
-     * @param pautaRepository acesso as pautas
-     * @param clock           relogio injetado, para testes deterministicos
-     */
-    public PautaService(PautaRepository pautaRepository, Clock clock) {
-        this.pautaRepository = pautaRepository;
-        this.clock = clock;
-    }
 
     /**
      * Cadastra uma nova pauta.

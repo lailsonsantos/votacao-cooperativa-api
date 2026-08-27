@@ -8,7 +8,6 @@ package br.com.cooperativa.votacao.infrastructure.integration.userinfo;
  * aceito em uma consulta e recusado na seguinte.
  */
 public enum StatusAssociado {
-
     /** O associado pode votar. */
     ABLE_TO_VOTE,
 

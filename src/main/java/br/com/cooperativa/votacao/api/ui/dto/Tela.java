@@ -28,7 +28,6 @@ import java.util.List;
 @Schema(description = "Descricao de tela no formato do Anexo 1")
 public record Tela(
         TipoTela tipo, String titulo, List<?> itens, Botao botaoOk, Botao botaoCancelar) {
-
     /**
      * Cria uma tela do tipo FORMULARIO.
      *

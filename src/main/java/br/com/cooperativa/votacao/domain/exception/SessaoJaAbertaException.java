@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
  * entre as duvidas levantadas.
  */
 public class SessaoJaAbertaException extends NegocioException {
-
     /**
      * Cria a excecao.
      *

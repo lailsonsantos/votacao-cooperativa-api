@@ -19,7 +19,6 @@ import java.util.UUID;
 @Schema(description = "Confirmacao do voto registrado")
 public record VotoResponse(
         UUID id, UUID pautaId, String associadoId, OpcaoVoto opcao, Instant criadoEm) {
-
     /**
      * Converte a entidade para a representacao da API.
      *

@@ -42,7 +42,6 @@ import org.springframework.util.StringUtils;
  * capacidade de apontar para outro banco sem mexer na variavel da plataforma.
  */
 public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProcessor {
-
     /** Nome da fonte de propriedades acrescentada ao ambiente. */
     static final String FONTE = "databaseUrlConvertida";
 
@@ -61,7 +60,6 @@ public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProce
     @Override
     public void postProcessEnvironment(
             ConfigurableEnvironment environment, SpringApplication application) {
-
         var databaseUrl = environment.getProperty(DATABASE_URL);
         if (!StringUtils.hasText(databaseUrl)) {
             return;

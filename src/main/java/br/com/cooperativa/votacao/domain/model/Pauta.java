@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,13 +19,19 @@ import lombok.NoArgsConstructor;
  * {@code docs/adr/0001-entidade-jpa-como-modelo-de-dominio.md}: aceita-se o
  * acoplamento a JPA em troca de eliminar uma camada inteira de mapeamento que,
  * para tres agregados, seria cerimonia sem contrapartida.
+ *
+ * <p>A identidade e baseada apenas no identificador: dois objetos que
+ * representam a mesma linha do banco sao a mesma entidade, ainda que um deles
+ * tenha sido carregado antes de uma alteracao. Nao ha {@code @ToString} de
+ * proposito &mdash; em {@code Voto} o metodo gerado incluiria o CPF, e qualquer
+ * log que imprimisse a entidade vazaria dado pessoal.
  */
 @Entity
 @Table(name = "pauta")
 @Getter
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Pauta {
-
     /** Identificador da pauta, gerado pela aplicacao. */
     @Id
     @Column(name = "id", nullable = false, updatable = false)

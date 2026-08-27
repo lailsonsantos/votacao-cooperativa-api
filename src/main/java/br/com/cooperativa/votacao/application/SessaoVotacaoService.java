@@ -9,8 +9,8 @@ import java.time.Clock;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.UUID;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,33 +19,13 @@ import org.springframework.transaction.annotation.Transactional;
  * Casos de uso de abertura e consulta de sessoes de votacao.
  */
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class SessaoVotacaoService {
-
-    private static final Logger log = LoggerFactory.getLogger(SessaoVotacaoService.class);
-
     private final SessaoVotacaoRepository sessaoRepository;
     private final PautaService pautaService;
     private final AppProperties appProperties;
     private final Clock clock;
-
-    /**
-     * Cria o servico.
-     *
-     * @param sessaoRepository acesso as sessoes
-     * @param pautaService     consulta de pautas
-     * @param appProperties    configuracao de negocio, inclusive a duracao padrao
-     * @param clock            relogio injetado
-     */
-    public SessaoVotacaoService(
-            SessaoVotacaoRepository sessaoRepository,
-            PautaService pautaService,
-            AppProperties appProperties,
-            Clock clock) {
-        this.sessaoRepository = sessaoRepository;
-        this.pautaService = pautaService;
-        this.appProperties = appProperties;
-        this.clock = clock;
-    }
 
     /**
      * Abre a sessao de votacao de uma pauta.

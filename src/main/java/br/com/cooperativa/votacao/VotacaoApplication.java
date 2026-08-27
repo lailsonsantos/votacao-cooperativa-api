@@ -27,7 +27,6 @@ import org.springframework.cache.annotation.EnableCaching;
 @EnableCaching
 @ConfigurationPropertiesScan
 public class VotacaoApplication {
-
     /**
      * Sobe o contexto Spring.
      *

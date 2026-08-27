@@ -15,7 +15,6 @@ import java.util.Map;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ItemSelecao(String texto, String url, Map<String, Object> body) {
-
     /**
      * Cria uma opcao com corpo.
      *

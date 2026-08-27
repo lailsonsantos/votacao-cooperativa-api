@@ -17,7 +17,6 @@ import java.util.Map;
  * concentram a conversao em um unico lugar, com mensagens de erro claras.
  */
 public class AcaoTelaRequest {
-
     /** Campos recebidos do cliente, na forma bruta. */
     private final Map<String, Object> campos = new HashMap<>();
 

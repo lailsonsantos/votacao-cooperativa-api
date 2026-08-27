@@ -11,7 +11,6 @@ import br.com.cooperativa.votacao.domain.model.OpcaoVoto;
  * memoria esgotaria a heap; a contagem agregada e resolvida pelo indice.
  */
 public interface ContagemVotos {
-
     /**
      * Opcao votada.
      *

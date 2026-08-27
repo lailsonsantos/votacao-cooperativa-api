@@ -19,7 +19,6 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @ConfigurationProperties(prefix = "app")
 public record AppProperties(Callback callback, Sessao sessao) {
-
     /**
      * Configuracao do host usado para montar as URLs absolutas das telas.
      *
@@ -27,7 +26,6 @@ public record AppProperties(Callback callback, Sessao sessao) {
      *                (ex.: {@code https://votacao-cooperativa-api.onrender.com})
      */
     public record Callback(@NotBlank String baseUrl) {
-
         /**
          * Devolve a URL base normalizada, sem barra final.
          *

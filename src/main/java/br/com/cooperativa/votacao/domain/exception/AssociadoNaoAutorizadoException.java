@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
  * ({@code UNABLE_TO_VOTE}).
  */
 public class AssociadoNaoAutorizadoException extends NegocioException {
-
     /**
      * Cria a excecao.
      *

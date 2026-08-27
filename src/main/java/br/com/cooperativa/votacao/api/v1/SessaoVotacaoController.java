@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.time.Clock;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,21 +24,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @ApiV1
 @Tag(name = "Sessoes", description = "Abertura e consulta das sessoes de votacao")
+@RequiredArgsConstructor
 public class SessaoVotacaoController {
-
     private final SessaoVotacaoService sessaoService;
     private final Clock clock;
-
-    /**
-     * Cria o controlador.
-     *
-     * @param sessaoService caso de uso de sessoes
-     * @param clock         relogio injetado, usado para derivar status e tempo restante
-     */
-    public SessaoVotacaoController(SessaoVotacaoService sessaoService, Clock clock) {
-        this.sessaoService = sessaoService;
-        this.clock = clock;
-    }
 
     /**
      * Abre a sessao de votacao de uma pauta.
@@ -66,7 +56,6 @@ public class SessaoVotacaoController {
     public SessaoResponse abrir(
             @PathVariable UUID id,
             @Valid @RequestBody(required = false) AbrirSessaoRequest request) {
-
         var duracao = request != null ? request.duracaoMinutos() : null;
         return SessaoResponse.de(sessaoService.abrir(id, duracao), clock.instant());
     }

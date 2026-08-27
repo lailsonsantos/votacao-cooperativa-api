@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
  * Acesso aos votos registrados.
  */
 public interface VotoRepository extends JpaRepository<Voto, UUID> {
-
     /**
      * Conta os votos de uma sessao agrupados por opcao.
      *

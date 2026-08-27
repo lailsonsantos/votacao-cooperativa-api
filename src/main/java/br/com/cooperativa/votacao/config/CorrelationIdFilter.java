@@ -28,7 +28,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorrelationIdFilter extends OncePerRequestFilter {
-
     /** Cabecalho HTTP que transporta o identificador de correlacao. */
     public static final String HEADER = "X-Correlation-Id";
 
@@ -48,7 +47,6 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
         var correlationId = request.getHeader(HEADER);
         if (!StringUtils.hasText(correlationId)) {
             correlationId = UUID.randomUUID().toString();

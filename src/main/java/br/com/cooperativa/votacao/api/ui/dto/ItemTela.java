@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ItemTela(TipoItem tipo, String texto, String id, String titulo, Object valor) {
-
     /**
      * Cria um item de texto somente leitura.
      *

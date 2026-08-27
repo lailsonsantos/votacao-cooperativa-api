@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
  * Lancada quando a pauta referenciada na requisicao nao existe.
  */
 public class RecursoNaoEncontradoException extends NegocioException {
-
     /**
      * Cria a excecao para uma pauta inexistente.
      *

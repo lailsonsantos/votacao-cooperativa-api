@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
  * {@code WARN}, nunca em {@code ERROR}.
  */
 public abstract class NegocioException extends RuntimeException {
-
     /** Status HTTP correspondente a esta falha. */
     private final HttpStatus status;
 

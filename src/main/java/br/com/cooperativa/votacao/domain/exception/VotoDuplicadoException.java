@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
  * mesmo associado.
  */
 public class VotoDuplicadoException extends NegocioException {
-
     /**
      * Cria a excecao.
      *
