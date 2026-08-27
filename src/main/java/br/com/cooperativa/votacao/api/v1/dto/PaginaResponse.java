@@ -3,15 +3,15 @@ package br.com.cooperativa.votacao.api.v1.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.function.Function;
-import org.springframework.data.domain.Page;
+import br.com.cooperativa.votacao.domain.model.Pagina;
 
 /**
  * Envelope de paginacao da API.
  *
- * <p>Existe para nao expor {@code org.springframework.data.domain.Page} na
- * resposta: a serializacao daquele tipo nao tem contrato estavel entre versoes
- * do Spring Data, e amarrar o contrato publico da API a um detalhe interno do
- * framework criaria uma quebra silenciosa em um upgrade de dependencia.
+ * <p>Existe para dar um contrato explicito e estavel a paginacao na resposta.
+ * A serializacao de tipos internos de biblioteca nao tem garantia entre versoes,
+ * e amarrar o contrato publico da API a um detalhe de framework criaria uma
+ * quebra silenciosa em um upgrade de dependencia.
  *
  * @param <T>            tipo do conteudo da pagina
  * @param conteudo       itens da pagina atual
@@ -34,17 +34,18 @@ public record PaginaResponse<T>(
      *
      * @param <E>      tipo da entidade de origem
      * @param <T>      tipo do DTO de destino
-     * @param page     pagina de origem
+     * @param pagina   pagina de dominio
      * @param mapeador conversor de entidade para DTO
      * @return o envelope de paginacao correspondente
      */
-    public static <E, T> PaginaResponse<T> de(Page<E> page, Function<E, T> mapeador) {
+    public static <E, T> PaginaResponse<T> de(Pagina<E> pagina, Function<E, T> mapeador) {
+        var convertida = pagina.mapear(mapeador);
         return new PaginaResponse<>(
-                page.getContent().stream().map(mapeador).toList(),
-                page.getNumber(),
-                page.getSize(),
-                page.getTotalElements(),
-                page.getTotalPages(),
-                page.isLast());
+                convertida.conteudo(),
+                convertida.pagina(),
+                convertida.tamanho(),
+                convertida.totalElementos(),
+                convertida.totalPaginas(),
+                convertida.ultima());
     }
 }

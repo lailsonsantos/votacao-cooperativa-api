@@ -1,6 +1,5 @@
 package br.com.cooperativa.votacao.domain.exception;
 
-import org.springframework.http.HttpStatus;
 
 /**
  * Lancada quando o servico externo nega o direito de voto do associado.
@@ -16,7 +15,7 @@ public class AssociadoNaoAutorizadoException extends NegocioException {
      * @param mensagem explicacao destinada ao associado
      */
     public AssociadoNaoAutorizadoException(String mensagem) {
-        super(HttpStatus.UNPROCESSABLE_ENTITY, "associado-nao-autorizado", mensagem);
+        super(TipoErro.REGRA_VIOLADA, "associado-nao-autorizado", mensagem);
     }
 
     /** {@inheritDoc} */

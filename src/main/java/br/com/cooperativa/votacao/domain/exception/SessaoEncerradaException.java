@@ -1,7 +1,6 @@
 package br.com.cooperativa.votacao.domain.exception;
 
 import java.util.UUID;
-import org.springframework.http.HttpStatus;
 
 /**
  * Lancada ao tentar votar depois do prazo da sessao.
@@ -17,7 +16,7 @@ public class SessaoEncerradaException extends NegocioException {
      */
     public SessaoEncerradaException(UUID pautaId) {
         super(
-                HttpStatus.UNPROCESSABLE_ENTITY,
+                TipoErro.REGRA_VIOLADA,
                 "sessao-encerrada",
                 "A sessao de votacao da pauta %s ja foi encerrada.".formatted(pautaId));
     }

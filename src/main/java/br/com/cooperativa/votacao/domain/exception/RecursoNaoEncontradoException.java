@@ -1,7 +1,6 @@
 package br.com.cooperativa.votacao.domain.exception;
 
 import java.util.UUID;
-import org.springframework.http.HttpStatus;
 
 /**
  * Lancada quando a pauta referenciada na requisicao nao existe.
@@ -15,7 +14,7 @@ public class RecursoNaoEncontradoException extends NegocioException {
      */
     public RecursoNaoEncontradoException(String recurso, UUID id) {
         super(
-                HttpStatus.NOT_FOUND,
+                TipoErro.NAO_ENCONTRADO,
                 "recurso-nao-encontrado",
                 "%s nao encontrada para o identificador %s.".formatted(recurso, id));
     }

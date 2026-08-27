@@ -2,7 +2,6 @@ package br.com.cooperativa.votacao.domain.exception;
 
 import br.com.cooperativa.votacao.domain.model.Cpf;
 import java.util.UUID;
-import org.springframework.http.HttpStatus;
 
 /**
  * Lancada quando um associado tenta votar mais de uma vez na mesma pauta.
@@ -22,7 +21,7 @@ public class VotoDuplicadoException extends NegocioException {
      */
     public VotoDuplicadoException(UUID pautaId, String associadoId, Throwable causa) {
         super(
-                HttpStatus.CONFLICT,
+                TipoErro.CONFLITO,
                 "voto-duplicado",
                 "O associado %s ja registrou voto na pauta %s."
                         .formatted(Cpf.mascarar(associadoId), pautaId),

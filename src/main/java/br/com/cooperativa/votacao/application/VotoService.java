@@ -67,7 +67,7 @@ public class VotoService {
 
         try {
             var voto =
-                    votoRepository.saveAndFlush(
+                    votoRepository.salvarEConfirmar(
                             Voto.registrar(sessao, cpf.numero(), opcao, agora));
 
             log.info(
@@ -107,7 +107,7 @@ public class VotoService {
                 .buscar(pautaId)
                 .map(
                         sessao ->
-                                votoRepository.existsBySessaoIdAndAssociadoId(
+                                votoRepository.existeVotoDoAssociado(
                                         sessao.getId(), cpf.numero()))
                 .orElse(false);
     }

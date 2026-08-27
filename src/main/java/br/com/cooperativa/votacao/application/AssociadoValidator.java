@@ -3,7 +3,7 @@ package br.com.cooperativa.votacao.application;
 import br.com.cooperativa.votacao.config.UserInfoProperties;
 import br.com.cooperativa.votacao.domain.exception.AssociadoNaoAutorizadoException;
 import br.com.cooperativa.votacao.domain.model.Cpf;
-import br.com.cooperativa.votacao.infrastructure.integration.userinfo.UserInfoClient;
+import br.com.cooperativa.votacao.application.port.ConsultaAptidaoParaVotar;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 public class AssociadoValidator {
-    private final UserInfoClient userInfoClient;
+    private final ConsultaAptidaoParaVotar consultaAptidao;
     private final UserInfoProperties properties;
 
     /**
@@ -41,7 +41,7 @@ public class AssociadoValidator {
         }
 
         var resposta =
-                userInfoClient
+                consultaAptidao
                         .consultar(cpf)
                         .orElseThrow(
                                 () ->

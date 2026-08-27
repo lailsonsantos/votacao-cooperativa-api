@@ -48,7 +48,7 @@ public class SessaoVotacaoService {
         // Checagem antecipada apenas para devolver a mensagem de negocio correta.
         // A garantia real e a constraint uk_sessao_pauta, tratada no catch abaixo,
         // que resolve a corrida entre duas aberturas simultaneas.
-        if (sessaoRepository.existsByPautaId(pautaId)) {
+        if (sessaoRepository.existePorPauta(pautaId)) {
             throw new SessaoJaAbertaException(pautaId);
         }
 
@@ -61,7 +61,7 @@ public class SessaoVotacaoService {
                 SessaoVotacao.abrir(pauta, clock.instant(), Duration.ofMinutes(minutos));
 
         try {
-            var salva = sessaoRepository.saveAndFlush(sessao);
+            var salva = sessaoRepository.salvarEConfirmar(sessao);
             log.info(
                     "Sessao de votacao aberta. pautaId={} sessaoId={} duracaoMinutos={} "
                             + "fechamentoEm={}",
@@ -98,6 +98,6 @@ public class SessaoVotacaoService {
      */
     @Transactional(readOnly = true)
     public Optional<SessaoVotacao> buscar(UUID pautaId) {
-        return sessaoRepository.findByPautaId(pautaId);
+        return sessaoRepository.buscarPorPauta(pautaId);
     }
 }

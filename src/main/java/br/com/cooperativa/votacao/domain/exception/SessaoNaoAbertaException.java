@@ -1,7 +1,6 @@
 package br.com.cooperativa.votacao.domain.exception;
 
 import java.util.UUID;
-import org.springframework.http.HttpStatus;
 
 /**
  * Lancada ao votar ou apurar uma pauta que nunca teve sessao aberta.
@@ -18,7 +17,7 @@ public class SessaoNaoAbertaException extends NegocioException {
      */
     public SessaoNaoAbertaException(UUID pautaId) {
         super(
-                HttpStatus.CONFLICT,
+                TipoErro.CONFLITO,
                 "sessao-nao-aberta",
                 "A pauta %s ainda nao teve sessao de votacao aberta.".formatted(pautaId));
     }

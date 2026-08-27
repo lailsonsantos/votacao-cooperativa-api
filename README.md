@@ -102,7 +102,7 @@ Testcontainers).
 ./mvnw verify
 ```
 
-Executa 72 testes e o gate de cobertura. Relatório em
+Executa 75 testes e o gate de cobertura. Relatório em
 `target/site/jacoco/index.html`.
 
 > **Docker Engine 29+** elevou a versão mínima da API aceita. O projeto já fixa
@@ -249,7 +249,7 @@ Um `409` cru deixaria o cliente sem nada para renderizar. Erros de negócio em
 
 | Decisão | Escolha | Justificativa |
 |---|---|---|
-| Arquitetura | Camadas (`api → application → domain`) | Hexagonal completo com *ports/adapters* seria over engineering para 3 agregados. Verificada por ArchUnit. |
+| Arquitetura | Camadas com inversão de dependência | [ADR 0007](docs/adr/0007-inversao-de-dependencia-sem-modelo-espelho.md). O domínio declara portas; a infraestrutura as implementa. `domain` não depende de nenhuma linha de Spring — verificado por ArchUnit. |
 | Entidade JPA = domínio | Sim, sem modelo espelho | [ADR 0001](docs/adr/0001-entidade-jpa-como-modelo-de-dominio.md). O domínio tem comportamento (`estaAberta()`), não é anêmico. |
 | Status da sessão | Derivado do relógio | [ADR 0002](docs/adr/0002-status-de-sessao-derivado.md). Sem job de fechamento, sem estado a reconciliar. |
 | Unicidade do voto | Constraint no banco | [ADR 0003](docs/adr/0003-unicidade-por-constraint.md). `SELECT` + `INSERT` tem race condition — e o Bônus 2 é sobre concorrência. |
@@ -315,7 +315,7 @@ Análise completa das alternativas e da política de depreciação:
 
 ## Qualidade
 
-**72 testes**, gate de cobertura em 80% de linhas (falha o build abaixo disso).
+**75 testes**, gate de cobertura em 80% de linhas (falha o build abaixo disso).
 
 | Nível | Ferramenta | Alvo |
 |---|---|---|
@@ -324,7 +324,7 @@ Análise completa das alternativas e da política de depreciação:
 | Contrato de tela | MockMvc + `jsonPath` | Cada campo conferido contra o Anexo 1 |
 | Integração externa | WireMock | Os 4 cenários do serviço de CPF |
 | Concorrência | `ExecutorService` + `CountDownLatch` | 200 threads → 1 voto |
-| Arquitetura | ArchUnit | Direção das dependências entre camadas |
+| Arquitetura | ArchUnit | 7 regras: direção das dependências, domínio livre de framework, ausência de ciclos |
 
 ### Logs
 
@@ -418,17 +418,20 @@ src/main/java/br/com/cooperativa/votacao
 ├── config/           Beans transversais (Clock, CORS, correlationId, resiliência)
 ├── domain/           Modelo, repositórios e exceções — sem dependência de web
 │   ├── model/
-│   ├── repository/
+│   ├── repository/   Portas de persistência, com apenas os métodos usados
 │   └── exception/
 ├── application/      Casos de uso e @Transactional
-├── infrastructure/   Integração com o serviço externo de CPF
+│   └── port/         Portas de saída (o que a aplicação precisa do mundo externo)
+├── infrastructure/   Adaptadores: persistência JPA e serviço externo de CPF
 └── api/
     ├── v1/           Superfície REST
     ├── ui/           Superfície Server-Driven UI (Anexo 1)
     └── error/        Tratador global
 ```
 
-Regra de dependência `api → application → domain`, verificada por ArchUnit.
+Regra de dependência `api → application → domain`, verificada por ArchUnit. A
+infraestrutura não é chamada por ninguém: ela **implementa** portas declaradas
+pelas camadas internas, e o Spring faz a ligação em tempo de execução.
 
 ---
 

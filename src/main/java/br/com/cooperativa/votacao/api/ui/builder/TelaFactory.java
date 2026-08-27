@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import br.com.cooperativa.votacao.domain.model.Pagina;
 import org.springframework.stereotype.Component;
 
 /**
@@ -78,8 +78,8 @@ public class TelaFactory {
      * @param pautas pagina de pautas a exibir
      * @return tela SELECAO com uma opcao por pauta
      */
-    public Tela listaPautas(Page<Pauta> pautas) {
-        if (pautas.isEmpty()) {
+    public Tela listaPautas(Pagina<Pauta> pautas) {
+        if (pautas.vazia()) {
             // Uma SELECAO vazia deixaria o usuario numa tela sem saida. Um
             // FORMULARIO com texto e botao de volta comunica o estado e oferece
             // um caminho adiante.
@@ -91,7 +91,7 @@ public class TelaFactory {
         }
 
         var itens =
-                pautas.getContent().stream()
+                pautas.conteudo().stream()
                         .map(p -> ItemSelecao.navegacao(p.getTitulo(), urls.pauta(p.getId())))
                         .toList();
 

@@ -71,8 +71,11 @@ public class GlobalExceptionHandler {
             return ResponseEntity.ok(telaDeErro(e.getTitulo(), e.getMessage()));
         }
 
-        return ResponseEntity.status(e.getStatus())
-                .body(problema(e.getStatus(), e.getTipo(), e.getTitulo(), e.getMessage(), request));
+        // A traducao de natureza de falha para status HTTP vive em um unico
+        // lugar; aqui apenas se aplica o resultado.
+        var status = MapeadorDeStatus.de(e.getTipo());
+        return ResponseEntity.status(status)
+                .body(problema(status, e.getCodigo(), e.getTitulo(), e.getMessage(), request));
     }
 
     /**
@@ -224,7 +227,7 @@ public class GlobalExceptionHandler {
      * Monta o corpo de erro no padrao RFC 7807.
      *
      * @param status   status HTTP
-     * @param tipo     identificador estavel do erro
+     * @param codigo   identificador estavel do erro
      * @param titulo   titulo curto
      * @param detalhe  explicacao ao consumidor
      * @param request  requisicao que originou a falha
@@ -232,12 +235,12 @@ public class GlobalExceptionHandler {
      */
     private ProblemDetail problema(
             HttpStatus status,
-            String tipo,
+            String codigo,
             String titulo,
             String detalhe,
             HttpServletRequest request) {
         var problema = ProblemDetail.forStatusAndDetail(status, detalhe);
-        problema.setType(URI.create(BASE_TIPO + tipo));
+        problema.setType(URI.create(BASE_TIPO + codigo));
         problema.setTitle(titulo);
         problema.setInstance(URI.create(request.getRequestURI()));
         problema.setProperty("timestamp", clock.instant());

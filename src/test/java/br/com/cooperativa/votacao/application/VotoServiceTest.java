@@ -74,7 +74,7 @@ class VotoServiceTest {
     @DisplayName("registra o voto quando a sessao esta aberta")
     void registraVotoComSessaoAberta() {
         when(sessaoService.buscarObrigatoria(pautaId)).thenReturn(sessao);
-        when(votoRepository.saveAndFlush(any(Voto.class)))
+        when(votoRepository.salvarEConfirmar(any(Voto.class)))
                 .thenAnswer(chamada -> chamada.getArgument(0));
 
         var voto = servicoEm(ABERTURA.plusSeconds(60)).registrar(pautaId, CPF, OpcaoVoto.SIM);
@@ -97,7 +97,7 @@ class VotoServiceTest {
         // A verificacao externa de CPF nao deve ser acionada para uma sessao
         // encerrada: seria uma ida a rede garantidamente inutil.
         verify(associadoValidator, never()).validarPodeVotar(any());
-        verify(votoRepository, never()).saveAndFlush(any());
+        verify(votoRepository, never()).salvarEConfirmar(any());
     }
 
     @Test
@@ -115,7 +115,7 @@ class VotoServiceTest {
     @DisplayName("traduz violacao de constraint em voto duplicado")
     void traduzViolacaoDeConstraint() {
         when(sessaoService.buscarObrigatoria(pautaId)).thenReturn(sessao);
-        when(votoRepository.saveAndFlush(any(Voto.class)))
+        when(votoRepository.salvarEConfirmar(any(Voto.class)))
                 .thenThrow(new DataIntegrityViolationException("uk_voto_sessao_associado"));
 
         var servico = servicoEm(ABERTURA.plusSeconds(60));

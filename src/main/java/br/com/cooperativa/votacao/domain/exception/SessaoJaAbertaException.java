@@ -1,7 +1,6 @@
 package br.com.cooperativa.votacao.domain.exception;
 
 import java.util.UUID;
-import org.springframework.http.HttpStatus;
 
 /**
  * Lancada ao tentar abrir uma segunda sessao para a mesma pauta.
@@ -19,7 +18,7 @@ public class SessaoJaAbertaException extends NegocioException {
      */
     public SessaoJaAbertaException(UUID pautaId) {
         super(
-                HttpStatus.CONFLICT,
+                TipoErro.CONFLITO,
                 "sessao-ja-aberta",
                 "A pauta %s ja possui uma sessao de votacao.".formatted(pautaId));
     }

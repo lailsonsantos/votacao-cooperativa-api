@@ -1,74 +1,61 @@
 package br.com.cooperativa.votacao.domain.exception;
 
-import org.springframework.http.HttpStatus;
+import lombok.Getter;
 
 /**
  * Raiz das falhas previstas pelas regras de negocio.
  *
- * <p>Cada subclasse carrega o proprio {@link HttpStatus} e um {@code tipo}
- * estavel. O tratador global apenas traduz esses dados para a resposta, sem
- * conhecer nenhuma regra &mdash; assim uma regra nova nao exige alteracao no
- * tratador, e a decisao de qual status devolver fica junto da regra que a
- * motiva.
+ * <p>Cada subclasse declara a <em>natureza</em> da falha ({@link TipoErro}) e um
+ * codigo estavel, ambos em vocabulario de dominio. Nenhuma delas conhece HTTP:
+ * a traducao para status acontece na camada de API, que e onde HTTP significa
+ * alguma coisa.
+ *
+ * <p>O tratador global apenas transporta esses dados, sem conhecer regra alguma.
+ * Assim, uma regra nova nao exige alteracao no tratador, e a decisao sobre a
+ * natureza do erro fica junto da regra que a motiva.
  *
  * <p>Falhas de negocio nao sao erros de sistema: um voto duplicado significa que
  * a aplicacao funcionou corretamente ao recusa-lo. Por isso sao registradas em
  * {@code WARN}, nunca em {@code ERROR}.
  */
+@Getter
 public abstract class NegocioException extends RuntimeException {
-    /** Status HTTP correspondente a esta falha. */
-    private final HttpStatus status;
 
-    /** Identificador estavel do tipo de erro, usado no campo {@code type} do ProblemDetail. */
-    private final String tipo;
+    /** Natureza da falha, em vocabulario de dominio. */
+    private final TipoErro tipo;
+
+    /** Codigo estavel do erro, publicado na documentacao da API. */
+    private final String codigo;
 
     /**
      * Cria a excecao de negocio.
      *
-     * @param status   status HTTP a devolver
-     * @param tipo     identificador estavel do erro, em kebab-case
-     * @param mensagem mensagem destinada ao consumidor da API
+     * @param tipo     natureza da falha
+     * @param codigo   identificador estavel do erro, em kebab-case
+     * @param mensagem mensagem destinada a quem consome a aplicacao
      */
-    protected NegocioException(HttpStatus status, String tipo, String mensagem) {
+    protected NegocioException(TipoErro tipo, String codigo, String mensagem) {
         super(mensagem);
-        this.status = status;
         this.tipo = tipo;
+        this.codigo = codigo;
     }
 
     /**
      * Cria a excecao de negocio preservando a causa original.
      *
-     * @param status   status HTTP a devolver
-     * @param tipo     identificador estavel do erro, em kebab-case
-     * @param mensagem mensagem destinada ao consumidor da API
+     * @param tipo     natureza da falha
+     * @param codigo   identificador estavel do erro, em kebab-case
+     * @param mensagem mensagem destinada a quem consome a aplicacao
      * @param causa    excecao de origem
      */
-    protected NegocioException(HttpStatus status, String tipo, String mensagem, Throwable causa) {
+    protected NegocioException(TipoErro tipo, String codigo, String mensagem, Throwable causa) {
         super(mensagem, causa);
-        this.status = status;
         this.tipo = tipo;
+        this.codigo = codigo;
     }
 
     /**
-     * Status HTTP a devolver ao cliente.
-     *
-     * @return o status associado a esta falha
-     */
-    public HttpStatus getStatus() {
-        return status;
-    }
-
-    /**
-     * Identificador estavel do tipo de erro.
-     *
-     * @return o tipo em kebab-case, ex.: {@code voto-duplicado}
-     */
-    public String getTipo() {
-        return tipo;
-    }
-
-    /**
-     * Titulo curto do erro, apresentado no campo {@code title} do ProblemDetail.
+     * Titulo curto do erro, apresentado a quem o recebe.
      *
      * @return o titulo legivel do erro
      */

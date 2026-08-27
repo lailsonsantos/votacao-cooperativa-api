@@ -12,13 +12,11 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
@@ -61,9 +59,9 @@ public class PautaController {
     @GetMapping("/pautas")
     @Operation(summary = "Lista as pautas cadastradas, de forma paginada")
     public PaginaResponse<PautaResponse> listar(
-            @PageableDefault(size = 20, sort = "criadaEm", direction = Sort.Direction.DESC)
-                    Pageable pageable) {
-        return PaginaResponse.de(pautaService.listar(pageable), PautaResponse::de);
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        return PaginaResponse.de(pautaService.listar(page, size), PautaResponse::de);
     }
 
     /**

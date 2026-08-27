@@ -9,9 +9,8 @@ import static org.mockito.Mockito.when;
 import br.com.cooperativa.votacao.config.UserInfoProperties;
 import br.com.cooperativa.votacao.domain.exception.AssociadoNaoAutorizadoException;
 import br.com.cooperativa.votacao.domain.model.Cpf;
-import br.com.cooperativa.votacao.infrastructure.integration.userinfo.StatusAssociado;
-import br.com.cooperativa.votacao.infrastructure.integration.userinfo.UserInfoClient;
-import br.com.cooperativa.votacao.infrastructure.integration.userinfo.UserInfoResponse;
+import br.com.cooperativa.votacao.application.port.ConsultaAptidaoParaVotar;
+import br.com.cooperativa.votacao.application.port.ConsultaAptidaoParaVotar.AptidaoParaVotar;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +27,7 @@ class AssociadoValidatorTest {
 
     private static final Cpf CPF = Cpf.de("19839091069");
 
-    @Mock private UserInfoClient client;
+    @Mock private ConsultaAptidaoParaVotar client;
 
     /**
      * Monta o validador com a integracao ligada ou desligada.
@@ -46,7 +45,7 @@ class AssociadoValidatorTest {
     @DisplayName("libera o voto quando o servico responde ABLE_TO_VOTE")
     void liberaQuandoHabilitado() {
         when(client.consultar(CPF))
-                .thenReturn(Optional.of(new UserInfoResponse(StatusAssociado.ABLE_TO_VOTE)));
+                .thenReturn(Optional.of(new AptidaoParaVotar(true)));
 
         assertThatCode(() -> validador(true).validarPodeVotar(CPF)).doesNotThrowAnyException();
     }
@@ -55,7 +54,7 @@ class AssociadoValidatorTest {
     @DisplayName("bloqueia o voto quando o servico responde UNABLE_TO_VOTE")
     void bloqueiaQuandoImpedido() {
         when(client.consultar(CPF))
-                .thenReturn(Optional.of(new UserInfoResponse(StatusAssociado.UNABLE_TO_VOTE)));
+                .thenReturn(Optional.of(new AptidaoParaVotar(false)));
 
         assertThatThrownBy(() -> validador(true).validarPodeVotar(CPF))
                 .isInstanceOf(AssociadoNaoAutorizadoException.class)

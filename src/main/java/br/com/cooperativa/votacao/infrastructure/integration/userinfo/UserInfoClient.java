@@ -1,5 +1,6 @@
 package br.com.cooperativa.votacao.infrastructure.integration.userinfo;
 
+import br.com.cooperativa.votacao.application.port.ConsultaAptidaoParaVotar;
 import br.com.cooperativa.votacao.config.UserInfoProperties;
 import br.com.cooperativa.votacao.domain.model.Cpf;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -34,7 +35,7 @@ import org.springframework.web.client.RestClientException;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class UserInfoClient {
+public class UserInfoClient implements ConsultaAptidaoParaVotar {
     /** Nome da instancia de resiliencia declarada em {@code application.yml}. */
     private static final String INSTANCIA = "userInfo";
 
@@ -53,9 +54,10 @@ public class UserInfoClient {
      * @return a resposta do servico, ou vazio se o CPF for desconhecido
      * @throws RestClientException se o servico estiver indisponivel apos as tentativas
      */
+    @Override
     @Retry(name = INSTANCIA)
     @CircuitBreaker(name = INSTANCIA, fallbackMethod = "consultarFallback")
-    public Optional<UserInfoResponse> consultar(Cpf cpf) {
+    public Optional<AptidaoParaVotar> consultar(Cpf cpf) {
         log.debug("Consultando servico externo para o CPF {}", cpf.mascarado());
 
         var resposta =
@@ -71,7 +73,9 @@ public class UserInfoClient {
                                 })
                         .body(UserInfoResponse.class);
 
-        return Optional.ofNullable(resposta);
+        // O enum do fornecedor nao atravessa a fronteira: a porta expressa apenas
+        // a decisao que o dominio precisa tomar.
+        return Optional.ofNullable(resposta).map(r -> new AptidaoParaVotar(r.podeVotar()));
     }
 
     /**
@@ -88,7 +92,7 @@ public class UserInfoClient {
      * @return uma resposta sintetica coerente com a configuracao vigente
      */
     @SuppressWarnings("unused")
-    private Optional<UserInfoResponse> consultarFallback(Cpf cpf, Throwable erro) {
+    private Optional<AptidaoParaVotar> consultarFallback(Cpf cpf, Throwable erro) {
         log.warn(
                 "Servico de verificacao de CPF indisponivel para {}. Aplicando fallback "
                         + "(permite voto = {}). Causa: {}",
@@ -96,11 +100,6 @@ public class UserInfoClient {
                 properties.fallbackPermiteVoto(),
                 erro.toString());
 
-        var status =
-                properties.fallbackPermiteVoto()
-                        ? StatusAssociado.ABLE_TO_VOTE
-                        : StatusAssociado.UNABLE_TO_VOTE;
-
-        return Optional.of(new UserInfoResponse(status));
+        return Optional.of(new AptidaoParaVotar(properties.fallbackPermiteVoto()));
     }
 }

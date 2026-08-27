@@ -61,8 +61,8 @@ class SessaoVotacaoServiceTest {
     @DisplayName("aplica a duracao padrao de 1 minuto quando nenhuma e informada")
     void aplicaDuracaoPadrao() {
         when(pautaService.buscar(pauta.getId())).thenReturn(pauta);
-        when(sessaoRepository.existsByPautaId(pauta.getId())).thenReturn(false);
-        when(sessaoRepository.saveAndFlush(any(SessaoVotacao.class)))
+        when(sessaoRepository.existePorPauta(pauta.getId())).thenReturn(false);
+        when(sessaoRepository.salvarEConfirmar(any(SessaoVotacao.class)))
                 .thenAnswer(chamada -> chamada.getArgument(0));
 
         var sessao = servico.abrir(pauta.getId(), null);
@@ -74,8 +74,8 @@ class SessaoVotacaoServiceTest {
     @DisplayName("aplica a duracao informada na chamada")
     void aplicaDuracaoInformada() {
         when(pautaService.buscar(pauta.getId())).thenReturn(pauta);
-        when(sessaoRepository.existsByPautaId(pauta.getId())).thenReturn(false);
-        when(sessaoRepository.saveAndFlush(any(SessaoVotacao.class)))
+        when(sessaoRepository.existePorPauta(pauta.getId())).thenReturn(false);
+        when(sessaoRepository.salvarEConfirmar(any(SessaoVotacao.class)))
                 .thenAnswer(chamada -> chamada.getArgument(0));
 
         var sessao = servico.abrir(pauta.getId(), 15);
@@ -87,7 +87,7 @@ class SessaoVotacaoServiceTest {
     @DisplayName("recusa abrir uma segunda sessao para a mesma pauta")
     void recusaSegundaSessao() {
         when(pautaService.buscar(pauta.getId())).thenReturn(pauta);
-        when(sessaoRepository.existsByPautaId(pauta.getId())).thenReturn(true);
+        when(sessaoRepository.existePorPauta(pauta.getId())).thenReturn(true);
 
         assertThatThrownBy(() -> servico.abrir(pauta.getId(), 5))
                 .isInstanceOf(SessaoJaAbertaException.class);
@@ -97,7 +97,7 @@ class SessaoVotacaoServiceTest {
     @DisplayName("exige sessao existente na consulta obrigatoria")
     void exigeSessaoExistente() {
         var pautaId = UUID.randomUUID();
-        when(sessaoRepository.findByPautaId(pautaId)).thenReturn(Optional.empty());
+        when(sessaoRepository.buscarPorPauta(pautaId)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> servico.buscarObrigatoria(pautaId))
                 .isInstanceOf(SessaoNaoAbertaException.class);

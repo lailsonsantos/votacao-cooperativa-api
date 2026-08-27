@@ -1,14 +1,13 @@
 package br.com.cooperativa.votacao.application;
 
 import br.com.cooperativa.votacao.domain.exception.RecursoNaoEncontradoException;
+import br.com.cooperativa.votacao.domain.model.Pagina;
 import br.com.cooperativa.votacao.domain.model.Pauta;
 import br.com.cooperativa.votacao.domain.repository.PautaRepository;
 import java.time.Clock;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +30,7 @@ public class PautaService {
      */
     @Transactional
     public Pauta criar(String titulo, String descricao) {
-        var pauta = pautaRepository.save(Pauta.criar(titulo, descricao, clock.instant()));
+        var pauta = pautaRepository.salvar(Pauta.criar(titulo, descricao, clock.instant()));
         log.info("Pauta criada. id={} titulo='{}'", pauta.getId(), pauta.getTitulo());
         return pauta;
     }
@@ -42,12 +41,17 @@ public class PautaService {
      * <p>A paginacao e obrigatoria por contrato: sem ela, uma cooperativa com
      * milhares de pautas produziria uma resposta ilimitada.
      *
-     * @param pageable pagina e ordenacao solicitadas
+     * @param pagina  indice da pagina, iniciando em zero
+     * @param tamanho quantidade de itens por pagina
      * @return a pagina de pautas
      */
     @Transactional(readOnly = true)
-    public Page<Pauta> listar(Pageable pageable) {
-        return pautaRepository.findAll(pageable);
+    public Pagina<Pauta> listar(int pagina, int tamanho) {
+        return new Pagina<>(
+                pautaRepository.listarMaisRecentes(pagina, tamanho),
+                pagina,
+                tamanho,
+                pautaRepository.contar());
     }
 
     /**
@@ -60,7 +64,7 @@ public class PautaService {
     @Transactional(readOnly = true)
     public Pauta buscar(UUID id) {
         return pautaRepository
-                .findById(id)
+                .buscarPorId(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Pauta", id));
     }
 }

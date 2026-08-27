@@ -1,7 +1,6 @@
 package br.com.cooperativa.votacao.domain.exception;
 
 import br.com.cooperativa.votacao.domain.model.Cpf;
-import org.springframework.http.HttpStatus;
 
 /**
  * Lancada quando o CPF informado nao passa na validacao dos digitos verificadores.
@@ -18,7 +17,7 @@ public class CpfInvalidoException extends NegocioException {
      */
     public CpfInvalidoException(String valor) {
         super(
-                HttpStatus.BAD_REQUEST,
+                TipoErro.ENTRADA_INVALIDA,
                 "cpf-invalido",
                 "O CPF informado (%s) nao e valido.".formatted(Cpf.mascarar(valor)));
     }
