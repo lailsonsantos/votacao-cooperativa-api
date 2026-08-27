@@ -1,3 +1,10 @@
+-- ---------------------------------------------------------------------------
+-- Estrutura inicial: pauta, sessao de votacao e voto.
+--
+-- O schema e versionado pelo Flyway em vez de gerado por ddl-auto, para que a
+-- evolucao seja explicita, revisavel e reproduzivel em qualquer ambiente.
+-- ---------------------------------------------------------------------------
+
 CREATE TABLE pauta (
     id         UUID          NOT NULL,
     titulo     VARCHAR(200)  NOT NULL,
@@ -27,10 +34,15 @@ CREATE TABLE voto (
     CONSTRAINT pk_voto        PRIMARY KEY (id),
     CONSTRAINT fk_voto_sessao FOREIGN KEY (sessao_id) REFERENCES sessao_votacao (id),
     CONSTRAINT ck_voto_opcao  CHECK (opcao IN ('SIM', 'NAO')),
-    -- Garantia de "um voto por associado por pauta". E esta constraint resolve corretamente a corrida entre
+    -- Garantia de "um voto por associado por pauta". E esta constraint, e nao
+    -- uma consulta previa na aplicacao, que resolve corretamente a corrida entre
     -- duas requisicoes simultaneas do mesmo associado.
     CONSTRAINT uk_voto_sessao_associado UNIQUE (sessao_id, associado_id)
 );
 
+-- Serve a consulta de apuracao (COUNT ... GROUP BY opcao) como index-only scan,
+-- mantendo o custo constante mesmo com centenas de milhares de votos.
 CREATE INDEX ix_voto_sessao_opcao ON voto (sessao_id, opcao);
+
+-- Acelera a listagem de pautas ordenada por data de cadastro.
 CREATE INDEX ix_pauta_criada_em ON pauta (criada_em DESC);

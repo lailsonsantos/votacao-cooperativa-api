@@ -587,6 +587,23 @@ navegador envia o header `Origin` sem barra, e um valor com `/` no fim nunca
 casaria. E `APP_CALLBACK_BASE_URL` importa porque as URLs das telas do Anexo 1
 são **absolutas** — com o valor errado o cliente falaria com o host errado.
 
+### Migrations são imutáveis depois de aplicadas
+
+O Flyway guarda um checksum de cada arquivo já executado e confere na
+inicialização. Editar um `V*.sql` que **já rodou em algum ambiente** — mesmo que
+seja só um comentário — muda o checksum e derruba a aplicação na subida:
+
+```
+FlywayValidateException: Migration checksum mismatch for migration version 1
+```
+
+Nesse caso a aplicação não sobe, e o deploy falha inteiro. O conserto é
+restaurar o arquivo como estava, ou rodar `flyway repair` contra o banco. A regra
+prática: mudança de schema é sempre um `V2__*.sql` novo, nunca uma edição no
+anterior. Por isso `V1__criar_tabelas.sql` está congelado, comentários
+inclusive — é o único arquivo do repositório que não acompanha as revisões de
+texto.
+
 ### Qualquer outra plataforma
 
 A aplicação não depende do Render. Aceita a conexão do banco de duas formas:
