@@ -10,7 +10,7 @@
 
 | Repositório | Conteúdo | Testes |
 |---|---|---|
-| [`votacao-cooperativa-api`](https://github.com/lailsonsantos/votacao-cooperativa-api) | Spring Boot 3.3, Java 21, PostgreSQL, Flyway, Docker | 59 |
+| [`votacao-cooperativa-api`](https://github.com/lailsonsantos/votacao-cooperativa-api) | Spring Boot 3.3, Java 21, PostgreSQL, Flyway, Docker | 71 |
 | [`votacao-cooperativa-web`](https://github.com/lailsonsantos/votacao-cooperativa-web) | React 18, Vite, TypeScript estrito | 14 |
 
 ---
@@ -46,20 +46,45 @@ moldura de celular, com os mesmos payloads que um app nativo receberia.
 | O fallback do Resilience4j só existe através do proxy do Spring; o teste instanciava o cliente com `new` e passaria mesmo sem a anotação | Cenário movido para um teste que sobe o contexto (`UserInfoFallbackIT`), exercitando a fiação real |
 | O botão "Atualizar" da tela de resultado aponta para um endpoint de leitura, mas o cliente enviava `POST` em todo `botaoOk` | A presença de `body` passou a distinguir ação de navegação, no `FORMULARIO` como já era no `SELECAO` (§6) |
 
-### 0.4 Deploy
+### 0.4 Deploy: de Heroku para portabilidade
 
-Heroku deixou de ter plano gratuito em novembro de 2022; subir a stack custa
-cerca de **US$ 12/mês** (dyno Basic + Postgres Essential-0). A configuração está
-pronta em ambos os repositórios — `Procfile`, `system.properties`, `app.json` e
-consumo das variáveis `JDBC_DATABASE_*` que o buildpack Java exporta — e o deploy
-fica a cargo de quem decide pelo custo.
+O plano previa Heroku. A conta ficou inacessível — dormente havia tempo demais
+para recuperar —, e a plataforma foi trocada pelo **Render**, cujo cadastro é
+feito pela conta do GitHub.
 
-Como alternativa sem custo, cada repositório traz um `render.yaml`: basta conectar
-o repositório no Render e aplicar o *blueprint*.
+Em vez de simplesmente substituir um conjunto de arquivos específicos por outro,
+a troca virou oportunidade de eliminar o acoplamento. Render, Railway, Fly.io,
+Neon e Supabase injetam a conexão do banco como uma URI:
+
+```
+postgresql://usuario:senha@host:5432/banco?sslmode=require
+```
+
+O Spring exige a URL em formato JDBC com as credenciais separadas. Um
+`EnvironmentPostProcessor` faz a ponte antes da criação do `DataSource`,
+preservando a query string — sem a qual o `sslmode=require` de bancos gerenciados
+se perderia e a conexão seria recusada por um erro que não aponta para a causa.
+A mesma imagem passa a subir em qualquer uma dessas plataformas sem alteração.
+
+| Componente | Plano | Custo |
+|---|---|---|
+| API (serviço Docker) | `starter` | US$ 7/mês, cobrado por segundo |
+| PostgreSQL | `free` | US$ 0 — expira em 30 dias |
+| Frontend (site estático) | `free` | US$ 0, sem hibernação |
+
+O plano `free` de serviço também funciona, mas hiberna após 15 min de
+inatividade e leva ~1 min para voltar — tempo suficiente para um avaliador
+concluir que a aplicação está fora do ar.
+
+**Validação antes de gastar:** o caminho de produção foi exercitado localmente
+antes de qualquer cobrança — imagem Docker limitada a 512 MB (o mesmo do plano
+`starter`), PostgreSQL real, `DATABASE_URL` com caracteres especiais na senha,
+Flyway aplicando as migrations, CORS e URLs de tela apontando para os domínios
+públicos. Consumo em regime: **283 MB dos 512**.
 
 ### 0.5 Verificação executada
 
-- `./mvnw verify` — **59 testes verdes**, incluindo 200 threads simultâneas
+- `./mvnw verify` — **71 testes verdes**, incluindo 200 threads simultâneas
   votando com o mesmo CPF contra PostgreSQL real, com exatamente 1 voto
   persistido.
 - Fluxo REST completo exercitado por HTTP: cadastro, sessão com default de 1
