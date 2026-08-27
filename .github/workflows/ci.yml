@@ -28,6 +28,16 @@ jobs:
           distribution: temurin
           cache: maven
 
+      # O wrapper usa distributionType=only-script, entao baixa o Maven a cada
+      # execucao. Sem cache, uma indisponibilidade momentanea do repositorio
+      # derruba o build por motivo que nada tem a ver com o codigo — foi o que
+      # aconteceu e motivou este passo.
+      - name: Cache da distribuicao do Maven
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/wrapper
+          key: maven-wrapper-${{ hashFiles('.mvn/wrapper/maven-wrapper.properties') }}
+
       - name: Build, testes e gate de cobertura
         # O runner do GitHub ja tem Docker, entao o Testcontainers sobe o
         # PostgreSQL real sem nenhum servico declarado no workflow.
