@@ -21,6 +21,14 @@
     <java.version>21</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+    <!-- Sobrescreve a versao gerenciada pelo Spring Boot (1.18.34).
+         O Lombok manipula estruturas internas do compilador, entao cada versao
+         so conhece os JDKs lancados ate ela. Uma IDE que compile com um JDK mais
+         novo do que a versao suportada falha com
+         "java.lang.ExceptionInInitializerError: com.sun.tools.javac.code.TypeTag :: UNKNOWN",
+         mesmo com o build passando no terminal — porque ali o JDK e outro.
+         Fixar a versao mais recente elimina essa dependencia de qual JDK a IDE usa. -->
+    <lombok.version>1.18.46</lombok.version>
     <springdoc.version>2.6.0</springdoc.version>
     <resilience4j.version>2.2.0</resilience4j.version>
     <archunit.version>1.3.0</archunit.version>

@@ -86,6 +86,43 @@ O suporte é nativo no IntelliJ IDEA Ultimate. No Community, use a extensão
 
 ## Problemas comuns
 
+### `ExceptionInInitializerError: com.sun.tools.javac.code.TypeTag :: UNKNOWN`
+
+Erro do Lombok, não do projeto. Ele manipula estruturas internas do compilador,
+então cada versão só conhece os JDKs lançados até ela. Quando a IDE compila com
+um JDK mais novo do que a versão do Lombok suporta, a inicialização do
+processador falha exatamente com essa mensagem.
+
+O sintoma característico é o build passar no terminal e falhar na IDE — porque
+são JDKs diferentes.
+
+**O projeto já fixa a versão mais recente do Lombok**, o que elimina a
+dependência de qual JDK a IDE usa. Se o erro aparecer, é porque o IntelliJ ainda
+está com a versão anterior em cache:
+
+1. **Recarregue o projeto Maven:** aba *Maven* (lateral direita) → ícone de
+   recarregar, ou botão direito no `pom.xml` → **Maven → Reload project**.
+2. **Build → Rebuild Project.**
+3. Persistindo: **File → Invalidate Caches → Invalidate and Restart**.
+
+Se ainda assim ocorrer, alinhe o JDK da IDE ao do projeto:
+
+- **File → Project Structure → Project → SDK** deve ser **21**.
+- **Settings → Build, Execution, Deployment → Build Tools → Maven → Runner → JRE**
+  deve ser **Project SDK** (não o *JetBrains Runtime* embutido, que costuma ser
+  outra versão).
+
+### Fazer a IDE usar exatamente o mesmo build do terminal
+
+Se as diferenças entre IDE e terminal incomodarem, delegue a compilação ao Maven:
+
+**Settings → Build, Execution, Deployment → Build Tools → Maven → Runner →
+marque `Delegate IDE build/run actions to Maven`.**
+
+O IntelliJ passa a chamar o Maven em vez do próprio compilador, e o resultado
+fica idêntico ao de `./mvnw verify`. O custo é um build um pouco mais lento.
+
+
 **"Cannot find symbol: log" ou "constructor não existe", mas o Maven compila.**
 Processamento de anotações desabilitado. Volte ao passo 2.
 
