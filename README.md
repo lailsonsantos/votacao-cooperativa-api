@@ -66,6 +66,10 @@ docker compose up --build
 Sobe PostgreSQL e a API juntos. O primeiro build leva alguns minutos (baixa as
 dependências Maven); os seguintes usam cache.
 
+O banco é publicado em **`localhost:5434`**, e não em 5432, para conviver com
+outro PostgreSQL que já esteja rodando na máquina. Se 5434 também estiver
+ocupada, use `DB_PORT=5436 docker compose up`.
+
 | Recurso | URL |
 |---|---|
 | API REST | http://localhost:8080/api/v1 |

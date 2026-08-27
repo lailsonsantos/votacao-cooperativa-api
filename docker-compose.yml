@@ -11,7 +11,12 @@ services:
       POSTGRES_USER: votacao
       POSTGRES_PASSWORD: votacao
     ports:
-      - "5432:5432"
+      # A porta no host e 5434, e nao 5432, para nao disputar com outro
+      # PostgreSQL que ja esteja rodando na maquina — o sintoma dessa disputa e
+      # um erro de autenticacao, nao de conexao, porque a aplicacao encontra um
+      # banco de verdade que simplesmente nao e o dela.
+      # Sobrescreva com DB_PORT se 5434 tambem estiver em uso.
+      - "${DB_PORT:-5434}:5432"
     volumes:
       - dados-postgres:/var/lib/postgresql/data
     healthcheck:

@@ -154,6 +154,35 @@ Rode a configuração **Formatar codigo (Spotless)**. Se preferir formatar ao
 salvar, o plugin *Save Actions* ou o formatador do google-java-format resolvem —
 mas o comando do Maven é a fonte da verdade, porque é ele que o CI executa.
 
+### `FATAL: password authentication failed for user "votacao"`
+
+A aplicação **encontrou** um PostgreSQL e foi recusada — repare que é erro de
+autenticação, não de conexão. Ou seja: há um banco respondendo, mas não é o do
+projeto.
+
+A causa quase sempre é outro PostgreSQL ocupando a porta. Confira o que responde:
+
+```bash
+docker ps --format '{{.Names}} -> {{.Ports}}' | grep 5432
+lsof -nP -iTCP:5432 -sTCP:LISTEN
+```
+
+Por isso o `docker-compose.yml` publica o banco em **5434** no host, e não em
+5432: assim ele convive com qualquer outro Postgres já em execução. Se 5434
+também estiver ocupada, escolha outra:
+
+```bash
+DB_PORT=5436 docker compose up banco
+```
+
+E ajuste a URL na configuração de execução para a mesma porta.
+
+Antes de rodar a configuração **API - PostgreSQL do Docker**, suba o banco:
+
+```bash
+docker compose up -d banco
+```
+
 **A porta 8080 já está em uso.**
 Edite a configuração e acrescente `--server.port=8081` em *Program arguments*, ou
 libere a porta.

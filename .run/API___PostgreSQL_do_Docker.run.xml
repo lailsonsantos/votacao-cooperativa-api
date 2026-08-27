@@ -4,6 +4,9 @@
 
     Exige o banco no ar antes:  docker compose up banco
 
+    O banco publica a porta 5434 no host, e nao 5432, para nao disputar com
+    outro PostgreSQL que ja esteja rodando na maquina.
+
     Use quando quiser exercitar o caminho real de producao: Flyway sobre
     PostgreSQL e log estruturado em JSON.
   -->
@@ -14,7 +17,7 @@
     <option name="SPRING_BOOT_MAIN_CLASS" value="br.com.cooperativa.votacao.VotacaoApplication"/>
     <option name="ACTIVE_PROFILES" value="prod"/>
     <envs>
-      <env name="SPRING_DATASOURCE_URL" value="jdbc:postgresql://localhost:5432/votacao"/>
+      <env name="SPRING_DATASOURCE_URL" value="jdbc:postgresql://localhost:5434/votacao"/>
       <env name="SPRING_DATASOURCE_USERNAME" value="votacao"/>
       <env name="SPRING_DATASOURCE_PASSWORD" value="votacao"/>
       <env name="APP_USER_INFO_ENABLED" value="false"/>
