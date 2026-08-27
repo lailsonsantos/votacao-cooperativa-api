@@ -2,14 +2,19 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 .mvn/timing.properties
 
-# IDEs
+# IDEs — configuracao local nao pertence ao repositorio: cada pessoa usa a sua,
+# e versiona-la gera conflito sem beneficio para quem clona.
 .idea/
+.run/
 *.iml
 *.iws
 .vscode/
 .settings/
 .classpath
 .project
+
+# Documentacao vive apenas no README.md.
+docs/
 
 # Sistema operacional
 .DS_Store

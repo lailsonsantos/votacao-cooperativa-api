@@ -64,8 +64,7 @@ class ArquiteturaTest {
      * {@code HttpStatus} chegou a viver nas excecoes de dominio; a regra existe para que nao volte.
      *
      * <p>As anotacoes de persistencia e de validacao seguem permitidas: sao especificacoes
-     * declarativas, sem modelo de programacao proprio, e a decisao esta registrada em {@code
-     * docs/adr/0001}.
+     * declarativas, sem modelo de programacao proprio, e a decisao esta justificada no README.
      */
     @ArchTest
     static final ArchRule dominioIndependenteDeFramework =

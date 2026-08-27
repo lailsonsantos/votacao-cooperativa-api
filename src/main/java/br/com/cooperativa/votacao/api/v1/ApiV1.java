@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
  * controlador esqueca o prefixo &mdash; uma rota fora de {@code /api/v1} ficaria de fora de toda a
  * politica de depreciacao.
  *
- * <p>Estrategia completa e justificativa em {@code docs/versionamento.md}.
+ * <p>Estrategia completa, alternativas descartadas e politica de depreciacao no README, secao
+ * "Tarefa Bonus 3".
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

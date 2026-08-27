@@ -8,8 +8,6 @@ cadastra uma **pauta** (o assunto em deliberação), abre uma **sessão de vota�
 com prazo determinado, os associados votam **Sim** ou **Não** — cada um uma única
 vez — e ao final o sistema apura e devolve o resultado.
 
-Solução do teste técnico descrito em [`docs/PLANO.md`](docs/PLANO.md).
-
 **Frontend (repositório separado):** https://github.com/lailsonsantos/votacao-cooperativa-web
 
 ---
@@ -22,32 +20,16 @@ Solução do teste técnico descrito em [`docs/PLANO.md`](docs/PLANO.md).
 | **Swagger UI** | https://votacao-cooperativa-api.onrender.com/swagger-ui.html |
 | **API REST** | https://votacao-cooperativa-api.onrender.com/api/v1 |
 | **Telas do Anexo 1** | https://votacao-cooperativa-api.onrender.com/api/v1/telas |
-| **OpenAPI (JSON)** | https://votacao-cooperativa-api.onrender.com/v3/api-docs |
 | **Health** | https://votacao-cooperativa-api.onrender.com/actuator/health |
 
 A aba **Simulador** da aplicação renderiza as telas do Anexo 1 direto do
 servidor — é a forma mais rápida de ver o contrato funcionando.
 
-### Sobre a hospedagem
-
-O serviço roda no Render, no plano `starter`, que **fica sempre no ar**.
-
-Se você reimplantar no plano `free` (basta trocar `plan: starter` por
-`plan: free` no [`render.yaml`](render.yaml)), o comportamento muda:
-
-| | `starter` | `free` |
-|---|---|---|
-| Hiberna | Não | Após **15 min** sem requisições |
-| Tempo para acordar | — | **~50 s** na primeira requisição |
-| Custo | US$ 7/mês, cobrado por segundo | US$ 0 |
-
-No plano `free`, a primeira chamada depois de um período ocioso simplesmente
-demora — não retorna erro. Vale abrir a URL e aguardar antes de concluir que a
-aplicação está fora do ar.
-
-> O banco de dados usa o plano gratuito do Render, que **expira 30 dias após a
-> criação**, com 14 dias de carência antes da exclusão dos dados. Para uso
-> prolongado, troque `plan: free` por `plan: basic-256mb` no `render.yaml`.
+> A API roda no plano `starter` do Render e fica sempre no ar. No plano gratuito
+> ela hiberna após 15 min de inatividade e leva ~50 s para acordar na primeira
+> requisição — nesse caso a demora não é erro, é a aplicação subindo.
+>
+> O banco usa o plano gratuito, que **expira 30 dias após a criação**.
 
 ---
 
@@ -85,30 +67,17 @@ banco).
 **Pré-requisito:** JDK 21. Não precisa de Maven — o projeto traz o wrapper.
 
 ```bash
-git clone https://github.com/lailsonsantos/votacao-cooperativa-api.git
-cd votacao-cooperativa-api
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
 O perfil `local` usa **H2 em memória** e deixa a integração externa desligada, de
 modo que a aplicação sobe sem nenhuma dependência externa. Console do H2 em
-http://localhost:8080/h2-console (JDBC URL `jdbc:h2:mem:votacao`, usuário `sa`,
-sem senha).
+http://localhost:8080/h2-console (JDBC `jdbc:h2:mem:votacao`, usuário `sa`, sem
+senha).
 
 No Windows, use `mvnw.cmd` no lugar de `./mvnw`.
 
-### Opção 3 — pelo IntelliJ IDEA
-
-O repositório versiona as configurações de execução em `.run/`, então elas
-aparecem prontas na lista do IDE — incluindo **API - perfil local (H2)**, que
-sobe a aplicação sem nenhuma dependência externa.
-
-Há um passo que causa confusão e não é opcional: **habilitar o processamento de
-anotações**, sem o que o Lombok não gera nada e a IDE mostra o projeto em
-vermelho mesmo com o Maven compilando. O guia completo, com esse e os demais
-pontos, está em [`docs/intellij.md`](docs/intellij.md).
-
-### Opção 4 — suíte completa de testes
+### Opção 3 — suíte completa de testes
 
 **Pré-requisito:** Docker (os testes de integração sobem um PostgreSQL real via
 Testcontainers).
@@ -117,31 +86,64 @@ Testcontainers).
 ./mvnw verify
 ```
 
-Executa 202 testes, o gate de cobertura, a verificacao de formatacao (Spotless)
-e a analise estatica (SpotBugs). Relatório em
-`target/site/jacoco/index.html`.
-
-> **Docker Engine 29+** elevou a versão mínima da API aceita. O projeto já fixa
-> `api.version=1.44` na configuração do Failsafe, então nenhum ajuste é
-> necessário na sua máquina.
+Executa 202 testes, o gate de cobertura, a verificação de formatação e a análise
+estática.
 
 ### Comandos úteis
 
 ```bash
-./mvnw test                      # apenas os testes unitários (rápido, sem Docker)
+./mvnw test                      # só os unitários (rápido, sem Docker)
+./mvnw spotless:apply            # corrige a formatação
 ./mvnw javadoc:javadoc           # documentação do código em target/site/apidocs
 ./mvnw package -DskipTests       # gera target/votacao.jar
 k6 run perf/k6/votacao.js        # teste de carga (requer k6 instalado)
 ```
 
-Uma coleção de requisições prontas está em [`docs/api.http`](docs/api.http),
-executável direto no IntelliJ IDEA ou no VS Code com a extensão REST Client.
+Uma coleção de requisições prontas está em [`api.http`](api.http), executável
+direto no IntelliJ IDEA ou no VS Code com a extensão REST Client.
 
-Rodando pelo IntelliJ? Veja [`docs/intellij.md`](docs/intellij.md).
+<details>
+<summary><b>Rodando no IntelliJ IDEA</b></summary>
+
+Abra o **`pom.xml`** (não a pasta) em *File → Open*.
+
+**1. SDK do projeto: Java 21.** O código usa `records`, *pattern matching* e
+blocos de texto; com JDK 17 não compila.
+
+**2. Habilite o processamento de anotações.** *Settings → Build, Execution,
+Deployment → Compiler → Annotation Processors → `Enable annotation processing`*.
+
+Sem isso o Lombok não gera construtores, getters nem o campo `log`, e a IDE mostra
+o projeto inteiro em vermelho — "cannot find symbol: log" — **enquanto o
+`./mvnw verify` passa normalmente no terminal**. É o passo que mais causa
+confusão.
+
+**3. Rode.** Use a configuração de execução do Spring Boot apontando para
+`VotacaoApplication` com o perfil `local` (sem dependências) ou `prod` (contra o
+PostgreSQL do compose, com `SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5434/votacao`,
+usuário e senha `votacao`).
+
+**Problemas comuns**
+
+| Sintoma | Causa |
+|---|---|
+| `cannot find symbol: log`, mas o Maven compila | Processamento de anotações desabilitado (passo 2) |
+| `invalid target release: 21` | SDK do projeto em versão anterior (passo 1) |
+| `NoSuchMethodError` em Lombok ou google-java-format | O JBR embutido do IntelliJ é mais novo que a ferramenta. As versões do `pom.xml` já suportam JDK 25 — recarregue o projeto Maven |
+| `Could not find a valid Docker environment` | Docker Desktop não está rodando |
+| `FATAL: password authentication failed for user "votacao"` | Outro PostgreSQL ocupando a porta. É erro de *autenticação*, não de conexão: a aplicação achou um banco que não é o dela |
+| `Port 8080 was already in use` | Outra aplicação na porta. Defina `SERVER_PORT=8081` nas variáveis de ambiente |
+
+Qualquer erro que aconteça na IDE e não no terminal quase sempre é diferença de
+JDK: o IntelliJ usa o JBR embutido e o terminal usa o `JAVA_HOME`. Para eliminar
+a diferença, marque *Settings → Build Tools → Maven → Runner → `Delegate IDE
+build/run actions to Maven`*.
+
+</details>
 
 ---
 
-## O que foi construído
+## Arquitetura
 
 O enunciado destaca em negrito que **o foco da avaliação é a comunicação entre o
 backend e o aplicativo mobile**, feita por mensagens JSON que o cliente
@@ -160,6 +162,77 @@ anexo. A solução tem, por isso, **duas superfícies HTTP sobre um único núcl
 
 A camada de telas é uma **casca fina**: monta o DTO de tela chamando os mesmos
 serviços de aplicação. **Nenhuma regra de negócio é duplicada.**
+
+```
+src/main/java/br/com/cooperativa/votacao
+├── config/           Beans transversais (Clock, CORS, correlationId, resiliência)
+├── domain/           Modelo, portas e exceções — sem uma linha de Spring
+│   ├── model/
+│   ├── repository/   Portas de persistência, com apenas os métodos usados
+│   └── exception/
+├── application/      Portas de entrada: o contrato dos casos de uso
+│   ├── impl/         Implementações e @Transactional
+│   └── port/         Portas de saída (o que a aplicação precisa do mundo externo)
+├── infrastructure/   Adaptadores: persistência JPA e serviço externo de CPF
+└── api/
+    ├── v1/           Superfície REST
+    ├── ui/           Superfície Server-Driven UI (Anexo 1)
+    └── error/        Tratador global
+```
+
+A infraestrutura não é chamada por ninguém: ela **implementa** portas declaradas
+pelas camadas internas, e o Spring faz a ligação em tempo de execução. A direção
+das dependências é verificada por **8 regras de ArchUnit** que falham o build.
+
+<details>
+<summary><b>Decisões e trade-offs</b></summary>
+
+**Camadas com inversão de dependência, sem modelo espelho.** As entidades JPA são
+o modelo de domínio. Duplicá-las em modelos de persistência com mapeadores
+dobraria a camada de dados para eliminar uma dependência de *anotações* —
+`jakarta.persistence` é especificação declarativa, materialmente diferente de
+`JpaRepository`, que traz uma API inteira e semântica transacional. É aí que o
+custo/benefício se inverte, e é aí que a linha foi traçada.
+
+O domínio, porém, **não depende de nenhuma linha de Spring**. As portas de
+repositório declaram só os métodos usados; os adaptadores em
+`infrastructure.persistence` estendem a porta **e** `JpaRepository`, com métodos
+`default` delegando — o que entrega a inversão sem nenhuma classe adaptadora
+escrita à mão.
+
+**Status da sessão derivado do relógio, não persistido.** `ABERTA` se
+`now < fechamentoEm`. Elimina o job de fechamento, o estado a reconciliar e a
+classe inteira de bug "sessão que ficou aberta porque o agendador caiu".
+
+**Unicidade do voto pela constraint do banco.** `SELECT` antes de `INSERT` tem
+*race condition* — e a Tarefa Bônus 2 é justamente sobre concorrência. Duas
+requisições simultâneas do mesmo associado passariam ambas pela checagem. Delegar
+ao banco também elimina uma ida de rede por voto.
+
+**Apuração por `COUNT ... GROUP BY`, nunca carregando votos.** Com 500 mil votos,
+materializar a lista para contá-la esgota a heap; a contagem agregada é resolvida
+pelo índice `ix_voto_sessao_opcao`.
+
+**`Instant`/UTC com `Clock` injetado.** Permite testar "a sessão expirou" sem
+`Thread.sleep`, o que mantém a suíte rápida e determinística. Elimina também a
+classe inteira de bugs de fuso e horário de verão.
+
+**HTTP fora do domínio.** As exceções declaram a *natureza* da falha
+(`TipoErro`); a tradução para status vive em `MapeadorDeStatus`, na camada de
+API. A mesma regra exposta por mensageria continuaria valendo e não teria status
+algum.
+
+**Validação de CPF pelo `@CPF` do Hibernate Validator**, que já vem no
+`spring-boot-starter-validation`. Escrever o cálculo dos dígitos à mão seria
+reimplementar, com menos testes, o que a biblioteca padrão resolve.
+
+**Lombok** para construtores de injeção e loggers, que não carregam decisão
+alguma. O `lombok.config` declara `@Value` como anotação copiável (sem o que a
+injeção do `WebConfig` falharia em execução) e liga
+`addLombokGeneratedAnnotation`, para que o código gerado fique fora do gate de
+cobertura.
+
+</details>
 
 ---
 
@@ -217,6 +290,13 @@ O `correlationId` volta também no header `X-Correlation-Id` e aparece em toda
 linha de log da requisição — é ele que liga o erro visto pelo usuário ao rastro
 completo no log.
 
+| Situação | Status |
+|---|---|
+| Pauta inexistente | `404` |
+| Sessão já aberta · sem sessão · voto duplicado | `409` |
+| Sessão encerrada · associado não autorizado | `422` |
+| CPF inválido · paginação fora dos limites | `400` |
+
 ---
 
 ## Telas do Anexo 1
@@ -263,22 +343,6 @@ Um `409` cru deixaria o cliente sem nada para renderizar. Erros de negócio em
 
 ---
 
-## Decisões e trade-offs
-
-| Decisão | Escolha | Justificativa |
-|---|---|---|
-| Arquitetura | Camadas com inversão de dependência | [ADR 0007](docs/adr/0007-inversao-de-dependencia-sem-modelo-espelho.md). O domínio declara portas; a infraestrutura as implementa. `domain` não depende de nenhuma linha de Spring — verificado por ArchUnit. |
-| Entidade JPA = domínio | Sim, sem modelo espelho | [ADR 0001](docs/adr/0001-entidade-jpa-como-modelo-de-dominio.md). O domínio tem comportamento (`estaAberta()`), não é anêmico. |
-| Status da sessão | Derivado do relógio | [ADR 0002](docs/adr/0002-status-de-sessao-derivado.md). Sem job de fechamento, sem estado a reconciliar. |
-| Unicidade do voto | Constraint no banco | [ADR 0003](docs/adr/0003-unicidade-por-constraint.md). `SELECT` + `INSERT` tem race condition — e o Bônus 2 é sobre concorrência. |
-| Apuração | `COUNT ... GROUP BY` | [ADR 0004](docs/adr/0004-apuracao-agregada.md). Nunca carrega votos em memória. |
-| Tempo | `Instant`/UTC + `Clock` injetado | [ADR 0005](docs/adr/0005-clock-injetado.md). Testar "sessão expirou" sem `Thread.sleep`. |
-| Duas superfícies HTTP | REST + telas sobre o mesmo núcleo | [ADR 0006](docs/adr/0006-duas-superficies-http.md). |
-| Validação de CPF | `@CPF` do Hibernate Validator | Já vem no `spring-boot-starter-validation`. Escrever o cálculo dos dígitos à mão seria reimplementar, com menos testes, o que a biblioteca padrão resolve. |
-| Boilerplate | Lombok (`@RequiredArgsConstructor`, `@Slf4j`, `@Getter`) | Construtores de injeção e declarações de logger não carregam decisão nenhuma. `lombok.addLombokGeneratedAnnotation` mantém o código gerado fora do gate de cobertura. |
-
----
-
 ## Tarefa Bônus 1 — Verificação de CPF
 
 > ⚠️ **O endpoint `https://user-info.herokuapp.com/users/{cpf}` está fora do ar.**
@@ -296,44 +360,166 @@ a indisponibilidade de um terceiro não impeça a avaliação:
 | Circuit breaker | Resilience4j — abre em 50% de falha, fecha após 30 s |
 | Fallback | `APP_USER_INFO_FALLBACK` (padrão `true`) — decisão de negócio explícita |
 
-A validação dos **dígitos verificadores do CPF** acontece antes da chamada
-remota: `400` sem gastar rede. O CPF é **mascarado no log** (`198******69`) —
-dado pessoal sob LGPD não vai para arquivo de log, e um conversor do Logback
-garante a máscara mesmo em mensagens vindas de bibliotecas de terceiros.
+A validação dos **dígitos verificadores** acontece antes da chamada remota:
+`400` sem gastar rede. O CPF é **mascarado no log** (`198******69`) — dado
+pessoal sob LGPD não vai para arquivo de log, e um conversor do Logback garante a
+máscara mesmo em mensagens vindas de bibliotecas de terceiros.
+
+A camada de aplicação depende da porta `ConsultaAptidaoParaVotar`, não do cliente
+HTTP: se a cooperativa passar a manter cadastro próprio de associados, basta uma
+implementação nova. Os quatro cenários do contrato são cobertos com **WireMock**;
+nenhum teste toca a rede real.
 
 ---
 
 ## Tarefa Bônus 2 — Performance
 
+> *"Imagine que sua aplicação possa ser usada em cenários que existam centenas de
+> milhares de votos."*
+
+Sob essa carga, três operações importam — e nenhuma delas cresce com a quantidade
+de votos já registrados:
+
+| Operação | Custo | Por quê |
+|---|---|---|
+| Registrar voto | 1 `INSERT` | Sem `SELECT` prévio: a unicidade é da constraint |
+| Apurar resultado | 1 `COUNT ... GROUP BY` | *Index-only scan*; nenhuma entidade materializada |
+| Consultar sessão | 1 `SELECT` com `join fetch` | Sem consulta extra por carregamento tardio |
+
 | Técnica | Efeito |
 |---|---|
-| Escrita *insert-only*, unicidade na constraint | 1 ida ao banco por voto, sem race condition |
-| `COUNT(*) ... GROUP BY opcao` | Apuração não carrega nenhuma entidade `Voto` |
-| Índice `(sessao_id, opcao)` | Apuração vira *index-only scan* |
-| Sem `List<Voto>` mapeada | Elimina N+1 e carga acidental da coleção |
-| `@Transactional(readOnly = true)` | Sem *dirty checking*; permite réplica de leitura |
-| Cache Caffeine em sessão **encerrada** | Resultado fechado é imutável → cacheável sem risco |
-| Paginação obrigatória | Impede resposta ilimitada |
-| HikariCP dimensionado | Evita o pool virar gargalo |
+| Escrita *insert-only* | Metade das idas ao banco por voto |
+| `DataIntegrityViolationException` → `409` | Traduz a constraint sem lock aplicacional |
+| Índice `(sessao_id, opcao)` | Apuração servida só pelo índice |
+| Sem `List<Voto>` mapeada em `SessaoVotacao` | Torna impossível carregar a coleção por engano |
+| `@Transactional(readOnly = true)` | Dispensa *dirty checking*; habilita réplica de leitura |
+| Cache Caffeine em sessão **encerrada** | Resultado fechado é imutável — cacheável sem risco |
+| Paginação com teto de 100 | Impede resposta ilimitada |
+| HikariCP dimensionado | Evita o pool virar gargalo antes do banco |
+| `hibernate.jdbc.batch_size=50` | Reduz *round-trips* em lote |
 
-**Evidência:** `VotacaoApiIT.unicidadeSobConcorrencia` dispara 200 threads
-votando com o mesmo CPF contra PostgreSQL real e exige exatamente **1** voto
-persistido. Roda em todo `./mvnw verify`. Detalhes em
-[`docs/performance.md`](docs/performance.md).
+### Evidência
+
+**Teste de concorrência**, em todo `./mvnw verify`: 200 threads partem de um
+`CountDownLatch` e votam com o **mesmo CPF** contra PostgreSQL real. Exige
+exatamente 1 resposta `201`, todas as demais `409`, e 1 voto no banco. Uma
+implementação com `SELECT` prévio falha nele de forma intermitente — e é
+exatamente esse tipo de bug que não aparece em teste sequencial.
+
+**Teste de carga** em [`perf/k6/votacao.js`](perf/k6/votacao.js):
+
+| Cenário | Perfil | *Threshold* |
+|---|---|---|
+| `carga_votos` | *ramp-up* até 500 VUs por 4 min, CPFs distintos | p95 < 200 ms |
+| `apuracao_concorrente` | 50 VUs lendo o resultado durante a votação | p95 < 100 ms |
+| `voto_duplicado` | 100 VUs com o **mesmo** CPF | exatamente **1** aceito |
+
+```bash
+k6 run perf/k6/votacao.js
+k6 run -e BASE_URL=https://votacao-cooperativa-api.onrender.com perf/k6/votacao.js
+```
+
+O script calcula dígitos verificadores válidos para cada CPF: com números
+aleatórios a API responderia `400` e o teste mediria o caminho de erro em vez do
+de escrita.
+
+### O que não foi feito, e por quê
+
+| Alternativa | Por que ficou de fora |
+|---|---|
+| Fila para ingestão assíncrona | Introduz consistência eventual: o associado não saberia na hora se o voto foi aceito |
+| Cache distribuído | O dado cacheado é pequeno e imutável; cache local resolve sem mais um serviço para operar |
+| Sharding por pauta | Ordens de grandeza acima do cenário descrito |
+| Contadores incrementais | Contenção de escrita na mesma linha — cria justamente o gargalo que se quer evitar |
+
+O enunciado avalia "simplicidade no design da solução" lado a lado com
+performance. Estas alternativas ficam registradas como caminho de evolução, não
+implementadas por antecipação.
 
 ---
 
-## Tarefa Bônus 3 — Versionamento
+## Tarefa Bônus 3 — Versionamento da API
 
-Versionamento **por URI** (`/api/v1`), concentrado na anotação composta `@ApiV1`.
-Análise completa das alternativas e da política de depreciação:
-[`docs/versionamento.md`](docs/versionamento.md).
+> *"Como você versionaria a API da sua aplicação? Que estratégia usar?"*
+
+**Versionamento por URI** (`/api/v1`), fixado desde o primeiro commit em uma
+anotação composta `@ApiV1`.
+
+| Estratégia | Prós | Contras | Veredito |
+|---|---|---|---|
+| **URI** — `/api/v1/pautas` | Visível na requisição; cacheável; testável no navegador e no cURL; roteável em gateway sem inspecionar cabeçalho | "Impura" para quem lê REST ao pé da letra | **Escolhida** |
+| Cabeçalho — `X-API-Version: 1` | URI permanece limpa | Invisível no log e no histórico; quebra cache (exige `Vary`); difícil de depurar | Descartada |
+| Media type — `Accept: …vnd.coop.v1+json` | A mais correta segundo a teoria | Alto atrito para cliente mobile; ferramental fraco; versionar recurso a recurso multiplica combinações | Descartada |
+| Query param — `?version=1` | Trivial de implementar | Polui cache e log; fácil de omitir, e o default vira armadilha silenciosa | Descartada |
+
+**O peso decisivo é o consumidor.** O cliente desta API é um **aplicativo
+mobile**, que não atualiza junto com o servidor: uma versão publicada na loja
+continua em campo por meses. Isso torna obrigatório manter `v1` e `v2` no ar ao
+mesmo tempo, e a URI é a forma mais barata de rotear as duas — inclusive em
+camadas que não são a aplicação, como CDN, WAF ou API gateway.
+
+O argumento de pureza REST perde para um fato operacional: quando um cliente
+relata erro, o time precisa ver **na URL do log** qual versão ele usava.
+
+Concentrar o prefixo em `@ApiV1` tem duas consequências práticas: nenhum
+controlador consegue esquecê-lo (uma rota fora de `/api/v1` ficaria de fora de
+toda a política de depreciação), e criar a `v2` é adicionar `@ApiV2` sem tocar
+nos controladores existentes.
+
+### Política de evolução
+
+**1. Mudança compatível → não sobe a versão.** Campo novo opcional, endpoint
+novo. Clientes ignoram o que não conhecem. Isso exige uma disciplina do lado do
+cliente, que documentamos: o renderizador de telas do frontend tem um `default`
+que exibe um aviso em vez de quebrar diante de um tipo de campo desconhecido.
+
+**2. Mudança incompatível → nova versão.** Remover ou renomear campo, mudar tipo
+ou semântica. `v1` e `v2` coexistem, e **apenas a camada `api` é duplicada** —
+`application` e `domain` continuam compartilhados. É por isso que nenhuma regra
+de negócio mora em controlador: se morasse, cada versão duplicaria a regra e as
+cópias divergiriam.
+
+**3. Depreciação anunciada por cabeçalho**, conforme RFC 8594 e RFC 9745:
+
+```http
+Deprecation: Wed, 01 Oct 2026 00:00:00 GMT
+Sunset:      Sun, 01 Mar 2027 00:00:00 GMT
+Link:        </api/v2/pautas>; rel="successor-version"
+```
+
+Cabeçalhos, e não corpo, para que o aviso alcance também respostas `204` e para
+que o monitoramento o detecte sem interpretar payload.
+
+**4. Janela mínima de seis meses** entre anúncio e desligamento — prazo ditado
+pelo ciclo real de adoção de aplicativo nas lojas. Menos que isso deixa usuários
+com o app quebrado sem culpa própria.
+
+**5. Testes de contrato de uma versão publicada não são alterados.** Se uma
+mudança quebra um teste de contrato da `v1`, a mudança está errada — não o teste.
+É essa regra que transforma a política em algo verificável pelo build.
+
+**Monitoramento.** Métrica por versão via Actuator/Micrometer. Sem isso, decidir
+desligar a `v1` seria adivinhação; com ela, dá para ver a curva de adoção da `v2`.
+
+A camada `/telas` versiona junto, mas tende a evoluir mais rápido — é BFF, e o
+padrão Server-Driven UI existe justamente para mudar tela sem publicar app.
 
 ---
 
 ## Qualidade
 
-**202 testes** e **100% de cobertura** — linhas, ramos, métodos e classes. O gate do build exige 95% de linhas e 90% de ramos; formatação e análise estática também falham o build.
+```bash
+./mvnw verify
+```
+
+**Falha o build** em: testes, cobertura, formatação (Spotless com
+google-java-format) e análise estática (SpotBugs). É o mesmo comando que roda no
+CI — não existe um comando especial que passe onde o local falha.
+
+**202 testes** e **100% de cobertura** — instruções, linhas, ramos, complexidade,
+métodos e classes. O gate exige 95% de linhas e 90% de ramos: um gate exatamente
+em 100% transforma qualquer linha nova em build vermelho antes mesmo de existir o
+teste, o que empurra para escrever teste só para o número fechar.
 
 | Nível | Ferramenta | Alvo |
 |---|---|---|
@@ -342,7 +528,11 @@ Análise completa das alternativas e da política de depreciação:
 | Contrato de tela | MockMvc + `jsonPath` | Cada campo conferido contra o Anexo 1 |
 | Integração externa | WireMock | Os 4 cenários do serviço de CPF |
 | Concorrência | `ExecutorService` + `CountDownLatch` | 200 threads → 1 voto |
-| Arquitetura | ArchUnit | 8 regras: direção das dependências, domínio livre de framework, ausência de ciclos |
+| Arquitetura | ArchUnit | 8 regras de direção de dependências |
+| Carga | k6 | Ver Tarefa Bônus 2 |
+
+Ramo importa mais que linha: uma linha com `if` pode aparecer coberta com metade
+dos caminhos nunca exercitados.
 
 ### Logs
 
@@ -350,13 +540,16 @@ Análise completa das alternativas e da política de depreciação:
 - `INFO` para eventos de negócio, `WARN` para rejeições esperadas, `ERROR` só
   para o inesperado. **Voto duplicado é `WARN`, não `ERROR`** — é o sistema
   funcionando.
-- CPF sempre mascarado.
+- CPF sempre mascarado, inclusive em mensagens de bibliotecas de terceiros.
+- `correlationId` em toda linha, aceito do cliente apenas no formato
+  `[A-Za-z0-9_-]{1,64}` — um valor com `CR`/`LF` permitiria dividir a resposta
+  HTTP e forjar linhas de log.
 
 ---
 
 ## Deploy
 
-### Render (configurado)
+### Render
 
 1. Entre em https://render.com com a conta do GitHub.
 2. **Blueprints → New Blueprint Instance** → selecione o repositório.
@@ -371,21 +564,20 @@ Análise completa das alternativas e da política de depreciação:
 
 Ambas **sem barra no final**. No `APP_CORS_ALLOWED_ORIGINS` isso é decisivo: o
 navegador envia o header `Origin` sem barra, e um valor com `/` no fim nunca
-casaria. E `APP_CALLBACK_BASE_URL` importa mais do que parece — as URLs das telas
-do Anexo 1 são **absolutas**, então com o valor errado o cliente falaria com o
-host errado.
+casaria. E `APP_CALLBACK_BASE_URL` importa porque as URLs das telas do Anexo 1
+são **absolutas** — com o valor errado o cliente falaria com o host errado.
 
 ### Qualquer outra plataforma
 
-A aplicação não depende do Render. Ela aceita a conexão do banco de duas formas:
+A aplicação não depende do Render. Aceita a conexão do banco de duas formas:
 
-1. **`DATABASE_URL`** no formato URI — `postgresql://usuario:senha@host:porta/banco` —
-   que é como Render, Railway, Fly.io, Neon e Supabase a injetam. A conversão
-   para JDBC é feita em tempo de inicialização por
-   `DatabaseUrlEnvironmentPostProcessor`, preservando a query string (o
-   `sslmode=require` de bancos gerenciados, em especial).
+1. **`DATABASE_URL`** no formato URI —
+   `postgresql://usuario:senha@host:porta/banco` — que é como Render, Railway,
+   Fly.io, Neon e Supabase a injetam. A conversão para JDBC é feita na
+   inicialização por `DatabaseUrlEnvironmentPostProcessor`, preservando a query
+   string (o `sslmode=require` de bancos gerenciados, em especial).
 2. **`SPRING_DATASOURCE_URL` / `_USERNAME` / `_PASSWORD`** explícitas, que têm
-   precedência sobre a anterior.
+   precedência.
 
 Fora isso, basta a imagem Docker, a porta em `$PORT` e `/actuator/health` para as
 *probes*.
@@ -402,7 +594,8 @@ Fora isso, basta a imagem Docker, a porta em `$PORT` e `/actuator/health` para a
 | `app.user-info.base-url` | `APP_USER_INFO_URL` | `https://user-info.herokuapp.com` | Serviço de CPF |
 | `app.user-info.enabled` | `APP_USER_INFO_ENABLED` | `true` | Desliga a integração |
 | `app.user-info.fallback-permite-voto` | `APP_USER_INFO_FALLBACK` | `true` | Comportamento com circuito aberto |
-| — | `DATABASE_URL` | — | Conexão em formato URI, convertida para JDBC na inicialização |
+| — | `DATABASE_URL` | — | Conexão em formato URI, convertida na inicialização |
+| — | `DB_PORT` | `5434` | Porta do PostgreSQL no host, no compose |
 
 Nenhum segredo no repositório.
 
@@ -426,31 +619,6 @@ explícita — todas revisáveis:
 | 8 | Há outros tipos de tela/campo? | Apenas os documentados no Anexo 1 |
 | 9 | Telas no mesmo serviço ou BFF separado? | Mesmo serviço, pacote e rota separados |
 | 10 | Alvo de nuvem específico? | Container agnóstico; publicado no Render |
-
----
-
-## Estrutura
-
-```
-src/main/java/br/com/cooperativa/votacao
-├── config/           Beans transversais (Clock, CORS, correlationId, resiliência)
-├── domain/           Modelo, repositórios e exceções — sem dependência de web
-│   ├── model/
-│   ├── repository/   Portas de persistência, com apenas os métodos usados
-│   └── exception/
-├── application/      Portas de entrada: o contrato dos casos de uso
-│   ├── impl/         Implementações dos casos de uso e @Transactional
-│   └── port/         Portas de saída (o que a aplicação precisa do mundo externo)
-├── infrastructure/   Adaptadores: persistência JPA e serviço externo de CPF
-└── api/
-    ├── v1/           Superfície REST
-    ├── ui/           Superfície Server-Driven UI (Anexo 1)
-    └── error/        Tratador global
-```
-
-Regra de dependência `api → application → domain`, verificada por ArchUnit. A
-infraestrutura não é chamada por ninguém: ela **implementa** portas declaradas
-pelas camadas internas, e o Spring faz a ligação em tempo de execução.
 
 ---
 

@@ -15,10 +15,10 @@ import lombok.NoArgsConstructor;
  * Assunto submetido a deliberacao da assembleia.
  *
  * <p>A entidade JPA e usada diretamente como modelo de dominio, sem um modelo espelho. E um
- * <em>trade-off</em> consciente, registrado em {@code
- * docs/adr/0001-entidade-jpa-como-modelo-de-dominio.md}: aceita-se o acoplamento a JPA em troca de
- * eliminar uma camada inteira de mapeamento que, para tres agregados, seria cerimonia sem
- * contrapartida.
+ * <em>trade-off</em> consciente, justificado no README: aceita-se o acoplamento a anotacoes de
+ * persistencia em troca de eliminar uma camada inteira de mapeamento que, para tres agregados,
+ * seria cerimonia sem contrapartida. O acoplamento e a uma especificacao declarativa, e nao a um
+ * modelo de programacao — diferente de {@code JpaRepository}, que ficou do lado de fora.
  *
  * <p>A identidade e baseada apenas no identificador: dois objetos que representam a mesma linha do
  * banco sao a mesma entidade, ainda que um deles tenha sido carregado antes de uma alteracao. Nao
