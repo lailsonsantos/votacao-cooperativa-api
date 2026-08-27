@@ -91,6 +91,44 @@ class DatabaseUrlEnvironmentPostProcessorTest {
     }
 
     @Test
+    @DisplayName("ignora URI sintaticamente quebrada em vez de estourar")
+    void uriQuebrada() {
+        // Um valor mal formado na variavel de ambiente nao pode impedir a
+        // aplicacao de subir com a configuracao explicita.
+        assertThat(DatabaseUrlEnvironmentPostProcessor.converter("postgres://[quebrado")).isEmpty();
+        assertThat(DatabaseUrlEnvironmentPostProcessor.converter("postgres://")).isEmpty();
+    }
+
+    @Test
+    @DisplayName("ignora URI sem host")
+    void semHost() {
+        // postgres:///banco e sintaticamente valido mas nao aponta para lugar
+        // nenhum; converter isso produziria uma URL JDBC invalida.
+        assertThat(DatabaseUrlEnvironmentPostProcessor.converter("postgres:///banco")).isEmpty();
+    }
+
+    @Test
+    @DisplayName("aceita URI sem credenciais")
+    void semCredenciais() {
+        var propriedades =
+                DatabaseUrlEnvironmentPostProcessor.converter("postgres://host:5432/banco");
+
+        assertThat(propriedades).containsKey("spring.datasource.url");
+        assertThat(propriedades).doesNotContainKey("spring.datasource.username");
+    }
+
+    @Test
+    @DisplayName("aceita usuario sem senha")
+    void usuarioSemSenha() {
+        var propriedades =
+                DatabaseUrlEnvironmentPostProcessor.converter("postgres://usuario@host/banco");
+
+        assertThat(propriedades)
+                .containsEntry("spring.datasource.username", "usuario")
+                .doesNotContainKey("spring.datasource.password");
+    }
+
+    @Test
     @DisplayName("acrescenta as propriedades ao ambiente quando DATABASE_URL existe")
     void acrescentaAoAmbiente() {
         var environment = new MockEnvironment();
@@ -116,6 +154,25 @@ class DatabaseUrlEnvironmentPostProcessorTest {
 
         processor.postProcessEnvironment(environment, new SpringApplication());
 
+        assertThat(
+                        environment
+                                .getPropertySources()
+                                .contains(DatabaseUrlEnvironmentPostProcessor.FONTE))
+                .isFalse();
+    }
+
+    @Test
+    @DisplayName("nao altera o ambiente quando DATABASE_URL existe mas e irreconhecivel")
+    void databaseUrlIrreconhecivel() {
+        var environment = new MockEnvironment();
+        environment.setProperty(
+                DatabaseUrlEnvironmentPostProcessor.DATABASE_URL, "mysql://u:p@host/banco");
+
+        processor.postProcessEnvironment(environment, new SpringApplication());
+
+        // Um banco de outro fornecedor na variavel nao pode ser convertido em URL
+        // JDBC de PostgreSQL; melhor nao mexer e deixar a configuracao explicita
+        // decidir do que produzir uma URL silenciosamente errada.
         assertThat(
                         environment
                                 .getPropertySources()

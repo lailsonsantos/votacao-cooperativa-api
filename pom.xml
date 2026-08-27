@@ -37,8 +37,13 @@
     <wiremock.version>3.9.1</wiremock.version>
     <logstash.version>8.0</logstash.version>
 
-    <!-- Cobertura minima exigida no build. Ver README, secao "Qualidade". -->
-    <jacoco.line.coverage>0.80</jacoco.line.coverage>
+    <!-- Cobertura minima exigida no build. Ver README, secao "Qualidade".
+         O projeto esta em 100%, e o gate fica um pouco abaixo de proposito: um
+         gate exatamente em 1.00 transforma qualquer linha nova em build vermelho
+         antes mesmo de existir o teste, o que empurra para o habito errado de
+         escrever teste so para o numero fechar. -->
+    <jacoco.line.coverage>0.95</jacoco.line.coverage>
+    <jacoco.branch.coverage>0.90</jacoco.branch.coverage>
   </properties>
 
   <dependencies>
@@ -333,6 +338,13 @@
                       <counter>LINE</counter>
                       <value>COVEREDRATIO</value>
                       <minimum>${jacoco.line.coverage}</minimum>
+                    </limit>
+                    <!-- Ramo importa mais que linha: uma linha com if pode estar
+                         "coberta" com metade dos caminhos nunca exercitados. -->
+                    <limit>
+                      <counter>BRANCH</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>${jacoco.branch.coverage}</minimum>
                     </limit>
                   </limits>
                 </rule>

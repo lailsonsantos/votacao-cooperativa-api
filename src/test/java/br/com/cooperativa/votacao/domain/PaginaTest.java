@@ -67,6 +67,23 @@ class PaginaTest {
     }
 
     @Test
+    @DisplayName("conteudo nulo vira lista vazia, e nao NullPointerException")
+    void conteudoNulo() {
+        // Defesa da copia defensiva: List.copyOf recusa nulo, entao o caso e
+        // tratado antes. Sem isso, uma porta mal implementada derrubaria a API.
+        assertThat(new Pagina<String>(null, 0, 10, 0).conteudo()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("a lista devolvida e imutavel")
+    void conteudoImutavel() {
+        var pagina = new Pagina<>(new java.util.ArrayList<>(List.of("a")), 0, 10, 1);
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> pagina.conteudo().add("b"))
+                .isInstanceOf(UnsupportedOperationException.class);
+    }
+
+    @Test
     @DisplayName("reconhece pagina vazia")
     void vazia() {
         assertThat(new Pagina<>(List.of(), 0, 10, 0).vazia()).isTrue();

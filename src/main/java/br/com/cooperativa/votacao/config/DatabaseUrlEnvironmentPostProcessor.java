@@ -107,7 +107,9 @@ public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProce
 
         // Porta ausente na URI significa a porta padrao do PostgreSQL.
         var porta = uri.getPort() > 0 ? uri.getPort() : 5432;
-        var banco = uri.getPath() == null ? "" : uri.getPath();
+        // A guarda acima garante o prefixo postgres://, o que torna a URI
+        // hierarquica; nesse caso getPath() devolve string vazia, nunca nulo.
+        var banco = uri.getPath();
 
         // A query string carrega parametros que nao podem ser perdidos: o
         // sslmode=require de bancos gerenciados e o mais importante deles, sem o

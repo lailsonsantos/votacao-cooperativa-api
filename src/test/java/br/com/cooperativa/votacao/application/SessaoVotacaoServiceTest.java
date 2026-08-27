@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /** Testes das regras de abertura de sessao. */
 @ExtendWith(MockitoExtension.class)
@@ -90,6 +91,32 @@ class SessaoVotacaoServiceTest {
 
         assertThatThrownBy(() -> servico.abrir(pauta.getId(), 5))
                 .isInstanceOf(SessaoJaAbertaException.class);
+    }
+
+    @Test
+    @DisplayName("traduz violacao de constraint em sessao ja aberta")
+    void traduzViolacaoDeConstraint() {
+        when(pautaService.buscar(pauta.getId())).thenReturn(pauta);
+        // Checagem previa passa: nenhuma sessao existia no instante da consulta.
+        when(sessaoRepository.existePorPauta(pauta.getId())).thenReturn(false);
+        // Entre a checagem e a gravacao, outra requisicao abriu a sessao. E a
+        // constraint uk_sessao_pauta que decide, exatamente como no voto.
+        when(sessaoRepository.salvarEConfirmar(any(SessaoVotacao.class)))
+                .thenThrow(new DataIntegrityViolationException("uk_sessao_pauta"));
+
+        assertThatThrownBy(() -> servico.abrir(pauta.getId(), 5))
+                .isInstanceOf(SessaoJaAbertaException.class);
+    }
+
+    @Test
+    @DisplayName("busca tolerante devolve vazio quando nao ha sessao")
+    void buscaTolerante() {
+        var pautaId = UUID.randomUUID();
+        when(sessaoRepository.buscarPorPauta(pautaId)).thenReturn(Optional.empty());
+
+        // Variante usada pelas telas, que precisam desenhar o caso "sem sessao"
+        // sem tratar excecao.
+        assertThat(servico.buscar(pautaId)).isEmpty();
     }
 
     @Test

@@ -88,7 +88,7 @@ públicos. Consumo em regime: **283 MB dos 512**.
 
 ### 0.5 Verificação executada
 
-- `./mvnw verify` — **113 testes verdes**, incluindo 200 threads simultâneas
+- `./mvnw verify` — **202 testes verdes, 100% de cobertura**, incluindo 200 threads simultâneas
   votando com o mesmo CPF contra PostgreSQL real, com exatamente 1 voto
   persistido.
 - Fluxo REST completo exercitado por HTTP: cadastro, sessão com default de 1

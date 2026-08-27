@@ -197,6 +197,37 @@ class VotacaoApiIT extends IntegracaoTest {
     }
 
     @Test
+    @DisplayName("lista pautas paginadas com o total correto")
+    void listaPaginada() throws Exception {
+        criarPauta("Pauta para listagem A");
+        criarPauta("Pauta para listagem B");
+
+        mockMvc.perform(get("/api/v1/pautas").param("page", "0").param("size", "2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.conteudo", org.hamcrest.Matchers.hasSize(2)))
+                .andExpect(jsonPath("$.pagina").value(0))
+                .andExpect(jsonPath("$.tamanho").value(2))
+                // O total vem de uma contagem propria, nao do tamanho da fatia.
+                .andExpect(
+                        jsonPath("$.totalElementos")
+                                .value(org.hamcrest.Matchers.greaterThanOrEqualTo(2)))
+                .andExpect(jsonPath("$.totalPaginas").exists())
+                .andExpect(jsonPath("$.ultima").exists());
+    }
+
+    @Test
+    @DisplayName("detalha uma pauta existente")
+    void detalhaPauta() throws Exception {
+        var pautaId = criarPauta("Pauta para detalhe");
+
+        mockMvc.perform(get("/api/v1/pautas/{id}", pautaId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(pautaId.toString()))
+                .andExpect(jsonPath("$.titulo").value("Pauta para detalhe"))
+                .andExpect(jsonPath("$.criadaEm").exists());
+    }
+
+    @Test
     @DisplayName("rota inexistente devolve 404, nao 500")
     void rotaInexistente() throws Exception {
         // Sem tratador dedicado, isto caia no catch-all e virava 500: um erro do

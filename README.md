@@ -117,7 +117,7 @@ Testcontainers).
 ./mvnw verify
 ```
 
-Executa 113 testes, o gate de cobertura, a verificacao de formatacao (Spotless)
+Executa 202 testes, o gate de cobertura, a verificacao de formatacao (Spotless)
 e a analise estatica (SpotBugs). Relatório em
 `target/site/jacoco/index.html`.
 
@@ -333,7 +333,7 @@ Análise completa das alternativas e da política de depreciação:
 
 ## Qualidade
 
-**113 testes**, gate de cobertura em 80% de linhas, formatacao e analise estatica — todos falham o build.
+**202 testes** e **100% de cobertura** — linhas, ramos, métodos e classes. O gate do build exige 95% de linhas e 90% de ramos; formatação e análise estática também falham o build.
 
 | Nível | Ferramenta | Alvo |
 |---|---|---|
