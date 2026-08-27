@@ -1,0 +1,45 @@
+# ---------------------------------------------------------------------------
+# Integracao continua: o mesmo comando que o desenvolvedor roda localmente.
+#
+# `mvn verify` executa testes unitarios, testes de integracao com Testcontainers
+# e o gate de cobertura. Nao existe um "comando especial de CI" que passe onde o
+# local falha, nem o contrario.
+# ---------------------------------------------------------------------------
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build e testes
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+
+      - name: Build, testes e gate de cobertura
+        # O runner do GitHub ja tem Docker, entao o Testcontainers sobe o
+        # PostgreSQL real sem nenhum servico declarado no workflow.
+        run: ./mvnw -B verify
+
+      - name: Publicar relatorio de cobertura
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco
+          path: target/site/jacoco/
+          retention-days: 7
+
+      - name: Gerar Javadoc
+        run: ./mvnw -B javadoc:javadoc
