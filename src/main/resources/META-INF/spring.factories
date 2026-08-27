@@ -1,0 +1,5 @@
+# O EnvironmentPostProcessor precisa ser declarado aqui porque roda antes de
+# qualquer bean existir: e o unico momento em que ainda da para influenciar a
+# criacao do DataSource.
+org.springframework.boot.env.EnvironmentPostProcessor=\
+br.com.cooperativa.votacao.config.DatabaseUrlEnvironmentPostProcessor

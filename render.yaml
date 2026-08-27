@@ -1,33 +1,73 @@
 # ---------------------------------------------------------------------------
-# Blueprint do Render — alternativa sem custo ao Heroku.
+# Blueprint do Render.
 #
-# O Render provisiona o servico e o banco a partir deste arquivo. Conecte o
-# repositorio em https://render.com e aplique o blueprint.
+# Aplique conectando o repositorio em https://render.com > Blueprints > New.
+# O Render le este arquivo, cria o servico e o banco, e mostra o custo antes de
+# confirmar.
+#
+# Apos o primeiro deploy, defina no painel:
+#   APP_CALLBACK_BASE_URL     = a URL publica desta API
+#   APP_CORS_ALLOWED_ORIGINS  = a URL publica do frontend
+#
+# APP_CALLBACK_BASE_URL importa mais do que parece: as URLs das telas do Anexo 1
+# sao absolutas, e com o valor errado o cliente tentaria falar com o host errado.
 # ---------------------------------------------------------------------------
 services:
   - type: web
     name: votacao-cooperativa-api
     runtime: docker
     dockerfilePath: ./Dockerfile
-    plan: free
+    region: oregon
+    # "starter" mantem o servico sempre no ar. No plano "free" ele hiberna apos
+    # 15 minutos de inatividade e leva cerca de um minuto para voltar — tempo
+    # suficiente para um avaliador concluir que a aplicacao esta fora do ar.
+    plan: starter
     healthCheckPath: /actuator/health
+    autoDeploy: true
+
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
-      # O Render injeta a URL do banco no formato JDBC diretamente.
-      - key: SPRING_DATASOURCE_URL
+
+      # O Render entrega a conexao como URI postgresql://, que o Spring nao
+      # consome diretamente. A conversao para JDBC e feita em tempo de
+      # inicializacao por DatabaseUrlEnvironmentPostProcessor.
+      - key: DATABASE_URL
         fromDatabase:
           name: votacao-banco
           property: connectionString
-      - key: APP_CALLBACK_BASE_URL
-        sync: false   # Preencher com a URL publica apos o primeiro deploy.
-      - key: APP_CORS_ALLOWED_ORIGINS
-        sync: false   # URL do frontend.
+
+      # O plano starter oferece 512 MB. Sem limitar a heap, a JVM enxerga a
+      # memoria do host e o container e encerrado por OOM sob carga.
+      - key: JAVA_TOOL_OPTIONS
+        value: -XX:MaxRAMPercentage=70 -XX:+UseContainerSupport -Xss512k
+
+      # O plano de banco tem poucas conexoes disponiveis; um pool maior do que
+      # elas so troca um gargalo por um erro de conexao recusada.
+      - key: DB_POOL_MAX
+        value: "5"
+
+      # Tarefa Bonus 1: o servico de CPF do enunciado esta fora do ar desde o
+      # encerramento do plano gratuito da Heroku.
       - key: APP_USER_INFO_ENABLED
         value: "false"
+
+      - key: APP_SESSAO_DURACAO_PADRAO
+        value: "1"
+
+      # Preenchidas no painel apos o primeiro deploy, quando as URLs existem.
+      - key: APP_CALLBACK_BASE_URL
+        sync: false
+      - key: APP_CORS_ALLOWED_ORIGINS
+        sync: false
 
 databases:
   - name: votacao-banco
     databaseName: votacao
     user: votacao
+    region: oregon
+    postgresMajorVersion: "16"
+    # ATENCAO: o plano gratuito de banco do Render expira 30 dias apos a criacao,
+    # com 14 dias de carencia antes da exclusao definitiva dos dados. E suficiente
+    # para uma avaliacao; para uso prolongado, troque por "basic-256mb".
     plan: free

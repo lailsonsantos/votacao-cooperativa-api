@@ -240,7 +240,7 @@ Análise completa das alternativas e da política de depreciação:
 | Concorrência | `ExecutorService` + `CountDownLatch` | 200 threads → 1 voto |
 | Arquitetura | ArchUnit | Direção das dependências entre camadas |
 
-**59 testes**, gate de cobertura em 80% de linhas (falha o build abaixo disso).
+**71 testes**, gate de cobertura em 80% de linhas (falha o build abaixo disso).
 
 ### Logs
 
@@ -254,31 +254,48 @@ Análise completa das alternativas e da política de depreciação:
 
 ## Deploy
 
-### Heroku
+### Render (configurado)
 
-```bash
-heroku create votacao-cooperativa-api
-heroku addons:create heroku-postgresql:essential-0
-heroku config:set SPRING_PROFILES_ACTIVE=prod
-heroku config:set APP_CALLBACK_BASE_URL=https://votacao-cooperativa-api-XXXX.herokuapp.com
-heroku config:set APP_CORS_ALLOWED_ORIGINS=https://SEU-FRONT.herokuapp.com
-heroku config:set APP_USER_INFO_ENABLED=false
-git push heroku main
-```
+Ambos os repositórios trazem um `render.yaml`. Para publicar:
 
-O buildpack Java exporta `JDBC_DATABASE_URL`, `JDBC_DATABASE_USERNAME` e
-`JDBC_DATABASE_PASSWORD` a partir do add-on; o perfil `prod` já as consome, sem
-precisar converter a URI `postgres://` para JDBC dentro da aplicação.
+1. Entre em https://render.com com a conta do GitHub.
+2. **Blueprints → New Blueprint Instance** → selecione `votacao-cooperativa-api`.
+3. O Render lê o `render.yaml`, mostra o custo e cria o serviço e o banco.
+4. Depois do primeiro deploy, preencha no painel:
 
-> **Custo:** a Heroku não tem mais plano gratuito. Dyno Basic ~US$ 7/mês +
-> Postgres Essential-0 ~US$ 5/mês.
+| Variável | Valor |
+|---|---|
+| `APP_CALLBACK_BASE_URL` | a URL pública desta API |
+| `APP_CORS_ALLOWED_ORIGINS` | a URL pública do frontend |
 
-### Alternativa sem custo — Render
+`APP_CALLBACK_BASE_URL` importa mais do que parece: as URLs das telas do Anexo 1
+são **absolutas**, e com o valor errado o cliente tentaria falar com o host
+errado.
 
-[`render.yaml`](render.yaml) declara o serviço e o banco. Basta conectar o
-repositório em https://render.com e aplicar o *blueprint*.
+**Custo:** serviço `starter` US$ 7/mês (cobrado por segundo) + banco no plano
+gratuito. O plano `free` de serviço também funciona, mas hiberna após 15 min de
+inatividade e leva cerca de um minuto para voltar — tempo suficiente para um
+avaliador concluir que a aplicação está fora do ar.
 
----
+> O plano gratuito de banco do Render **expira 30 dias após a criação**, com 14
+> dias de carência antes da exclusão dos dados. É suficiente para uma avaliação;
+> para uso prolongado, troque `plan: free` por `plan: basic-256mb` no
+> `render.yaml`.
+
+### Qualquer outra plataforma
+
+A aplicação não depende do Render. Ela aceita a conexão do banco de duas formas:
+
+1. **`DATABASE_URL`** no formato URI — `postgresql://usuario:senha@host:porta/banco` —
+   que é como Render, Railway, Fly.io, Neon e Supabase a injetam. A conversão
+   para JDBC é feita em tempo de inicialização por
+   `DatabaseUrlEnvironmentPostProcessor`, preservando a query string (o
+   `sslmode=require` de bancos gerenciados, em especial).
+2. **`SPRING_DATASOURCE_URL` / `_USERNAME` / `_PASSWORD`** explícitas, que têm
+   precedência sobre a anterior.
+
+Fora isso, basta a imagem Docker, a porta em `$PORT` e `/actuator/health` para as
+*probes*.
 
 ## Configuração
 
@@ -290,6 +307,7 @@ repositório em https://render.com e aplicar o *blueprint*.
 | `app.user-info.base-url` | `APP_USER_INFO_URL` | `https://user-info.herokuapp.com` | Serviço de CPF |
 | `app.user-info.enabled` | `APP_USER_INFO_ENABLED` | `true` | Desliga a integração |
 | `app.user-info.fallback-permite-voto` | `APP_USER_INFO_FALLBACK` | `true` | Comportamento com circuito aberto |
+| — | `DATABASE_URL` | — | Conexão em formato URI, convertida para JDBC na inicialização |
 
 Nenhum segredo no repositório.
 

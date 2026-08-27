@@ -1,15 +1,17 @@
 # ---------------------------------------------------------------------------
 # Perfil "prod": PostgreSQL gerenciado e log estruturado em JSON.
 #
-# O buildpack Java da Heroku exporta JDBC_DATABASE_URL / _USERNAME / _PASSWORD
-# a partir do DATABASE_URL do add-on. Consumir essas variaveis evita ter que
-# converter a URI postgres:// para o formato JDBC dentro da aplicacao.
+# A conexao pode chegar de duas formas, e as duas funcionam sem alteracao:
+#
+#   1. DATABASE_URL no formato URI (postgresql://usuario:senha@host:porta/banco),
+#      que e como Render, Railway, Fly.io, Neon e Supabase a injetam. A conversao
+#      para JDBC e feita por DatabaseUrlEnvironmentPostProcessor.
+#
+#   2. SPRING_DATASOURCE_URL / _USERNAME / _PASSWORD explicitas, que tem
+#      precedencia sobre a anterior.
 # ---------------------------------------------------------------------------
 spring:
   datasource:
-    url: ${JDBC_DATABASE_URL:${SPRING_DATASOURCE_URL}}
-    username: ${JDBC_DATABASE_USERNAME:${SPRING_DATASOURCE_USERNAME:}}
-    password: ${JDBC_DATABASE_PASSWORD:${SPRING_DATASOURCE_PASSWORD:}}
     hikari:
       # Dimensionado para nao transformar o pool em gargalo sob a carga da
       # Tarefa Bonus 2, respeitando o limite de conexoes do plano do banco.
