@@ -32,18 +32,18 @@ public class UrlTelaFactory {
     }
 
     /**
-     * URL do formulario de cadastro de pauta.
+     * URL do formulário de cadastro de pauta.
      *
-     * @return a URL absoluta do formulario
+     * @return a URL absoluta do formulário
      */
     public String novaPauta() {
         return absoluta("/pautas/nova");
     }
 
     /**
-     * URL de criacao de pauta (destino do botao do formulario).
+     * URL de criação de pauta (destino do botão do formulário).
      *
-     * @return a URL absoluta da acao
+     * @return a URL absoluta da ação
      */
     public String criarPauta() {
         return absoluta("/pautas");
@@ -60,20 +60,20 @@ public class UrlTelaFactory {
     }
 
     /**
-     * URL de abertura de sessao de uma pauta.
+     * URL de abertura de sessão de uma pauta.
      *
      * @param pautaId identificador da pauta
-     * @return a URL absoluta da acao
+     * @return a URL absoluta da ação
      */
     public String abrirSessao(UUID pautaId) {
         return absoluta("/pautas/" + pautaId + "/sessao");
     }
 
     /**
-     * URL de identificacao do associado antes de votar.
+     * URL de identificação do associado antes de votar.
      *
      * @param pautaId identificador da pauta
-     * @return a URL absoluta da acao
+     * @return a URL absoluta da ação
      */
     public String identificacao(UUID pautaId) {
         return absoluta("/pautas/" + pautaId + "/votos/identificacao");
@@ -83,7 +83,7 @@ public class UrlTelaFactory {
      * URL de registro de voto.
      *
      * @param pautaId identificador da pauta
-     * @return a URL absoluta da acao
+     * @return a URL absoluta da ação
      */
     public String votar(UUID pautaId) {
         return absoluta("/pautas/" + pautaId + "/votos");

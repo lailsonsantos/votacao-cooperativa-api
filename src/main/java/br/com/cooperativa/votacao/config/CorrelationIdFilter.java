@@ -27,8 +27,8 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
     /**
      * Injeta o identificador no MDC antes de seguir a cadeia de filtros.
      *
-     * @param request requisicao HTTP recebida
-     * @param response resposta HTTP em construcao
+     * @param request requisição HTTP recebida
+     * @param response resposta HTTP em construção
      * @param filterChain cadeia de filtros a prosseguir
      * @throws ServletException se a cadeia de filtros falhar
      * @throws IOException se a escrita da resposta falhar
@@ -39,7 +39,7 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         var correlationId = request.getHeader(HEADER);
         if (!aceitavel(correlationId)) {
-            // Fora do formato: gera um novo em vez de recusar. Nao vale negar
+            // Fora do formato: gera um novo em vez de recusar. Não vale negar
             // um voto por causa de rastreabilidade.
             correlationId = UUID.randomUUID().toString();
         }
@@ -50,8 +50,8 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } finally {
-            // Precisa limpar: a thread volta pro pool e o id vazaria pra proxima
-            // requisicao.
+            // Precisa limpar: a thread volta pro pool e o id vazaria pra próxima
+            // requisição.
             MDC.remove(MDC_KEY);
         }
     }

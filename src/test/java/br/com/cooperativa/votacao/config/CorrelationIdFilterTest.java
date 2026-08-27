@@ -32,9 +32,9 @@ class CorrelationIdFilterTest {
     @ParameterizedTest
     @ValueSource(
             strings = {
-                // Divisao de resposta: injetaria um cabecalho novo.
+                // Divisão de resposta: injetaria um cabecalho novo.
                 "abc\r\nSet-Cookie: sessao=roubada",
-                // Injecao de log: forjaria uma linha inteira.
+                // Injeção de log: forjaria uma linha inteira.
                 "abc\nINFO Voto registrado indevidamente",
                 "abc def",
                 "abc;drop",
@@ -52,7 +52,7 @@ class CorrelationIdFilterTest {
 
         var devolvido = response.getHeader(CorrelationIdFilter.HEADER);
         assertThat(devolvido).isNotEqualTo(valor).doesNotContain("\r", "\n", " ");
-        // O substituto e um UUID, entao a rastreabilidade nao se perde.
+        // O substituto é um UUID, então a rastreabilidade não se perde.
         assertThat(devolvido).matches("[0-9a-f-]{36}");
     }
 
@@ -74,8 +74,8 @@ class CorrelationIdFilterTest {
 
         filtro.doFilter(request, new MockHttpServletResponse(), new MockFilterChain());
 
-        // Threads sao reaproveitadas pelo pool do servidor: sem a limpeza, o
-        // identificador apareceria no log da requisicao seguinte.
+        // Threads são reaproveitadas pelo pool do servidor: sem a limpeza, o
+        // identificador apareceria no log da requisição seguinte.
         assertThat(MDC.get(CorrelationIdFilter.MDC_KEY)).isNull();
     }
 

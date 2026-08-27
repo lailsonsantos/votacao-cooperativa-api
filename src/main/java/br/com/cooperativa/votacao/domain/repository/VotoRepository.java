@@ -7,7 +7,7 @@ import java.util.UUID;
 public interface VotoRepository {
 
     /**
-     * Persiste o voto e confirma a gravacao imediatamente.
+     * Persiste o voto e confirma a gravação imediatamente.
      *
      * @param voto voto a persistir
      * @return o voto persistido
@@ -15,19 +15,19 @@ public interface VotoRepository {
     Voto salvarEConfirmar(Voto voto);
 
     /**
-     * Conta os votos de uma sessao agrupados por opcao.
+     * Conta os votos de uma sessão agrupados por opção.
      *
-     * @param sessaoId identificador da sessao
-     * @return uma linha por opcao efetivamente votada
+     * @param sessaoId identificador da sessão
+     * @return uma linha por opção efetivamente votada
      */
     List<ContagemVotos> contarPorOpcao(UUID sessaoId);
 
     /**
-     * Indica se o associado ja votou na sessao.
+     * Indica se o associado já votou na sessão.
      *
-     * @param sessaoId identificador da sessao
+     * @param sessaoId identificador da sessão
      * @param associadoId CPF do associado
-     * @return {@code true} se ja existir voto do associado na sessao
+     * @return {@code true} se já existir voto do associado na sessão
      */
     boolean existeVotoDoAssociado(UUID sessaoId, String associadoId);
 }

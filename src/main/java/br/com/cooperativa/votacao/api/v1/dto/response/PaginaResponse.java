@@ -19,13 +19,13 @@ public record PaginaResponse<T>(
     }
 
     /**
-     * Converte uma pagina do Spring Data aplicando um mapeador ao conteudo.
+     * Converte uma pagina do Spring Data aplicando um mapeador ao conteúdo.
      *
      * @param <E> tipo da entidade de origem
      * @param <T> tipo do DTO de destino
-     * @param pagina pagina de dominio
+     * @param pagina pagina de domínio
      * @param mapeador conversor de entidade para DTO
-     * @return o envelope de paginacao correspondente
+     * @return o envelope de paginação correspondente
      */
     public static <E, T> PaginaResponse<T> de(Pagina<E> pagina, Function<E, T> mapeador) {
         var convertida = pagina.mapear(mapeador);

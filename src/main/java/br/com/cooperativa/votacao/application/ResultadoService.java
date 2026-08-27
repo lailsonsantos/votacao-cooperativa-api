@@ -11,7 +11,7 @@ public interface ResultadoService {
      *
      * @param pautaId identificador da pauta
      * @return o resultado apurado
-     * @throws SessaoNaoAbertaException se a pauta nunca teve sessao
+     * @throws SessaoNaoAbertaException se a pauta nunca teve sessão
      */
     ResultadoVotacao apurar(UUID pautaId);
 }

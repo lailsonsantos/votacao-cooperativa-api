@@ -15,11 +15,11 @@ public record SessaoResponse(
         StatusSessao status,
         long segundosRestantes) {
     /**
-     * Converte a entidade para a representacao da API.
+     * Converte a entidade para a representação da API.
      *
-     * @param sessao entidade de origem
-     * @param agora instante de referencia, vindo do relogio injetado
-     * @return a representacao correspondente
+     * @param sessão entidade de origem
+     * @param agora instante de referência, vindo do relógio injetado
+     * @return a representação correspondente
      */
     public static SessaoResponse de(SessaoVotacao sessao, Instant agora) {
         return new SessaoResponse(

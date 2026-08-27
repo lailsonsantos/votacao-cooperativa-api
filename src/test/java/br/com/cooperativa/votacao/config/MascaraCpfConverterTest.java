@@ -18,8 +18,8 @@ class MascaraCpfConverterTest {
     /**
      * Constroi um evento de log com a mensagem informada.
      *
-     * @param mensagem texto ja formatado
-     * @return o evento pronto para conversao
+     * @param mensagem texto já formatado
+     * @return o evento pronto para conversão
      */
     private ILoggingEvent evento(String mensagem) {
         var e = mock(ILoggingEvent.class);
@@ -48,7 +48,7 @@ class MascaraCpfConverterTest {
     @Test
     @DisplayName("nao mascara os primeiros digitos de um numero maior")
     void naoMascaraNumeroMaior() {
-        // Sem os lookarounds, os 11 primeiros digitos de um identificador de 15
+        // Sem os lookarounds, os 11 primeiros dígitos de um identificador de 15
         // seriam substituidos, corrompendo o log em vez de proteger dado pessoal.
         var texto = "identificador 123456789012345 processado";
         assertThat(converter.convert(evento(texto))).isEqualTo(texto);

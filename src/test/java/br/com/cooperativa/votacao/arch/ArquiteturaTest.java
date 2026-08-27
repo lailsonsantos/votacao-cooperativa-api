@@ -15,7 +15,7 @@ import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition;
         importOptions = ImportOption.DoNotIncludeTests.class)
 class ArquiteturaTest {
 
-    /** As camadas so podem ser acessadas de fora para dentro. */
+    /** As camadas só podem ser acessadas de fora para dentro. */
     @ArchTest
     static final ArchRule camadas =
             Architectures.layeredArchitecture()
@@ -35,7 +35,7 @@ class ArquiteturaTest {
                     .whereLayer("Aplicacao")
                     .mayOnlyBeAccessedByLayers("Api", "Infraestrutura");
 
-    /** O dominio nao depende de nenhum framework de aplicacao. */
+    /** O domínio não depende de nenhum framework de aplicação. */
     @ArchTest
     static final ArchRule dominioIndependenteDeFramework =
             noClasses()
@@ -52,7 +52,7 @@ class ArquiteturaTest {
                             "o dominio precisa poder ser exposto por outro transporte e"
                                     + " persistido de outra forma sem alteracao");
 
-    /** A camada de aplicacao nao conhece implementacoes de integracao. */
+    /** A camada de aplicação não conhece implementações de integração. */
     @ArchTest
     static final ArchRule aplicacaoDependeDeAbstracoes =
             noClasses()
@@ -74,7 +74,7 @@ class ArquiteturaTest {
                     .resideInAPackage("br.com.cooperativa.votacao.application")
                     .because("o adaptador implementa a porta; nao consome caso de uso");
 
-    /** Ninguem depende de uma implementacao de caso de uso. */
+    /** Ninguém depende de uma implementação de caso de uso. */
     @ArchTest
     static final ArchRule ninguemDependeDeImplementacao =
             noClasses()
@@ -85,7 +85,7 @@ class ArquiteturaTest {
                     .resideInAPackage("..application.impl..")
                     .because("o consumidor depende da abstracao, nao da implementacao");
 
-    /** Nenhuma regra de negocio mora em controlador. */
+    /** Nenhuma regra de negócio mora em controlador. */
     @ArchTest
     static final ArchRule controladoresNaoAcessamRepositorios =
             noClasses()
@@ -96,7 +96,7 @@ class ArquiteturaTest {
                     .resideInAPackage("..domain.repository..")
                     .because("o acesso a dados pertence a camada de aplicacao");
 
-    /** Nenhum ciclo entre os pacotes de primeiro nivel. */
+    /** Nenhum ciclo entre os pacotes de primeiro nível. */
     @ArchTest
     static final ArchRule semCiclos =
             SlicesRuleDefinition.slices()

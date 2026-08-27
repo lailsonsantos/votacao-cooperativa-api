@@ -27,14 +27,14 @@ import org.springframework.test.web.servlet.MockMvc;
 @DisplayName("Telas por estado da sessao")
 class TelaEstadosIT extends IntegracaoTest {
 
-    /** Substitui o relogio da aplicacao por um que o teste consegue adiantar. */
+    /** Substitui o relógio da aplicação por um que o teste consegue adiantar. */
     @TestConfiguration
     static class RelogioControlavel {
 
         /**
-         * Relogio controlavel, com precedencia sobre o de sistema.
+         * Relógio controlável, com precedência sobre o de sistema.
          *
-         * @return o relogio de teste
+         * @return o relógio de teste
          */
         @Bean
         @Primary
@@ -58,7 +58,7 @@ class TelaEstadosIT extends IntegracaoTest {
      *
      * @param titulo titulo da pauta
      * @return o identificador da pauta criada
-     * @throws Exception se a requisicao falhar
+     * @throws Exception se a requisição falhar
      */
     private UUID criarPauta(String titulo) throws Exception {
         var corpo =
@@ -126,7 +126,7 @@ class TelaEstadosIT extends IntegracaoTest {
                                 .content("{\"cpf\":\"19839091069\",\"opcao\":\"SIM\"}"))
                 .andExpect(status().isOk());
 
-        // Adianta o relogio em vez de esperar: o status da sessao e derivado dele.
+        // Adianta o relógio em vez de esperar: o status da sessão é derivado dele.
         relogio.avancar(Duration.ofMinutes(2));
 
         mockMvc.perform(get("/api/v1/telas/pautas/{id}", id))

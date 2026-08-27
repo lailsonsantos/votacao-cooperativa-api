@@ -29,17 +29,17 @@ public class GlobalExceptionHandler {
     /** Prefixo das rotas que devolvem telas em vez de ProblemDetail. */
     private static final String PREFIXO_TELAS = "/api/v1/telas";
 
-    /** Base dos identificadores de tipo de erro publicados na documentacao. */
+    /** Base dos identificadores de tipo de erro publicados na documentação. */
     private static final String BASE_TIPO = "https://api.cooperativa.com/erros/";
 
     private final TelaFactory telas;
     private final Clock clock;
 
     /**
-     * Trata as falhas previstas pelas regras de negocio.
+     * Trata as falhas previstas pelas regras de negócio.
      *
-     * @param e excecao de negocio
-     * @param request requisicao que originou a falha
+     * @param e exceção de negócio
+     * @param request requisição que originou a falha
      * @return ProblemDetail ou tela de erro, conforme a superficie acionada
      */
     @ExceptionHandler(NegocioException.class)
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
             return ResponseEntity.ok(telas.erro(e.getTitulo(), e.getMessage()));
         }
 
-        // A traducao de natureza de falha para status HTTP vive em um unico
+        // A tradução de natureza de falha para status HTTP vive em um único
         // lugar; aqui apenas se aplica o resultado.
         var status = MapeadorDeStatus.de(e.getTipo());
         return ResponseEntity.status(status)
@@ -58,10 +58,10 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Trata falhas de validacao de Bean Validation.
+     * Trata falhas de válidação de Bean Validation.
      *
-     * @param e excecao com os campos invalidos
-     * @param request requisicao que originou a falha
+     * @param e exceção com os campos inválidos
+     * @param request requisição que originou a falha
      * @return {@code 400} detalhando cada campo recusado
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -91,9 +91,9 @@ public class GlobalExceptionHandler {
     /**
      * Trata corpo malformado e enums desconhecidos.
      *
-     * @param e excecao de leitura
-     * @param request requisicao que originou a falha
-     * @return {@code 400} com mensagem generica e segura
+     * @param e exceção de leitura
+     * @param request requisição que originou a falha
+     * @return {@code 400} com mensagem genérica e segura
      */
     @ExceptionHandler({
         HttpMessageNotReadableException.class,
@@ -121,10 +121,10 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Rede de seguranca para violacoes de integridade nao traduzidas antes.
+     * Rede de segurança para violações de integridade não traduzidas antes.
      *
-     * @param e violacao de integridade
-     * @param request requisicao que originou a falha
+     * @param e violação de integridade
+     * @param request requisição que originou a falha
      * @return {@code 409} sem expor detalhes do banco
      */
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -149,11 +149,11 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Trata rota inexistente e metodo nao suportado.
+     * Trata rota inexistente e método não suportado.
      *
-     * @param e excecao de roteamento
-     * @param request requisicao que originou a falha
-     * @return {@code 404} para rota inexistente, {@code 405} para metodo nao suportado
+     * @param e exceção de roteamento
+     * @param request requisição que originou a falha
+     * @return {@code 404} para rota inexistente, {@code 405} para método não suportado
      */
     @ExceptionHandler({
         NoResourceFoundException.class,
@@ -182,10 +182,10 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Trata violacoes de restricao em parametros de requisicao.
+     * Trata violações de restrição em parametros de requisição.
      *
-     * @param e violacao de restricao
-     * @param request requisicao que originou a falha
+     * @param e violação de restrição
+     * @param request requisição que originou a falha
      * @return {@code 400} descrevendo o parametro recusado
      */
     @ExceptionHandler(ConstraintViolationException.class)
@@ -216,7 +216,7 @@ public class GlobalExceptionHandler {
     /**
      * Extrai o nome do parametro violado do caminho da propriedade.
      *
-     * @param violacao violacao de restricao
+     * @param violação violação de restrição
      * @return o nome do parametro
      */
     private static String ultimoNo(jakarta.validation.ConstraintViolation<?> violacao) {
@@ -226,11 +226,11 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Ultimo recurso para falhas inesperadas.
+     * Último recurso para falhas inesperadas.
      *
-     * @param e excecao inesperada
-     * @param request requisicao que originou a falha
-     * @return {@code 500} com mensagem generica
+     * @param e exceção inesperada
+     * @param request requisição que originou a falha
+     * @return {@code 500} com mensagem genérica
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> tratarInesperado(Exception e, HttpServletRequest request) {
@@ -258,9 +258,9 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Indica se a requisicao veio da superficie de telas.
+     * Indica se a requisição veio da superficie de telas.
      *
-     * @param request requisicao em tratamento
+     * @param request requisição em tratamento
      * @return {@code true} se a rota pertencer a {@code /api/v1/telas}
      */
     private boolean ehTela(HttpServletRequest request) {
@@ -271,18 +271,18 @@ public class GlobalExceptionHandler {
      * Monta a tela de erro apresentada ao cliente do Anexo 1.
      *
      * @param titulo titulo da tela
-     * @param mensagem explicacao ao usuario
+     * @param mensagem explicação ao usuário
      * @return a tela de erro
      */
 
     /**
-     * Monta o corpo de erro no padrao RFC 7807.
+     * Monta o corpo de erro no padrão RFC 7807.
      *
      * @param status status HTTP
-     * @param codigo identificador estavel do erro
+     * @param código identificador estável do erro
      * @param titulo titulo curto
-     * @param detalhe explicacao ao consumidor
-     * @param request requisicao que originou a falha
+     * @param detalhe explicação ao consumidor
+     * @param request requisição que originou a falha
      * @return o ProblemDetail preenchido
      */
     private ProblemDetail problema(
@@ -298,7 +298,7 @@ public class GlobalExceptionHandler {
         problema.setProperty("timestamp", clock.instant());
 
         // Devolver o correlationId fecha o ciclo de diagnostico: quem recebe o
-        // erro consegue localizar o rastro completo da requisicao no log.
+        // erro consegue localizar o rastro completo da requisição no log.
         var correlationId = CorrelationIdFilter.atual();
         if (correlationId != null) {
             problema.setProperty("correlationId", correlationId);

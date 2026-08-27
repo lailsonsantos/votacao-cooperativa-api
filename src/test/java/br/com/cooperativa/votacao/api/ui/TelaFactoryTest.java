@@ -49,7 +49,7 @@ class TelaFactoryTest {
             assertThat(tela.itens()).hasSize(2);
             assertThat(tela.itens())
                     .allSatisfy(i -> assertThat(((ItemSelecao) i).url()).startsWith(BASE));
-            // SELECAO nao carrega botoes: campos nulos somem na serializacao.
+            // SELECAO não carrega botões: campos nulos somem na serialização.
             assertThat(tela.botaoOk()).isNull();
         }
 
@@ -82,7 +82,7 @@ class TelaFactoryTest {
             assertThat(tela.itens())
                     .extracting(i -> ((ItemSelecao) i).texto())
                     .containsExactly("Reforma do estatuto", "Aquisicao de sede");
-            // Item sem body e navegacao: o cliente faz GET, nao POST.
+            // Item sem body é navegação: o cliente faz GET, não POST.
             assertThat(tela.itens()).allSatisfy(i -> assertThat(((ItemSelecao) i).body()).isNull());
         }
 
@@ -91,7 +91,7 @@ class TelaFactoryTest {
         void semPautas() {
             var tela = telas.listaPautas(new Pagina<>(List.of(), 0, 20, 0));
 
-            // Uma SELECAO vazia deixaria o usuario numa tela sem nenhuma acao.
+            // Uma SELECAO vazia deixaria o usuário numa tela sem nenhuma ação.
             assertThat(tela.tipo()).isEqualTo(TipoTela.FORMULARIO);
             assertThat(tela.botaoOk().texto()).isEqualTo("Cadastrar nova pauta");
             assertThat(tela.botaoCancelar()).isNotNull();
@@ -204,7 +204,7 @@ class TelaFactoryTest {
             assertThat(tela.itens())
                     .extracting(i -> ((ItemSelecao) i).texto())
                     .containsExactly("Sim", "Nao");
-            // O cliente apenas reenvia o body; e o servidor quem define o conteudo.
+            // O cliente apenas reenvia o body; é o servidor quem define o conteúdo.
             assertThat(tela.itens())
                     .allSatisfy(
                             i ->
@@ -226,7 +226,7 @@ class TelaFactoryTest {
                     .anySatisfy(t -> assertThat(t).contains("parcial"))
                     .anySatisfy(t -> assertThat(t).contains("Sim: 3"))
                     .anySatisfy(t -> assertThat(t).contains("APROVADA"));
-            // Botao sem body: atualizar e navegacao, nao acao.
+            // Botão sem body: atualizar é navegação, não ação.
             assertThat(tela.botaoOk().body()).isNull();
         }
 
@@ -271,8 +271,8 @@ class TelaFactoryTest {
     @Test
     @DisplayName("tela sem itens nao quebra na copia defensiva")
     void telaSemItens() {
-        // List.copyOf recusa nulo, entao o caso e tratado antes. O campo nulo e
-        // significativo: ele some da serializacao, como o Anexo 1 exige.
+        // List.copyOf recusa nulo, então o caso é tratado antes. O campo nulo é
+        // significativo: ele some da serialização, como o Anexo 1 exige.
         var tela =
                 new br.com.cooperativa.votacao.api.ui.dto.Tela(
                         TipoTela.SELECAO, "Sem itens", null, null, null);

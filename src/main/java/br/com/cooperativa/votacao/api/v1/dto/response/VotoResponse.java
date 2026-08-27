@@ -11,10 +11,10 @@ import java.util.UUID;
 public record VotoResponse(
         UUID id, UUID pautaId, String associadoId, OpcaoVoto opcao, Instant criadoEm) {
     /**
-     * Converte a entidade para a representacao da API.
+     * Converte a entidade para a representação da API.
      *
      * @param voto entidade de origem
-     * @return a representacao correspondente
+     * @return a representação correspondente
      */
     public static VotoResponse de(Voto voto) {
         return new VotoResponse(

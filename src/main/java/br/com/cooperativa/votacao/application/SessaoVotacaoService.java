@@ -10,30 +10,30 @@ import java.util.UUID;
 public interface SessaoVotacaoService {
 
     /**
-     * Abre a sessao de votacao de uma pauta.
+     * Abre a sessão de votação de uma pauta.
      *
      * @param pautaId identificador da pauta
-     * @param duracaoMinutos duracao solicitada, ou {@code null} para usar o padrao
-     * @return a sessao aberta
-     * @throws RecursoNaoEncontradoException se a pauta nao existir
-     * @throws SessaoJaAbertaException se a pauta ja possuir uma sessao
+     * @param duracaoMinutos duração solicitada, ou {@code null} para usar o padrão
+     * @return a sessão aberta
+     * @throws RecursoNaoEncontradoException se a pauta não existir
+     * @throws SessaoJaAbertaException se a pauta já possuir uma sessão
      */
     SessaoVotacao abrir(UUID pautaId, Integer duracaoMinutos);
 
     /**
-     * Busca a sessao de uma pauta, exigindo que ela exista.
+     * Busca a sessão de uma pauta, exigindo que ela exista.
      *
      * @param pautaId identificador da pauta
-     * @return a sessao encontrada
-     * @throws SessaoNaoAbertaException se a pauta nunca teve sessao aberta
+     * @return a sessão encontrada
+     * @throws SessaoNaoAbertaException se a pauta nunca teve sessão aberta
      */
     SessaoVotacao buscarObrigatoria(UUID pautaId);
 
     /**
-     * Busca a sessao de uma pauta, se existir.
+     * Busca a sessão de uma pauta, se existir.
      *
      * @param pautaId identificador da pauta
-     * @return a sessao, se houver
+     * @return a sessão, se houver
      */
     Optional<SessaoVotacao> buscar(UUID pautaId);
 }

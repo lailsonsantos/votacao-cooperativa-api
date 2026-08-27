@@ -4,14 +4,14 @@ import br.com.cooperativa.votacao.domain.enums.OpcaoVoto;
 
 public interface ContagemVotos {
     /**
-     * Opcao votada.
+     * Opção votada.
      *
-     * @return a opcao a que este total se refere
+     * @return a opção a que este total se refere
      */
     OpcaoVoto getOpcao();
 
     /**
-     * Quantidade de votos para a opcao.
+     * Quantidade de votos para a opção.
      *
      * @return o total de votos
      */

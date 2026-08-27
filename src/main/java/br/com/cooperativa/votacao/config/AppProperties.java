@@ -9,9 +9,9 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "app")
 public record AppProperties(Callback callback, Sessao sessao) {
     /**
-     * Configuracao do host usado para montar as URLs absolutas das telas.
+     * Configuração do host usado para montar as URLs absolutas das telas.
      *
-     * @param baseUrl raiz publica da aplicacao, sem barra final (ex.: {@code
+     * @param baseUrl raiz pública da aplicação, sem barra final (ex.: {@code
      *     https://votacao-cooperativa-api.onrender.com})
      */
     public record Callback(@NotBlank String baseUrl) {
@@ -26,11 +26,11 @@ public record AppProperties(Callback callback, Sessao sessao) {
     }
 
     /**
-     * Configuracao padrao das sessoes de votacao.
+     * Configuração padrão das sessões de votação.
      *
-     * @param duracaoPadraoMinutos duracao aplicada quando a chamada de abertura nao informa uma
-     *     duracao. O enunciado define 1 minuto; o valor vive em configuracao para nao existir
-     *     numero magico no codigo.
+     * @param duracaoPadraoMinutos duração aplicada quando a chamada de abertura não informa uma
+     *     duração. O enunciado define 1 minuto; o valor vive em configuração para não existir
+     *     número mágico no código.
      */
     public record Sessao(@Positive int duracaoPadraoMinutos) {}
 }

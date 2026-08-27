@@ -28,7 +28,7 @@ public class AcaoTelaRequest {
      */
     @JsonAnyGetter
     public Map<String, Object> getCampos() {
-        // Vista imutavel. Nao uso Map.copyOf porque ele rejeita valor nulo, e um
+        // Vista imutável. Não uso Map.copyOf porque ele rejeita valor nulo, e um
         // corpo JSON qualquer pode ter.
         return Collections.unmodifiableMap(campos);
     }
@@ -49,10 +49,10 @@ public class AcaoTelaRequest {
     }
 
     /**
-     * Le um campo numerico inteiro.
+     * Le um campo numérico inteiro.
      *
      * @param chave nome do campo
-     * @return o valor inteiro, ou {@code null} se ausente ou nao numerico
+     * @return o valor inteiro, ou {@code null} se ausente ou não numérico
      */
     public Integer inteiro(String chave) {
         var valor = campos.get(chave);

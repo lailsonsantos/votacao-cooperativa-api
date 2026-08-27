@@ -12,7 +12,7 @@ public class OpenApiConfig {
     /**
      * Descreve a API para o springdoc.
      *
-     * @return o documento OpenAPI base, completado em tempo de execucao pelos controladores
+     * @return o documento OpenAPI base, completado em tempo de execução pelos controladores
      */
     @Bean
     public OpenAPI votacaoOpenApi() {

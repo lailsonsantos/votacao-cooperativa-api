@@ -31,8 +31,8 @@ public class PautaServiceImpl implements PautaService {
     @Override
     @Transactional(readOnly = true)
     public Pagina<Pauta> listar(int pagina, int tamanho) {
-        // A contagem total acompanha a fatia porque o envelope de paginacao da API
-        // a expoe; sem ela o cliente nao saberia quantas paginas existem.
+        // A contagem total acompanha a fatia porque o envelope de paginação da API
+        // a expoe; sem ela o cliente não saberia quantas páginas existem.
         return new Pagina<>(
                 pautaRepository.listarMaisRecentes(pagina, tamanho),
                 pagina,

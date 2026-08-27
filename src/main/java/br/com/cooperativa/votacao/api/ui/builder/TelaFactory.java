@@ -31,9 +31,9 @@ public class TelaFactory {
     private final UrlTelaFactory urls;
 
     /**
-     * Menu inicial da aplicacao.
+     * Menu inicial da aplicação.
      *
-     * @return tela SELECAO com as acoes disponiveis
+     * @return tela SELECAO com as ações disponíveis
      */
     public Tela menu() {
         return Tela.selecao(
@@ -44,9 +44,9 @@ public class TelaFactory {
     }
 
     /**
-     * Formulario de cadastro de pauta.
+     * Formulário de cadastro de pauta.
      *
-     * @return tela FORMULARIO com os campos de titulo e descricao
+     * @return tela FORMULARIO com os campos de título e descrição
      */
     public Tela novaPauta() {
         return Tela.formulario(
@@ -60,14 +60,14 @@ public class TelaFactory {
     }
 
     /**
-     * Lista de pautas como tela de selecao.
+     * Lista de pautas como tela de seleção.
      *
      * @param pautas pagina de pautas a exibir
-     * @return tela SELECAO com uma opcao por pauta
+     * @return tela SELECAO com uma opção por pauta
      */
     public Tela listaPautas(Pagina<Pauta> pautas) {
         if (pautas.vazia()) {
-            // SELECAO vazia deixaria o usuario sem saida. Uso FORMULARIO pra ter botao.
+            // SELECAO vazia deixaria o usuário sem saída. Uso FORMULARIO pra ter botão.
             return Tela.formulario(
                     "Pautas em deliberacao",
                     List.of(ItemTela.texto("Nenhuma pauta cadastrada ate o momento.")),
@@ -84,11 +84,11 @@ public class TelaFactory {
     }
 
     /**
-     * Tela de uma pauta que ainda nao teve sessao aberta.
+     * Tela de uma pauta que ainda não teve sessão aberta.
      *
-     * @param pauta pauta em questao
-     * @param duracaoPadraoMinutos duracao sugerida no campo, vinda de configuracao
-     * @return tela FORMULARIO que permite abrir a sessao
+     * @param pauta pauta em questão
+     * @param duracaoPadraoMinutos duração sugerida no campo, vinda de configuração
+     * @return tela FORMULARIO que permite abrir a sessão
      */
     public Tela pautaSemSessao(Pauta pauta, int duracaoPadraoMinutos) {
         var itens = new ArrayList<ItemTela>();
@@ -106,10 +106,10 @@ public class TelaFactory {
     }
 
     /**
-     * Tela de identificacao do associado, para uma pauta com sessao aberta.
+     * Tela de identificação do associado, para uma pauta com sessão aberta.
      *
-     * @param sessao sessao aberta
-     * @param agora instante de referencia, para calcular o tempo restante
+     * @param sessão sessão aberta
+     * @param agora instante de referência, para calcular o tempo restante
      * @return tela FORMULARIO que coleta o CPF
      */
     public Tela identificacao(SessaoVotacao sessao, Instant agora) {
@@ -129,9 +129,9 @@ public class TelaFactory {
     /**
      * Tela de escolha do voto.
      *
-     * @param pauta pauta em votacao
-     * @param cpf CPF ja validado, propagado no corpo de cada opcao
-     * @return tela SELECAO com as opcoes Sim e Nao
+     * @param pauta pauta em votação
+     * @param cpf CPF já validado, propagado no corpo de cada opção
+     * @return tela SELECAO com as opções Sim e Não
      */
     public Tela opcoesDeVoto(Pauta pauta, String cpf) {
         var url = urls.votar(pauta.getId());
@@ -143,10 +143,10 @@ public class TelaFactory {
     }
 
     /**
-     * Tela de resultado da apuracao.
+     * Tela de resultado da apuração.
      *
      * @param resultado resultado apurado
-     * @return tela FORMULARIO com os numeros e o desfecho
+     * @return tela FORMULARIO com os números e o desfecho
      */
     public Tela resultado(ResultadoVotacao resultado) {
         var itens =
@@ -168,11 +168,11 @@ public class TelaFactory {
     }
 
     /**
-     * Tela usada para comunicar um erro de negocio ao cliente.
+     * Tela usada para comunicar um erro de negócio ao cliente.
      *
      * @param titulo titulo da tela de erro
-     * @param mensagem explicacao apresentada ao usuario
-     * @return tela FORMULARIO com a mensagem e um botao de retorno
+     * @param mensagem explicação apresentada ao usuário
+     * @return tela FORMULARIO com a mensagem e um botão de retorno
      */
     public Tela erro(String titulo, String mensagem) {
         return Tela.formulario(
@@ -183,9 +183,9 @@ public class TelaFactory {
     }
 
     /**
-     * Acrescenta a descricao da pauta, quando houver.
+     * Acrescenta a descrição da pauta, quando houver.
      *
-     * @param itens lista em construcao
+     * @param itens lista em construção
      * @param pauta pauta de origem
      */
     private void adicionarDescricao(List<ItemTela> itens, Pauta pauta) {
@@ -195,9 +195,9 @@ public class TelaFactory {
     }
 
     /**
-     * Formata o tempo restante de forma legivel para o associado.
+     * Formata o tempo restante de forma legível para o associado.
      *
-     * @param restante duracao restante da sessao
+     * @param restante duração restante da sessão
      * @return frase com minutos e segundos restantes
      */
     private String tempoRestante(Duration restante) {

@@ -16,7 +16,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Tag("integracao")
 public abstract class IntegracaoTest {
 
-    /** Instancia unica de PostgreSQL compartilhada por toda a suite. */
+    /** Instância única de PostgreSQL compartilhada por toda a suite. */
     static final PostgreSQLContainer<?> POSTGRES =
             new PostgreSQLContainer<>("postgres:16-alpine")
                     .withDatabaseName("votacao")
@@ -25,17 +25,17 @@ public abstract class IntegracaoTest {
                     .withReuse(true);
 
     static {
-        // O Docker 29 recusa a versao de API que o docker-java negocia por padrao.
-        // Fica aqui, e nao no Failsafe, pra funcionar tambem rodando pela IDE.
-        // Precisa vir antes do start(), que e quando o cliente e criado.
+        // O Docker 29 recusa a versão de API que o docker-java negocia por padrão.
+        // Fica aqui, e não no Failsafe, pra funcionar também rodando pela IDE.
+        // Precisa vir antes do start(), que é quando o cliente é criado.
         System.setProperty("api.version", "1.44");
         POSTGRES.start();
     }
 
     /**
-     * Aponta a aplicacao para o container antes da criacao do contexto.
+     * Aponta a aplicação para o container antes da criação do contexto.
      *
-     * @param registry registro de propriedades dinamicas do Spring Test
+     * @param registry registro de propriedades dinâmicas do Spring Test
      */
     @DynamicPropertySource
     static void configurarBanco(DynamicPropertyRegistry registry) {

@@ -6,17 +6,17 @@ import java.util.Optional;
 public interface ConsultaAptidaoParaVotar {
 
     /**
-     * Consulta se o associado esta apto a votar.
+     * Consulta se o associado está apto a votar.
      *
-     * @param cpf CPF ja validado do associado
-     * @return a aptidao encontrada, ou vazio se o associado for desconhecido
+     * @param cpf CPF já validado do associado
+     * @return a aptidão encontrada, ou vazio se o associado for desconhecido
      */
     Optional<AptidaoParaVotar> consultar(Cpf cpf);
 
     /**
-     * Resposta da consulta de aptidao.
+     * Resposta da consulta de aptidão.
      *
-     * @param podeVotar se o associado esta habilitado a votar
+     * @param podeVotar se o associado está habilitado a votar
      */
     record AptidaoParaVotar(boolean podeVotar) {}
 }

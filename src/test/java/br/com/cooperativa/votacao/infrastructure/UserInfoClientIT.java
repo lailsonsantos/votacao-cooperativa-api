@@ -48,7 +48,7 @@ class UserInfoClientIT {
         wireMock.resetAll();
         properties =
                 new UserInfoProperties("http://localhost:" + wireMock.port(), true, true, 500, 500);
-        // Mesmos timeouts de producao: sem eles o cenario de indisponibilidade
+        // Mesmos timeouts de produção: sem eles o cenário de indisponibilidade
         // nunca dispararia.
         var settings =
                 ClientHttpRequestFactorySettings.DEFAULTS
@@ -102,7 +102,7 @@ class UserInfoClientIT {
         wireMock.stubFor(
                 get(urlPathEqualTo("/users/11144477735")).willReturn(aResponse().withStatus(404)));
 
-        // 404 e uma resposta legitima do contrato. Traduzi-la em excecao
+        // 404 é uma resposta legítima do contrato. Traduzi-la em exceção
         // acionaria retry e circuit breaker para algo que nunca vai mudar.
         assertThat(client.consultar(Cpf.de("11144477735"))).isEmpty();
     }
@@ -114,8 +114,8 @@ class UserInfoClientIT {
                 get(urlPathEqualTo("/users/19839091069"))
                         .willReturn(aResponse().withFixedDelay(2_000).withStatus(200)));
 
-        // Sem o proxy do Spring o fallback anotado nao entra, entao aqui a falha
-        // propaga mesmo. O fallback real esta em UserInfoFallbackIT.
+        // Sem o proxy do Spring o fallback anotado não entra, então aqui a falha
+        // propaga mesmo. O fallback real está em UserInfoFallbackIT.
         assertThatThrownBy(() -> client.consultar(Cpf.de("19839091069")))
                 .isInstanceOf(ResourceAccessException.class);
     }

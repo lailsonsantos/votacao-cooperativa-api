@@ -26,7 +26,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 
-/** Testes das regras de abertura de sessao. */
+/** Testes das regras de abertura de sessão. */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("SessaoVotacaoService")
 class SessaoVotacaoServiceTest {
@@ -97,10 +97,10 @@ class SessaoVotacaoServiceTest {
     @DisplayName("traduz violacao de constraint em sessao ja aberta")
     void traduzViolacaoDeConstraint() {
         when(pautaService.buscar(pauta.getId())).thenReturn(pauta);
-        // Checagem previa passa: nenhuma sessao existia no instante da consulta.
+        // Checagem prévia passa: nenhuma sessão existia no instante da consulta.
         when(sessaoRepository.existePorPauta(pauta.getId())).thenReturn(false);
-        // Entre a checagem e a gravacao, outra requisicao abriu a sessao. E a
-        // constraint uk_sessao_pauta que decide, exatamente como no voto.
+        // Entre a checagem e a gravação, outra requisição abriu a sessão. É a
+        // constraint uk_sessão_pauta que decide, exatamente como no voto.
         when(sessaoRepository.salvarEConfirmar(any(SessaoVotacao.class)))
                 .thenThrow(new DataIntegrityViolationException("uk_sessao_pauta"));
 
@@ -114,8 +114,8 @@ class SessaoVotacaoServiceTest {
         var pautaId = UUID.randomUUID();
         when(sessaoRepository.buscarPorPauta(pautaId)).thenReturn(Optional.empty());
 
-        // Variante usada pelas telas, que precisam desenhar o caso "sem sessao"
-        // sem tratar excecao.
+        // Variante usada pelas telas, que precisam desenhar o caso "sem sessão"
+        // sem tratar exceção.
         assertThat(servico.buscar(pautaId)).isEmpty();
     }
 

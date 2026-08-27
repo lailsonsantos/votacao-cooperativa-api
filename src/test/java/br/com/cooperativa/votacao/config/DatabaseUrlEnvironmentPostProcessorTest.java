@@ -38,7 +38,7 @@ class DatabaseUrlEnvironmentPostProcessorTest {
                 DatabaseUrlEnvironmentPostProcessor.converter(
                         "postgresql://u:p@ep-neon.aws.neon.tech/votacao?sslmode=require");
 
-        // Perder o sslmode faria o banco recusar a conexao com um erro que nao
+        // Perder o sslmode faria o banco recusar a conexão com um erro que não
         // aponta para a causa.
         assertThat(propriedades.get("spring.datasource.url"))
                 .isEqualTo("jdbc:postgresql://ep-neon.aws.neon.tech:5432/votacao?sslmode=require");
@@ -86,8 +86,8 @@ class DatabaseUrlEnvironmentPostProcessorTest {
     @Test
     @DisplayName("ignora URI sintaticamente quebrada em vez de estourar")
     void uriQuebrada() {
-        // Um valor mal formado na variavel de ambiente nao pode impedir a
-        // aplicacao de subir com a configuracao explicita.
+        // Um valor mal formado na variável de ambiente não pode impedir a
+        // aplicação de subir com a configuração explicita.
         assertThat(DatabaseUrlEnvironmentPostProcessor.converter("postgres://[quebrado")).isEmpty();
         assertThat(DatabaseUrlEnvironmentPostProcessor.converter("postgres://")).isEmpty();
     }
@@ -95,8 +95,8 @@ class DatabaseUrlEnvironmentPostProcessorTest {
     @Test
     @DisplayName("ignora URI sem host")
     void semHost() {
-        // postgres:///banco e sintaticamente valido mas nao aponta para lugar
-        // nenhum; converter isso produziria uma URL JDBC invalida.
+        // postgres:///banco é sintaticamente válido mas não aponta para lugar
+        // nenhum; converter isso produziria uma URL JDBC inválida.
         assertThat(DatabaseUrlEnvironmentPostProcessor.converter("postgres:///banco")).isEmpty();
     }
 
@@ -163,7 +163,7 @@ class DatabaseUrlEnvironmentPostProcessorTest {
 
         processor.postProcessEnvironment(environment, new SpringApplication());
 
-        // Banco de outro fornecedor: melhor nao mexer do que gerar uma URL errada.
+        // Banco de outro fornecedor: melhor não mexer do que gerar uma URL errada.
         assertThat(
                         environment
                                 .getPropertySources()
@@ -182,8 +182,8 @@ class DatabaseUrlEnvironmentPostProcessorTest {
 
         processor.postProcessEnvironment(environment, new SpringApplication());
 
-        // Quem definiu a URL a mao quis apontar para outro banco; sobrescrever
-        // isso seria surpreendente e dificil de diagnosticar.
+        // Quem definiu a URL a mão quis apontar para outro banco; sobrescrever
+        // isso seria surpreendente e difícil de diagnosticar.
         assertThat(environment.getProperty("spring.datasource.url"))
                 .isEqualTo("jdbc:postgresql://outro/banco");
     }

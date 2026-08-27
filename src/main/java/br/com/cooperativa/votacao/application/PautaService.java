@@ -10,8 +10,8 @@ public interface PautaService {
     /**
      * Cadastra uma nova pauta.
      *
-     * @param titulo titulo da pauta, ja validado na borda
-     * @param descricao descricao opcional
+     * @param titulo titulo da pauta, já validado na borda
+     * @param descrição descrição opcional
      * @return a pauta persistida
      */
     Pauta criar(String titulo, String descricao);
@@ -30,7 +30,7 @@ public interface PautaService {
      *
      * @param id identificador da pauta
      * @return a pauta encontrada
-     * @throws RecursoNaoEncontradoException se nao existir pauta com o identificador
+     * @throws RecursoNaoEncontradoException se não existir pauta com o identificador
      */
     Pauta buscar(UUID id);
 }

@@ -14,23 +14,23 @@ public interface VotoService {
     /**
      * Registra o voto de um associado em uma pauta.
      *
-     * @param pautaId identificador da pauta em votacao
-     * @param cpf CPF do associado, ja validado
-     * @param opcao opcao escolhida
+     * @param pautaId identificador da pauta em votação
+     * @param cpf CPF do associado, já validado
+     * @param opção opção escolhida
      * @return o voto persistido
-     * @throws SessaoNaoAbertaException se a pauta nao tiver sessao
-     * @throws SessaoEncerradaException se a sessao ja tiver fechado
-     * @throws VotoDuplicadoException se o associado ja votou nesta pauta
-     * @throws AssociadoNaoAutorizadoException se o associado nao estiver apto a votar
+     * @throws SessaoNaoAbertaException se a pauta não tiver sessão
+     * @throws SessaoEncerradaException se a sessão já tiver fechado
+     * @throws VotoDuplicadoException se o associado já votou nesta pauta
+     * @throws AssociadoNaoAutorizadoException se o associado não estiver apto a votar
      */
     Voto registrar(UUID pautaId, Cpf cpf, OpcaoVoto opcao);
 
     /**
-     * Indica se o associado ja votou na pauta.
+     * Indica se o associado já votou na pauta.
      *
      * @param pautaId identificador da pauta
      * @param cpf CPF do associado
-     * @return {@code true} se ja existir voto do associado na sessao da pauta
+     * @return {@code true} se já existir voto do associado na sessão da pauta
      */
     boolean jaVotou(UUID pautaId, Cpf cpf);
 }

@@ -17,10 +17,10 @@ public record ResultadoResponse(
         long votosNao,
         ResultadoApuracao resultado) {
     /**
-     * Converte o resultado de dominio para a representacao da API.
+     * Converte o resultado de domínio para a representação da API.
      *
-     * @param resultado resultado de dominio
-     * @return a representacao correspondente
+     * @param resultado resultado de domínio
+     * @return a representação correspondente
      */
     public static ResultadoResponse de(ResultadoVotacao resultado) {
         return new ResultadoResponse(

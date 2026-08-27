@@ -32,7 +32,7 @@ public class VotoServiceImpl implements VotoService {
     public Voto registrar(UUID pautaId, Cpf cpf, OpcaoVoto opcao) {
         var sessao = sessaoService.buscarObrigatoria(pautaId);
 
-        // Clock injetado em vez de Instant.now() para dar pra testar o fim da sessao.
+        // Clock injetado em vez de Instant.now() para dar pra testar o fim da sessão.
         var agora = clock.instant();
         if (!sessao.estaAberta(agora)) {
             log.warn(
@@ -58,8 +58,8 @@ public class VotoServiceImpl implements VotoService {
             return voto;
 
         } catch (DataIntegrityViolationException e) {
-            // So a constraint do banco detecta duplicidade com seguranca. Traduzo aqui
-            // pra API nao precisar saber de detalhe de persistencia.
+            // Só a constraint do banco detecta duplicidade com segurança. Traduzo aqui
+            // pra API não precisar saber de detalhe de persistência.
             log.warn("Voto recusado: duplicado. pautaId={} associado={}", pautaId, cpf.mascarado());
             throw new VotoDuplicadoException(pautaId, cpf.numero(), e);
         }

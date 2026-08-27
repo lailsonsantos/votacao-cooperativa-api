@@ -7,27 +7,27 @@ import java.time.ZoneId;
 
 public class RelogioDeTeste extends Clock {
 
-    /** Instante que o relogio reporta no momento. */
+    /** Instante que o relógio reporta no momento. */
     private Instant agora;
 
-    /** Fuso reportado, sempre UTC, como no restante da aplicacao. */
+    /** Fuso reportado, sempre UTC, como no restante da aplicação. */
     private final ZoneId zona = ZoneId.of("UTC");
 
-    /** Cria o relogio posicionado no instante atual do sistema. */
+    /** Cria o relógio posicionado no instante atual do sistema. */
     public RelogioDeTeste() {
         this.agora = Instant.now();
     }
 
     /**
-     * Adianta o relogio.
+     * Adianta o relógio.
      *
-     * @param duracao quanto avancar
+     * @param duração quanto avancar
      */
     public void avancar(Duration duracao) {
         agora = agora.plus(duracao);
     }
 
-    /** Reposiciona o relogio no instante atual do sistema. */
+    /** Reposiciona o relógio no instante atual do sistema. */
     public void reiniciar() {
         agora = Instant.now();
     }

@@ -51,10 +51,10 @@ class VotoServiceTest {
     }
 
     /**
-     * Monta o servico com o relogio posicionado em um instante especifico.
+     * Monta o serviço com o relógio posicionado em um instante específico.
      *
-     * @param agora instante que o servico enxergara como "agora"
-     * @return o servico pronto para uso
+     * @param agora instante que o serviço enxergara como "agora"
+     * @return o serviço pronto para uso
      */
     private VotoService servicoEm(Instant agora) {
         return new VotoServiceImpl(
@@ -88,7 +88,7 @@ class VotoServiceTest {
         assertThatThrownBy(() -> servico.registrar(pautaId, CPF, OpcaoVoto.SIM))
                 .isInstanceOf(SessaoEncerradaException.class);
 
-        // A verificacao externa de CPF nao deve ser acionada para uma sessao
+        // A verificação externa de CPF não deve ser acionada para uma sessão
         // encerrada: seria uma ida a rede garantidamente inutil.
         verify(associadoValidator, never()).validarPodeVotar(any());
         verify(votoRepository, never()).salvarEConfirmar(any());
@@ -116,7 +116,7 @@ class VotoServiceTest {
 
         assertThatThrownBy(() -> servico.registrar(pautaId, CPF, OpcaoVoto.SIM))
                 .isInstanceOf(VotoDuplicadoException.class)
-                // A mensagem devolvida ao cliente nao pode conter o CPF completo.
+                // A mensagem devolvida ao cliente não pode conter o CPF completo.
                 .hasMessageContaining("198******69")
                 .hasMessageNotContaining(CPF.numero());
     }

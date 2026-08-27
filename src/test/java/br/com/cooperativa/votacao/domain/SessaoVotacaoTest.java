@@ -32,7 +32,7 @@ class SessaoVotacaoTest {
     void fechaNoInstanteDeFechamento() {
         var sessao = SessaoVotacao.abrir(pauta, ABERTURA, Duration.ofMinutes(5));
 
-        // Limite exclusivo: no instante do fechamento ja nao aceita voto. Sem esse
+        // Limite exclusivo: no instante do fechamento já não aceita voto. Sem esse
         // caso, trocar isBefore por isAfter passaria batido.
         assertThat(sessao.estaAberta(ABERTURA.plusSeconds(300))).isFalse();
         assertThat(sessao.status(ABERTURA.plusSeconds(300))).isEqualTo(StatusSessao.FECHADA);

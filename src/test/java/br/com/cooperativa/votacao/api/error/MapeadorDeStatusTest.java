@@ -25,7 +25,7 @@ import org.springframework.http.HttpStatus;
 class MapeadorDeStatusTest {
 
     /**
-     * Cada excecao de negocio com o status que deve produzir.
+     * Cada exceção de negócio com o status que deve produzir.
      *
      * @return os casos a verificar
      */
@@ -57,7 +57,7 @@ class MapeadorDeStatusTest {
     @DisplayName("toda natureza declarada tem status proprio, nunca 500")
     void nenhumaNaturezaSemMapeamento(TipoErro tipo) {
         // Uma natureza nova sem entrada na tabela cairia em 500 silenciosamente;
-        // este teste faz a omissao aparecer no build.
+        // este teste faz a omissão aparecer no build.
         assertThat(MapeadorDeStatus.de(tipo)).isNotEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -70,8 +70,8 @@ class MapeadorDeStatusTest {
 
         assertThat(e.getTitulo()).isEqualTo("Voto duplicado");
         assertThat(e.getCodigo()).isEqualTo("voto-duplicado");
-        // O codigo vai para o campo type do ProblemDetail e e contrato publico:
-        // muda-lo quebraria clientes que reagem a tipos especificos de erro.
+        // O código vai para o campo type do ProblemDetail e é contrato público:
+        // muda-lo quebraria clientes que reagem a tipos específicos de erro.
         assertThat(e.getTipo()).isEqualTo(TipoErro.CONFLITO);
     }
 

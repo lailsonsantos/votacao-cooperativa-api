@@ -15,7 +15,7 @@ public class CacheConfig {
     /**
      * Gerenciador de cache baseado em Caffeine.
      *
-     * @return o gerenciador de cache da aplicacao
+     * @return o gerenciador de cache da aplicação
      */
     @Bean
     public CacheManager cacheManager() {

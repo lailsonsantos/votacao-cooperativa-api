@@ -65,8 +65,8 @@ class GlobalExceptionHandlerTest {
             throw new IllegalStateException("falha nao prevista");
         }
 
-        /** Dispara a violacao diretamente. */
-        /** Corpo com restricao violada, para exercitar a validacao de payload. */
+        /** Dispara a violação diretamente. */
+        /** Corpo com restrição violada, para exercitar a válidação de payload. */
         record CorpoValidado(@jakarta.validation.constraints.NotBlank String titulo) {}
 
         @org.springframework.web.bind.annotation.PostMapping({
@@ -147,7 +147,7 @@ class GlobalExceptionHandlerTest {
             mockMvc.perform(get("/api/v1/inesperado"))
                     .andExpect(status().isInternalServerError())
                     .andExpect(jsonPath("$.title").value("Erro inesperado"))
-                    // A mensagem original nao pode chegar ao cliente.
+                    // A mensagem original não pode chegar ao cliente.
                     .andExpect(
                             jsonPath("$.detail")
                                     .value(
@@ -187,7 +187,7 @@ class GlobalExceptionHandlerTest {
         @Test
         @DisplayName("falha de negocio vira tela legivel com HTTP 200")
         void negocio() throws Exception {
-            // O cliente do Anexo 1 nao interpreta status: um 422 cru o deixaria
+            // O cliente do Anexo 1 não interpreta status: um 422 cru o deixaria
             // sem nada para desenhar.
             mockMvc.perform(get("/api/v1/telas/negocio"))
                     .andExpect(status().isOk())

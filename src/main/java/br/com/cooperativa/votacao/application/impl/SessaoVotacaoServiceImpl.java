@@ -32,8 +32,8 @@ public class SessaoVotacaoServiceImpl implements SessaoVotacaoService {
     public SessaoVotacao abrir(UUID pautaId, Integer duracaoMinutos) {
         var pauta = pautaService.buscar(pautaId);
 
-        // Checagem so pra dar a mensagem certa. Quem garante mesmo e a constraint
-        // uk_sessao_pauta, tratada no catch abaixo.
+        // Checagem só pra dar a mensagem certa. Quem garante mesmo é a constraint
+        // uk_sessão_pauta, tratada no catch abaixo.
         if (sessaoRepository.existePorPauta(pautaId)) {
             throw new SessaoJaAbertaException(pautaId);
         }

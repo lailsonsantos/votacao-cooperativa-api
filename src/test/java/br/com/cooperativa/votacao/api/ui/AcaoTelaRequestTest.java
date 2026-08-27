@@ -16,9 +16,9 @@ class AcaoTelaRequestTest {
     /**
      * Desserializa um JSON como o cliente enviaria.
      *
-     * @param json corpo da requisicao
+     * @param json corpo da requisição
      * @return o objeto preenchido
-     * @throws Exception se o JSON for invalido
+     * @throws Exception se o JSON for inválido
      */
     private AcaoTelaRequest de(String json) throws Exception {
         return mapper.readValue(json, AcaoTelaRequest.class);
@@ -39,8 +39,8 @@ class AcaoTelaRequestTest {
     @Test
     @DisplayName("devolve nulo em vez de estourar quando o texto nao e numero")
     void inteiroInvalido() throws Exception {
-        // Nulo faz o servico aplicar o padrao; uma excecao aqui viraria 500 para
-        // uma entrada que o usuario simplesmente digitou errado.
+        // Nulo faz o serviço aplicar o padrão; uma exceção aqui viraria 500 para
+        // uma entrada que o usuário simplesmente digitou errado.
         assertThat(de("{\"duracaoMinutos\":\"abc\"}").inteiro("duracaoMinutos")).isNull();
     }
 
@@ -67,8 +67,8 @@ class AcaoTelaRequestTest {
     @Test
     @DisplayName("texto so de espacos equivale a ausente")
     void textoEmBranco() throws Exception {
-        // Distinguir "" de null aqui evitaria que o servidor aplicasse o padrao;
-        // tratar ambos como ausente e o comportamento util.
+        // Distinguir "" de null aqui evitaria que o servidor aplicasse o padrão;
+        // tratar ambos como ausente é o comportamento útil.
         assertThat(de("{\"cpf\":\"   \"}").texto("cpf")).isNull();
         assertThat(de("{}").texto("cpf")).isNull();
         assertThat(de("{\"cpf\":null}").texto("cpf")).isNull();
@@ -98,7 +98,7 @@ class AcaoTelaRequestTest {
                 br.com.cooperativa.votacao.api.ui.dto.ItemTela.inputData(
                         "idCampoData", "Campo data", "01/01/2000");
 
-        // O tipo faz parte do catalogo documentado no Anexo 1, ainda que nenhuma
+        // O tipo faz parte do catálogo documentado no Anexo 1, ainda que nenhuma
         // tela atual o utilize; deixa-lo sem teste esconderia uma quebra futura.
         assertThat(item.tipo())
                 .isEqualTo(br.com.cooperativa.votacao.api.ui.dto.enums.TipoItem.INPUT_DATA);
@@ -112,7 +112,7 @@ class AcaoTelaRequestTest {
     void camposImutaveis() throws Exception {
         var campos = de("{\"cpf\":\"1\"}").getCampos();
 
-        // Devolver a colecao interna deixaria qualquer consumidor alterar o
+        // Devolver a coleção interna deixaria qualquer consumidor alterar o
         // estado do objeto pelas costas de quem o construiu.
         assertThatThrownBy(() -> campos.put("outro", "x"))
                 .isInstanceOf(UnsupportedOperationException.class);

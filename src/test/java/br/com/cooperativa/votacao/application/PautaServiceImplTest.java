@@ -43,7 +43,7 @@ class PautaServiceImplTest {
 
         assertThat(pauta.getTitulo()).isEqualTo("Reforma do estatuto");
         assertThat(pauta.getDescricao()).isEqualTo("Artigos 12 a 18.");
-        // Sem o Clock injetado, este valor seria o tempo real e o teste nao
+        // Sem o Clock injetado, este valor seria o tempo real e o teste não
         // conseguiria afirmar nada sobre ele.
         assertThat(pauta.getCriadaEm()).isEqualTo(AGORA);
         assertThat(pauta.getId()).isNotNull();
@@ -63,8 +63,8 @@ class PautaServiceImplTest {
         assertThat(pagina.pagina()).isEqualTo(1);
         assertThat(pagina.tamanho()).isEqualTo(2);
         assertThat(pagina.totalElementos()).isEqualTo(7);
-        // 7 elementos em paginas de 2 exigem 4 paginas: e o arredondamento para
-        // cima que impede a ultima pagina de ser ignorada pelo cliente.
+        // 7 elementos em páginas de 2 exigem 4 páginas: é o arredondamento para
+        // cima que impede a última pagina de ser ignorada pelo cliente.
         assertThat(pagina.totalPaginas()).isEqualTo(4);
         assertThat(pagina.ultima()).isFalse();
     }
@@ -86,7 +86,7 @@ class PautaServiceImplTest {
         var servico = servico();
 
         // Traduzir aqui evita que cada chamador precise decidir o que fazer com
-        // um Optional vazio — e garante o mesmo 404 em todas as superficies.
+        // um Optional vazio — e garante o mesmo 404 em todas as superfícies.
         assertThatThrownBy(() -> servico.buscar(id))
                 .isInstanceOf(RecursoNaoEncontradoException.class)
                 .hasMessageContaining(id.toString());

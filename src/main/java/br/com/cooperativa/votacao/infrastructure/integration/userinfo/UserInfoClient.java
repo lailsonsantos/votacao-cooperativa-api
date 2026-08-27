@@ -22,11 +22,11 @@ public class UserInfoClient implements ConsultaAptidaoParaVotar {
     private final UserInfoProperties properties;
 
     /**
-     * Consulta a situacao de um CPF no servico externo.
+     * Consulta a situação de um CPF no serviço externo.
      *
-     * @param cpf CPF ja validado nos digitos verificadores
-     * @return a resposta do servico, ou vazio se o CPF for desconhecido
-     * @throws RestClientException se o servico estiver indisponivel apos as tentativas
+     * @param cpf CPF já validado nos dígitos verificadores
+     * @return a resposta do serviço, ou vazio se o CPF for desconhecido
+     * @throws RestClientException se o serviço estiver indisponível após as tentativas
      */
     @Override
     @Retry(name = INSTANCIA)
@@ -42,22 +42,22 @@ public class UserInfoClient implements ConsultaAptidaoParaVotar {
                         .onStatus(
                                 status -> status.value() == 404,
                                 (request, response) -> {
-                                    // Nao lanca: CPF desconhecido e resposta valida do
-                                    // contrato e sera representado por Optional vazio.
+                                    // Não lança: CPF desconhecido é resposta válida do
+                                    // contrato e será representado por Optional vazio.
                                 })
                         .body(UserInfoResponse.class);
 
-        // O enum do fornecedor nao atravessa a fronteira: a porta expressa apenas
-        // a decisao que o dominio precisa tomar.
+        // O enum do fornecedor não atravessa a fronteira: a porta expressa apenas
+        // a decisão que o domínio precisa tomar.
         return Optional.ofNullable(resposta).map(r -> new AptidaoParaVotar(r.podeVotar()));
     }
 
     /**
-     * Fallback acionado quando o servico externo esta indisponivel.
+     * Fallback acionado quando o serviço externo está indisponível.
      *
      * @param cpf CPF consultado
      * @param erro falha que disparou o fallback
-     * @return uma resposta sintetica coerente com a configuracao vigente
+     * @return uma resposta sintetica coerente com a configuração vigente
      */
     @SuppressWarnings("unused")
     private Optional<AptidaoParaVotar> consultarFallback(Cpf cpf, Throwable erro) {

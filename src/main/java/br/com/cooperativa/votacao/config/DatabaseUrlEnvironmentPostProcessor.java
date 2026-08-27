@@ -18,10 +18,10 @@ public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProce
     static final String URL_EXPLICITA = "spring.datasource.url";
 
     /**
-     * Converte {@code DATABASE_URL} em propriedades de datasource, se aplicavel.
+     * Converte {@code DATABASE_URL} em propriedades de datasource, se aplicável.
      *
-     * @param environment ambiente em construcao
-     * @param application aplicacao sendo inicializada
+     * @param environment ambiente em construção
+     * @param application aplicação sendo inicializada
      */
     @Override
     public void postProcessEnvironment(
@@ -31,7 +31,7 @@ public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProce
             return;
         }
 
-        // Quem definiu SPRING_DATASOURCE_URL a mao quis outro banco. Nao sobrescrevo.
+        // Quem definiu SPRING_DATASOURCE_URL a mão quis outro banco. Não sobrescrevo.
         if (StringUtils.hasText(environment.getProperty(URL_EXPLICITA))) {
             return;
         }
@@ -43,15 +43,15 @@ public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProce
     }
 
     /**
-     * Traduz uma URI de conexao Postgres para propriedades do Spring.
+     * Traduz uma URI de conexão Postgres para propriedades do Spring.
      *
      * @param databaseUrl URI no formato {@code postgres[ql]://usuario:senha@host:porta/banco}
-     * @return as propriedades de datasource, ou um mapa vazio se a URI nao for reconhecida
+     * @return as propriedades de datasource, ou um mapa vazio se a URI não for reconhecida
      */
     static Map<String, Object> converter(String databaseUrl) {
         Map<String, Object> propriedades = new HashMap<>();
 
-        // Uma URL que ja esteja em formato JDBC nao precisa de conversao: a
+        // Uma URL que já esteja em formato JDBC não precisa de conversão: a
         // plataforma pode te-la fornecido pronta.
         if (databaseUrl.startsWith("jdbc:")) {
             propriedades.put(URL_EXPLICITA, databaseUrl);
@@ -74,14 +74,14 @@ public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProce
             return propriedades;
         }
 
-        // Porta ausente na URI significa a porta padrao do PostgreSQL.
+        // Porta ausente na URI significa a porta padrão do PostgreSQL.
         var porta = uri.getPort() > 0 ? uri.getPort() : 5432;
-        // Com o prefixo postgres:// a URI e hierarquica, entao getPath() nunca vem nulo.
+        // Com o prefixo postgres:// a URI é hierárquica, então getPath() nunca vem nulo.
         var banco = uri.getPath();
 
-        // A query string carrega parametros que nao podem ser perdidos: o
-        // sslmode=require de bancos gerenciados e o mais importante deles, sem o
-        // qual a conexao e recusada.
+        // A query string carrega parametros que não podem ser perdidos: o
+        // sslmode=require de bancos gerenciados é o mais importante deles, sem o
+        // qual a conexão é recusada.
         var query = StringUtils.hasText(uri.getQuery()) ? "?" + uri.getQuery() : "";
 
         propriedades.put(

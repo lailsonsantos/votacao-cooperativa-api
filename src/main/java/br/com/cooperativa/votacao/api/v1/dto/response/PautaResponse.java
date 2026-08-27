@@ -8,10 +8,10 @@ import java.util.UUID;
 @Schema(description = "Pauta cadastrada")
 public record PautaResponse(UUID id, String titulo, String descricao, Instant criadaEm) {
     /**
-     * Converte a entidade de dominio para a representacao da API.
+     * Converte a entidade de domínio para a representação da API.
      *
      * @param pauta entidade de origem
-     * @return a representacao correspondente
+     * @return a representação correspondente
      */
     public static PautaResponse de(Pauta pauta) {
         return new PautaResponse(

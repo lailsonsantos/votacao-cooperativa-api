@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-/** Testes da apuracao do desfecho de uma pauta. */
+/** Testes da apuração do desfecho de uma pauta. */
 @DisplayName("ResultadoVotacao")
 class ResultadoVotacaoTest {
 
@@ -46,7 +46,7 @@ class ResultadoVotacaoTest {
     @Test
     @DisplayName("distingue empate de ausencia de votos")
     void distingueEmpateDeSemVotos() {
-        // Tratar "0 a 0" como empate esconderia do consumidor que ninguem votou.
+        // Tratar "0 a 0" como empate esconderia do consumidor que ninguém votou.
         assertThat(ResultadoVotacao.de(PAUTA, "P", StatusSessao.FECHADA, 0, 0).resultado())
                 .isEqualTo(ResultadoApuracao.SEM_VOTOS);
         assertThat(ResultadoVotacao.de(PAUTA, "P", StatusSessao.FECHADA, 1, 1).resultado())

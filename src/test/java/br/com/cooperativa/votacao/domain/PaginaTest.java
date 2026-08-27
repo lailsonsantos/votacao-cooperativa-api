@@ -40,8 +40,8 @@ class PaginaTest {
     @Test
     @DisplayName("nao divide por zero quando o tamanho e invalido")
     void tamanhoZero() {
-        // Defesa contra um caminho que so surgiria por engano; o importante e nao
-        // derrubar a requisicao com ArithmeticException.
+        // Defesa contra um caminho que só surgiria por engano; o importante é não
+        // derrubar a requisição com ArithmeticException.
         var pagina = new Pagina<>(List.of(), 0, 0, 50);
         assertThat(pagina.totalPaginas()).isZero();
     }
@@ -62,7 +62,7 @@ class PaginaTest {
     @Test
     @DisplayName("conteudo nulo vira lista vazia, e nao NullPointerException")
     void conteudoNulo() {
-        // Defesa da copia defensiva: List.copyOf recusa nulo, entao o caso e
+        // Defesa da copia defensiva: List.copyOf recusa nulo, então o caso e
         // tratado antes. Sem isso, uma porta mal implementada derrubaria a API.
         assertThat(new Pagina<String>(null, 0, 10, 0).conteudo()).isEmpty();
     }

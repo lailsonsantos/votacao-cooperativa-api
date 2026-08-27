@@ -22,11 +22,11 @@ class TelaContratoIT extends IntegracaoTest {
     @Autowired private ObjectMapper objectMapper;
 
     /**
-     * Cadastra uma pauta pela propria camada de telas.
+     * Cadastra uma pauta pela própria camada de telas.
      *
      * @param titulo titulo da pauta
-     * @return o identificador extraido da URL do botao devolvido
-     * @throws Exception se a requisicao falhar
+     * @return o identificador extraido da URL do botão devolvido
+     * @throws Exception se a requisição falhar
      */
     private UUID criarPautaPelaTela(String titulo) throws Exception {
         var corpo =
@@ -44,7 +44,7 @@ class TelaContratoIT extends IntegracaoTest {
                         .getResponse()
                         .getContentAsString();
 
-        // A tela devolvida ja aponta para a acao de abrir sessao da pauta criada;
+        // A tela devolvida já aponta para a ação de abrir sessão da pauta criada;
         // o identificador vem dali, exatamente como o cliente o obteria.
         var url = objectMapper.readTree(corpo).get("botaoOk").get("url").asText();
         var partes = url.split("/");
@@ -64,7 +64,7 @@ class TelaContratoIT extends IntegracaoTest {
                 .andExpect(
                         jsonPath("$.itens[0].url")
                                 .value(Matchers.startsWith("http://localhost:8080/api/v1/telas")))
-                // SELECAO nao carrega botaoOk nem botaoCancelar; campos nulos sao
+                // SELECAO não carrega botaoOk nem botaoCancelar; campos nulos são
                 // omitidos para que o JSON seja identico ao do Anexo 1.
                 .andExpect(jsonPath("$.botaoOk").doesNotExist())
                 .andExpect(jsonPath("$.botaoCancelar").doesNotExist());
@@ -78,7 +78,7 @@ class TelaContratoIT extends IntegracaoTest {
                 .andExpect(jsonPath("$.tipo").value("FORMULARIO"))
                 .andExpect(jsonPath("$.itens[0].tipo").value("TEXTO"))
                 .andExpect(jsonPath("$.itens[0].texto").exists())
-                // Item TEXTO nao pode carregar "id": null.
+                // Item TEXTO não pode carregar "id": null.
                 .andExpect(jsonPath("$.itens[0].id").doesNotExist())
                 .andExpect(jsonPath("$.itens[1].tipo").value("INPUT_TEXTO"))
                 .andExpect(jsonPath("$.itens[1].id").value("titulo"))
@@ -110,8 +110,8 @@ class TelaContratoIT extends IntegracaoTest {
     void fluxoDeVoto() throws Exception {
         var pautaId = criarPautaPelaTela("Pauta para votar");
 
-        // Abrir sessao devolve diretamente a tela de identificacao: a navegacao
-        // e dirigida pelo servidor, sem o cliente decidir para onde ir.
+        // Abrir sessão devolve diretamente a tela de identificação: a navegação
+        // é dirigida pelo servidor, sem o cliente decidir para onde ir.
         mockMvc.perform(
                         post("/api/v1/telas/pautas/{id}/sessao", pautaId)
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -130,7 +130,7 @@ class TelaContratoIT extends IntegracaoTest {
                 .andExpect(jsonPath("$.tipo").value("SELECAO"))
                 .andExpect(jsonPath("$.itens", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$.itens[0].texto").value("Sim"))
-                // O body de cada item carrega tudo que a acao precisa, conforme
+                // O body de cada item carrega tudo que a ação precisa, conforme
                 // o Anexo 1: o cliente apenas reenvia o objeto.
                 .andExpect(jsonPath("$.itens[0].body.opcao").value("SIM"))
                 .andExpect(jsonPath("$.itens[0].body.cpf").value("19839091069"))
@@ -154,7 +154,7 @@ class TelaContratoIT extends IntegracaoTest {
         var pautaId = criarPautaPelaTela("Pauta sem sessao para erro");
 
         // A API REST devolveria 409 aqui. A camada de telas devolve 200 com uma
-        // tela que o cliente sabe renderizar, porque ele nao interpreta status.
+        // tela que o cliente sabe renderizar, porque ele não interpreta status.
         mockMvc.perform(
                         post("/api/v1/telas/pautas/{id}/votos/identificacao", pautaId)
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -176,7 +176,7 @@ class TelaContratoIT extends IntegracaoTest {
                                 .content("{\"duracaoMinutos\":10}"))
                 .andExpect(status().isOk());
 
-        // Aqui o corpo e um mapa aberto, nao da pra usar @CPF. Quem valida e o
+        // Aqui o corpo é um mapa aberto, não dá pra usar @CPF. Quem válida e o
         // objeto Cpf, e o erro vira tela.
         mockMvc.perform(
                         post("/api/v1/telas/pautas/{id}/votos/identificacao", pautaId)

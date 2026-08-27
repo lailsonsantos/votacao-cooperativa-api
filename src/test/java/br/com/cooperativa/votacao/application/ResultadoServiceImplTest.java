@@ -49,10 +49,10 @@ class ResultadoServiceImplTest {
     }
 
     /**
-     * Monta o servico com o relogio posicionado em um instante especifico.
+     * Monta o serviço com o relógio posicionado em um instante específico.
      *
-     * @param agora instante que o servico enxergara como atual
-     * @return o servico pronto para uso
+     * @param agora instante que o serviço enxergara como atual
+     * @return o serviço pronto para uso
      */
     private ResultadoServiceImpl servicoEm(Instant agora) {
         return new ResultadoServiceImpl(
@@ -62,9 +62,9 @@ class ResultadoServiceImplTest {
     /**
      * Cria uma linha de contagem como a consulta agregada devolveria.
      *
-     * @param opcao opcao votada
+     * @param opção opção votada
      * @param total quantidade de votos
-     * @return a projecao correspondente
+     * @return a projeção correspondente
      */
     private ContagemVotos contagem(OpcaoVoto opcao, long total) {
         return new ContagemVotos() {
@@ -106,7 +106,7 @@ class ResultadoServiceImplTest {
         servico.apurar(pauta.getId());
         servico.apurar(pauta.getId());
 
-        // Cachear aqui congelaria o placar durante a votacao.
+        // Cachear aqui congelaria o placar durante a votação.
         verify(votoRepository, times(2)).contarPorOpcao(sessao.getId());
         assertThat(cacheManager.getCache(CacheConfig.CACHE_RESULTADO).get(pauta.getId())).isNull();
     }
@@ -122,7 +122,7 @@ class ResultadoServiceImplTest {
         var primeiro = servico.apurar(pauta.getId());
         var segundo = servico.apurar(pauta.getId());
 
-        // Uma unica consulta para duas apuracoes: o resultado fechado e imutavel.
+        // Uma única consulta para duas apurações: o resultado fechado é imutável.
         verify(votoRepository, times(1)).contarPorOpcao(sessao.getId());
         assertThat(primeiro).isEqualTo(segundo);
         assertThat(primeiro.resultado()).isEqualTo(ResultadoApuracao.REPROVADA);
@@ -136,7 +136,7 @@ class ResultadoServiceImplTest {
         when(votoRepository.contarPorOpcao(sessao.getId()))
                 .thenReturn(List.of(contagem(OpcaoVoto.SIM, 1)));
 
-        // Cache ausente nao pode derrubar a apuracao: e otimizacao, nao requisito.
+        // Cache ausente não pode derrubar a apuração: é otimização, não requisito.
         var semCache =
                 new ResultadoServiceImpl(
                         votoRepository,
@@ -167,7 +167,7 @@ class ResultadoServiceImplTest {
                 .thenReturn(List.of(contagem(OpcaoVoto.SIM, 4)));
 
         servicoEm(ABERTURA.plusSeconds(600)).apurar(pauta.getId());
-        // Instancia nova, mesmo cache: simula outra requisicao no mesmo processo.
+        // Instância nova, mesmo cache: simula outra requisição no mesmo processo.
         var outra = servicoEm(ABERTURA.plusSeconds(700)).apurar(pauta.getId());
 
         verify(votoRepository, times(1)).contarPorOpcao(sessao.getId());

@@ -19,7 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-/** Testes da verificacao do direito de voto (Tarefa Bonus 1). */
+/** Testes da verificação do direito de voto (Tarefa Bonus 1). */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("AssociadoValidator")
 class AssociadoValidatorTest {
@@ -29,7 +29,7 @@ class AssociadoValidatorTest {
     @Mock private ConsultaAptidaoParaVotar client;
 
     /**
-     * Monta o validador com a integracao ligada ou desligada.
+     * Monta o validador com a integração ligada ou desligada.
      *
      * @param habilitada se a consulta remota deve acontecer
      * @return o validador configurado
@@ -72,8 +72,8 @@ class AssociadoValidatorTest {
     void naoConsultaQuandoDesligado() {
         assertThatCode(() -> validador(false).validarPodeVotar(CPF)).doesNotThrowAnyException();
 
-        // Este e o caminho que permite executar e avaliar a aplicacao com o
-        // servico externo do enunciado fora do ar.
+        // Este é o caminho que permite executar e avaliar a aplicação com o
+        // serviço externo do enunciado fora do ar.
         verify(client, never()).consultar(CPF);
     }
 }

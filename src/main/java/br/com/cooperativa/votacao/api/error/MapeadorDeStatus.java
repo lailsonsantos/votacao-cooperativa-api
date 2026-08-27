@@ -19,17 +19,17 @@ final class MapeadorDeStatus {
         STATUS.put(TipoErro.REGRA_VIOLADA, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    /** Classe utilitaria: nao deve ser instanciada. */
+    /** Classe utilitária: não deve ser instanciada. */
     private MapeadorDeStatus() {}
 
     /**
      * Devolve o status HTTP correspondente a natureza da falha.
      *
-     * @param tipo natureza da falha declarada pelo dominio
+     * @param tipo natureza da falha declarada pelo domínio
      * @return o status HTTP correspondente
      */
     static HttpStatus de(TipoErro tipo) {
-        // Todas as naturezas estao mapeadas; o default existe para que a inclusao
+        // Todas as naturezas estão mapeadas; o default existe para que a inclusão
         // de um valor novo no enum degrade para 500 em vez de lancar NPE.
         return STATUS.getOrDefault(tipo, HttpStatus.INTERNAL_SERVER_ERROR);
     }

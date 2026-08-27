@@ -19,8 +19,8 @@ public class AssociadoValidatorImpl implements AssociadoValidator {
 
     @Override
     public void validarPodeVotar(Cpf cpf) {
-        // Integracao desligada: qualquer CPF valido vota. Serve pra rodar a
-        // aplicacao sem depender do servico externo.
+        // Integração desligada: qualquer CPF válido vota. Serve pra rodar a
+        // aplicação sem depender do serviço externo.
         if (!properties.enabled()) {
             log.debug(
                     "Verificacao externa de aptidao desabilitada; liberando o voto de {}.",

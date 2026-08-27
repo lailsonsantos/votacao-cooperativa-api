@@ -33,8 +33,8 @@ class UserInfoFallbackIT {
         wireMock = new WireMockServer(WireMockConfiguration.options().dynamicPort());
         wireMock.start();
 
-        // Servico que nunca responde a tempo: reproduz exatamente a situacao do
-        // endpoint do enunciado, que esta fora do ar.
+        // Serviço que nunca responde a tempo: reproduz exatamente a situação do
+        // endpoint do enunciado, que está fora do ar.
         wireMock.stubFor(
                 get(urlPathMatching("/users/.*"))
                         .willReturn(aResponse().withFixedDelay(5_000).withStatus(200)));
@@ -46,9 +46,9 @@ class UserInfoFallbackIT {
     }
 
     /**
-     * Aponta a aplicacao para o stub e liga a integracao neste teste.
+     * Aponta a aplicação para o stub e liga a integração neste teste.
      *
-     * @param registry registro de propriedades dinamicas do Spring Test
+     * @param registry registro de propriedades dinâmicas do Spring Test
      */
     @DynamicPropertySource
     static void configurar(DynamicPropertyRegistry registry) {
@@ -64,8 +64,8 @@ class UserInfoFallbackIT {
     void aplicaFallbackConfigurado() {
         var resposta = client.consultar(Cpf.de("19839091069"));
 
-        // A assembleia nao pode ser interrompida pela indisponibilidade de um
-        // terceiro. O comportamento e configuravel; aqui verifica-se o padrao.
+        // A assembleia não pode ser interrompida pela indisponibilidade de um
+        // terceiro. O comportamento é configurável; aqui verifica-se o padrão.
         assertThat(resposta).isPresent();
         assertThat(resposta.get().podeVotar()).isTrue();
     }

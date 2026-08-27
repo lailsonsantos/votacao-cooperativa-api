@@ -10,7 +10,7 @@ import java.util.List;
 public record Tela(
         TipoTela tipo, String titulo, List<?> itens, Botao botaoOk, Botao botaoCancelar) {
 
-    /** Copia defensiva das colecoes recebidas. */
+    /** Copia defensiva das coleções recebidas. */
     public Tela {
         itens = itens == null ? null : List.copyOf(itens);
     }
@@ -20,8 +20,8 @@ public record Tela(
      *
      * @param titulo titulo da tela
      * @param itens campos e textos a exibir
-     * @param botaoOk acao principal
-     * @param botaoCancelar acao secundaria, pode ser nula
+     * @param botaoOk ação principal
+     * @param botaoCancelar ação secundaria, pode ser nula
      * @return a tela correspondente
      */
     public static Tela formulario(
@@ -33,7 +33,7 @@ public record Tela(
      * Cria uma tela do tipo SELECAO.
      *
      * @param titulo titulo da tela
-     * @param itens opcoes disponiveis
+     * @param itens opções disponíveis
      * @return a tela correspondente
      */
     public static Tela selecao(String titulo, List<ItemSelecao> itens) {

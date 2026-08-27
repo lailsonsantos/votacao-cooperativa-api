@@ -6,30 +6,30 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record Botao(String texto, String url, Map<String, Object> body) {
 
-    /** Copia defensiva das colecoes recebidas. */
+    /** Copia defensiva das coleções recebidas. */
     public Botao {
-        // body nulo e significativo: distingue navegacao de acao.
+        // body nulo é significativo: distingue navegação de ação.
         body = body == null ? null : Map.copyOf(body);
     }
 
     /**
-     * Cria um botao com corpo fixo.
+     * Cria um botão com corpo fixo.
      *
-     * @param texto rotulo do botao
-     * @param url destino absoluto da acao
+     * @param texto rótulo do botão
+     * @param url destino absoluto da ação
      * @param body dados fixos a enviar
-     * @return o botao correspondente
+     * @return o botão correspondente
      */
     public static Botao de(String texto, String url, Map<String, Object> body) {
         return new Botao(texto, url, body);
     }
 
     /**
-     * Cria um botao de navegacao, sem corpo fixo.
+     * Cria um botão de navegação, sem corpo fixo.
      *
-     * @param texto rotulo do botao
+     * @param texto rótulo do botão
      * @param url destino absoluto
-     * @return o botao correspondente
+     * @return o botão correspondente
      */
     public static Botao navegacao(String texto, String url) {
         return new Botao(texto, url, null);

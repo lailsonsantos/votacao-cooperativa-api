@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-/** Testes de integracao da API REST v1, ponta a ponta sobre PostgreSQL real. */
+/** Testes de integração da API REST v1, ponta a ponta sobre PostgreSQL real. */
 @DisplayName("API v1")
 class VotacaoApiIT extends IntegracaoTest {
 
@@ -36,7 +36,7 @@ class VotacaoApiIT extends IntegracaoTest {
      *
      * @param titulo titulo da pauta
      * @return o identificador da pauta criada
-     * @throws Exception se a requisicao falhar
+     * @throws Exception se a requisição falhar
      */
     private UUID criarPauta(String titulo) throws Exception {
         var resposta =
@@ -58,11 +58,11 @@ class VotacaoApiIT extends IntegracaoTest {
     }
 
     /**
-     * Abre a sessao de uma pauta.
+     * Abre a sessão de uma pauta.
      *
      * @param pautaId identificador da pauta
-     * @param minutos duracao solicitada
-     * @throws Exception se a requisicao falhar
+     * @param minutos duração solicitada
+     * @throws Exception se a requisição falhar
      */
     private void abrirSessao(UUID pautaId, int minutos) throws Exception {
         mockMvc.perform(
@@ -89,8 +89,8 @@ class VotacaoApiIT extends IntegracaoTest {
                 .andExpect(jsonPath("$.votosNao").value(1))
                 .andExpect(jsonPath("$.totalVotos").value(3))
                 .andExpect(jsonPath("$.resultado").value("APROVADA"))
-                // A sessao segue aberta, entao o resultado precisa vir marcado
-                // como parcial: o numero ainda pode mudar.
+                // A sessão segue aberta, então o resultado precisa vir marcado
+                // como parcial: o número ainda pode mudar.
                 .andExpect(jsonPath("$.parcial").value(true));
     }
 
@@ -107,7 +107,7 @@ class VotacaoApiIT extends IntegracaoTest {
                 .andExpect(jsonPath("$.title").value("Voto duplicado"))
                 .andExpect(jsonPath("$.status").value(409))
                 .andExpect(jsonPath("$.correlationId").exists())
-                // O CPF nao pode voltar completo na mensagem de erro.
+                // O CPF não pode voltar completo na mensagem de erro.
                 .andExpect(
                         jsonPath("$.detail")
                                 .value(org.hamcrest.Matchers.containsString("198******69")));
@@ -135,7 +135,7 @@ class VotacaoApiIT extends IntegracaoTest {
         mockMvc.perform(post("/api/v1/pautas/{id}/sessao", pautaId))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.status").value("ABERTA"))
-                // 60 segundos exatos; a tolerancia cobre o tempo de execucao.
+                // 60 segundos exatos; a tolerância cobre o tempo de execução.
                 .andExpect(
                         jsonPath("$.segundosRestantes")
                                 .value(org.hamcrest.Matchers.lessThanOrEqualTo(60)));
@@ -157,7 +157,7 @@ class VotacaoApiIT extends IntegracaoTest {
         var pautaId = criarPauta("Pauta com cpf invalido");
         abrirSessao(pautaId, 5);
 
-        // 11111111111 tem onze digitos mas nao e CPF valido. O @CPF pega na borda
+        // 11111111111 tem onze dígitos mas não é CPF válido. O @CPF pega na borda
         // e a resposta diz qual campo falhou.
         votar(pautaId, "11111111111", "SIM")
                 .andExpect(status().isBadRequest())
@@ -205,7 +205,7 @@ class VotacaoApiIT extends IntegracaoTest {
                 .andExpect(jsonPath("$.conteudo", org.hamcrest.Matchers.hasSize(2)))
                 .andExpect(jsonPath("$.pagina").value(0))
                 .andExpect(jsonPath("$.tamanho").value(2))
-                // O total vem de uma contagem propria, nao do tamanho da fatia.
+                // O total vem de uma contagem própria, não do tamanho da fatia.
                 .andExpect(
                         jsonPath("$.totalElementos")
                                 .value(org.hamcrest.Matchers.greaterThanOrEqualTo(2)))
@@ -228,7 +228,7 @@ class VotacaoApiIT extends IntegracaoTest {
     @Test
     @DisplayName("rota inexistente devolve 404, nao 500")
     void rotaInexistente() throws Exception {
-        // Sem tratador dedicado, isto caia no catch-all e virava 500: um erro do
+        // Sem tratador dedicado, isto caía no catch-all e virava 500: um erro do
         // cliente reportado como falha do servidor.
         mockMvc.perform(get("/api/v1/inexistente"))
                 .andExpect(status().isNotFound())
@@ -296,7 +296,7 @@ class VotacaoApiIT extends IntegracaoTest {
                 executor.submit(
                         () -> {
                             try {
-                                // Todas as threads partem juntas: e a largada
+                                // Todas as threads partem juntas: é a largada
                                 // simultanea que cria a corrida real entre o
                                 // SELECT e o INSERT que a constraint precisa vencer.
                                 largada.await();
@@ -319,7 +319,7 @@ class VotacaoApiIT extends IntegracaoTest {
                                     conflitos.incrementAndGet();
                                 }
                             } catch (Exception e) {
-                                // Falhas inesperadas aparecem como divergencia na
+                                // Falhas inesperadas aparecem como divergência na
                                 // soma verificada abaixo.
                             } finally {
                                 chegada.countDown();
@@ -331,7 +331,7 @@ class VotacaoApiIT extends IntegracaoTest {
             assertThat(chegada.await(60, TimeUnit.SECONDS)).isTrue();
         }
 
-        // Este e o teste que prova que a unicidade sobrevive a concorrencia real.
+        // Este é o teste que prova que a unicidade sobrevive a concorrência real.
         // Uma checagem "select antes de insert" falharia aqui de forma intermitente.
         assertThat(sucessos.get()).isEqualTo(1);
         assertThat(sucessos.get() + conflitos.get()).isEqualTo(threads);
@@ -347,9 +347,9 @@ class VotacaoApiIT extends IntegracaoTest {
      *
      * @param pautaId identificador da pauta
      * @param cpf CPF do associado
-     * @param opcao opcao escolhida
-     * @return o resultado da requisicao, para encadeamento de assercoes
-     * @throws Exception se a requisicao falhar
+     * @param opção opção escolhida
+     * @return o resultado da requisição, para encadeamento de asserções
+     * @throws Exception se a requisição falhar
      */
     private org.springframework.test.web.servlet.ResultActions votar(
             UUID pautaId, String cpf, String opcao) throws Exception {
@@ -364,11 +364,11 @@ class VotacaoApiIT extends IntegracaoTest {
     }
 
     /**
-     * Recupera o identificador da sessao de uma pauta pela API.
+     * Recupera o identificador da sessão de uma pauta pela API.
      *
      * @param pautaId identificador da pauta
-     * @return o identificador da sessao
-     * @throws Exception se a requisicao falhar
+     * @return o identificador da sessão
+     * @throws Exception se a requisição falhar
      */
     private UUID buscarSessaoId(UUID pautaId) throws Exception {
         var corpo =

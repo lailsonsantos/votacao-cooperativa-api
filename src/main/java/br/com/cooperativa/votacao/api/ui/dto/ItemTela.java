@@ -8,7 +8,7 @@ public record ItemTela(TipoItem tipo, String texto, String id, String titulo, Ob
     /**
      * Cria um item de texto somente leitura.
      *
-     * @param texto conteudo a exibir
+     * @param texto conteúdo a exibir
      * @return o item correspondente
      */
     public static ItemTela texto(String texto) {
@@ -18,8 +18,8 @@ public record ItemTela(TipoItem tipo, String texto, String id, String titulo, Ob
     /**
      * Cria um campo de entrada de texto.
      *
-     * @param id chave com que o valor sera enviado no POST
-     * @param titulo rotulo do campo
+     * @param id chave com que o valor será enviado no POST
+     * @param titulo rótulo do campo
      * @param valor valor inicial, pode ser nulo
      * @return o item correspondente
      */
@@ -28,10 +28,10 @@ public record ItemTela(TipoItem tipo, String texto, String id, String titulo, Ob
     }
 
     /**
-     * Cria um campo de entrada numerica.
+     * Cria um campo de entrada numérica.
      *
-     * @param id chave com que o valor sera enviado no POST
-     * @param titulo rotulo do campo
+     * @param id chave com que o valor será enviado no POST
+     * @param titulo rótulo do campo
      * @param valor valor inicial
      * @return o item correspondente
      */
@@ -42,8 +42,8 @@ public record ItemTela(TipoItem tipo, String texto, String id, String titulo, Ob
     /**
      * Cria um campo de entrada de data.
      *
-     * @param id chave com que o valor sera enviado no POST
-     * @param titulo rotulo do campo
+     * @param id chave com que o valor será enviado no POST
+     * @param titulo rótulo do campo
      * @param valor valor inicial no formato {@code dd/MM/yyyy}
      * @return o item correspondente
      */

@@ -54,8 +54,8 @@ public class ResultadoServiceImpl implements ResultadoService {
     /**
      * Executa a contagem agregada e monta o resultado.
      *
-     * @param sessao sessao a apurar
-     * @param status situacao da sessao no momento da apuracao
+     * @param sessão sessão a apurar
+     * @param status situação da sessão no momento da apuração
      * @return o resultado com o desfecho calculado
      */
     private ResultadoVotacao contar(SessaoVotacao sessao, StatusSessao status) {
@@ -89,7 +89,7 @@ public class ResultadoServiceImpl implements ResultadoService {
     }
 
     /**
-     * Guarda o resultado no cache, se o cache estiver disponivel.
+     * Guarda o resultado no cache, se o cache estiver disponível.
      *
      * @param cache cache de resultados, possivelmente nulo
      * @param pautaId chave de cache
