@@ -93,7 +93,18 @@ sem senha).
 
 No Windows, use `mvnw.cmd` no lugar de `./mvnw`.
 
-### Opção 3 — suíte completa de testes
+### Opção 3 — pelo IntelliJ IDEA
+
+O repositório versiona as configurações de execução em `.run/`, então elas
+aparecem prontas na lista do IDE — incluindo **API - perfil local (H2)**, que
+sobe a aplicação sem nenhuma dependência externa.
+
+Há um passo que causa confusão e não é opcional: **habilitar o processamento de
+anotações**, sem o que o Lombok não gera nada e a IDE mostra o projeto em
+vermelho mesmo com o Maven compilando. O guia completo, com esse e os demais
+pontos, está em [`docs/intellij.md`](docs/intellij.md).
+
+### Opção 4 — suíte completa de testes
 
 **Pré-requisito:** Docker (os testes de integração sobem um PostgreSQL real via
 Testcontainers).
@@ -121,6 +132,8 @@ k6 run perf/k6/votacao.js        # teste de carga (requer k6 instalado)
 
 Uma coleção de requisições prontas está em [`docs/api.http`](docs/api.http),
 executável direto no IntelliJ IDEA ou no VS Code com a extensão REST Client.
+
+Rodando pelo IntelliJ? Veja [`docs/intellij.md`](docs/intellij.md).
 
 ---
 

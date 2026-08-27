@@ -1,0 +1,21 @@
+<component name="ProjectRunConfigurationManager">
+  <!--
+    Sobe a aplicacao sem nenhuma dependencia externa: H2 em memoria e a
+    integracao de CPF desligada. E a forma mais rapida de ter a API no ar, e a
+    unica que funciona sem Docker.
+
+    Swagger:  http://localhost:8080/swagger-ui.html
+    Console:  http://localhost:8080/h2-console
+              JDBC jdbc:h2:mem:votacao, usuario sa, sem senha.
+  -->
+  <configuration default="false" name="API - perfil local (H2)"
+                 type="SpringBootApplicationConfigurationType"
+                 factoryName="Spring Boot" nameIsGenerated="false">
+    <module name="votacao"/>
+    <option name="SPRING_BOOT_MAIN_CLASS" value="br.com.cooperativa.votacao.VotacaoApplication"/>
+    <option name="ACTIVE_PROFILES" value="local"/>
+    <method v="2">
+      <option name="Make" enabled="true"/>
+    </method>
+  </configuration>
+</component>

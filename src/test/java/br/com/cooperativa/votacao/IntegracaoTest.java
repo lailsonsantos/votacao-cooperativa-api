@@ -35,6 +35,15 @@ public abstract class IntegracaoTest {
                     .withReuse(true);
 
     static {
+        // O Docker Engine 29 elevou a versao minima da API aceita e recusa com
+        // HTTP 400 a versao 1.32 que o docker-java negocia por padrao. Definir a
+        // propriedade aqui, e nao apenas na configuracao do Failsafe, faz a suite
+        // funcionar tambem quando um teste e executado direto pela IDE — que e
+        // como se depura um teste que falhou.
+        //
+        // O docker-java le esta propriedade na primeira criacao de cliente, que
+        // acontece em start(); por isso a atribuicao precede a chamada.
+        System.setProperty("api.version", "1.44");
         POSTGRES.start();
     }
 
