@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Log legivel para desenvolvimento.
+
+  O padrao inclui o correlationId do MDC entre colchetes: e ele que liga o erro
+  devolvido ao cliente ao rastro completo da requisicao no arquivo de log.
+
+  O conversor "mask" apaga CPFs de qualquer mensagem antes da gravacao. CPF e
+  dado pessoal sob a LGPD, e registra-lo em log criaria uma base de dados
+  pessoais paralela, fora de qualquer controle de acesso.
+-->
+<configuration>
+
+  <conversionRule conversionWord="mask"
+                  converterClass="br.com.cooperativa.votacao.config.MascaraCpfConverter"/>
+
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} %-5level [%X{correlationId:-sem-correlacao}] %logger{36} - %mask%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="INFO">
+    <appender-ref ref="CONSOLE"/>
+  </root>
+
+</configuration>

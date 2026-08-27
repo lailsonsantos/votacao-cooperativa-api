@@ -1,0 +1,27 @@
+# ---------------------------------------------------------------------------
+# Perfil de teste. A URL do banco e injetada em tempo de execucao pelo
+# Testcontainers; aqui ficam apenas os ajustes de comportamento.
+# ---------------------------------------------------------------------------
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    clean-disabled: false
+
+app:
+  callback:
+    base-url: http://localhost:8080
+  sessao:
+    duracao-padrao-minutos: 1
+  user-info:
+    # Cada teste que exercita a integracao aponta esta URL para o WireMock.
+    # Desligada por padrao para que os demais testes nao toquem a rede.
+    enabled: false
+    base-url: http://localhost:0
+
+logging:
+  level:
+    br.com.cooperativa.votacao: INFO
+    org.testcontainers: WARN
+    com.github.dockerjava: WARN

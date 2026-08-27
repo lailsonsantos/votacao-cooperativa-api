@@ -1,0 +1,33 @@
+# ---------------------------------------------------------------------------
+# Blueprint do Render — alternativa sem custo ao Heroku.
+#
+# O Render provisiona o servico e o banco a partir deste arquivo. Conecte o
+# repositorio em https://render.com e aplique o blueprint.
+# ---------------------------------------------------------------------------
+services:
+  - type: web
+    name: votacao-cooperativa-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      # O Render injeta a URL do banco no formato JDBC diretamente.
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: votacao-banco
+          property: connectionString
+      - key: APP_CALLBACK_BASE_URL
+        sync: false   # Preencher com a URL publica apos o primeiro deploy.
+      - key: APP_CORS_ALLOWED_ORIGINS
+        sync: false   # URL do frontend.
+      - key: APP_USER_INFO_ENABLED
+        value: "false"
+
+databases:
+  - name: votacao-banco
+    databaseName: votacao
+    user: votacao
+    plan: free

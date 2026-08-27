@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Log estruturado em JSON para os ambientes de nuvem.
+
+  Uma linha por evento, com o MDC inteiro promovido a campos de primeiro nivel,
+  de modo que o correlationId seja pesquisavel diretamente no agregador de logs
+  (ELK, CloudWatch, Datadog) sem necessidade de parser customizado.
+-->
+<configuration>
+
+  <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+      <includeMdcKeyName>correlationId</includeMdcKeyName>
+      <customFields>{"aplicacao":"votacao-cooperativa-api"}</customFields>
+      <fieldNames>
+        <timestamp>timestamp</timestamp>
+        <message>mensagem</message>
+        <logger>origem</logger>
+        <level>nivel</level>
+      </fieldNames>
+    </encoder>
+  </appender>
+
+  <logger name="br.com.cooperativa.votacao" level="INFO"/>
+
+  <root level="INFO">
+    <appender-ref ref="JSON"/>
+  </root>
+
+</configuration>

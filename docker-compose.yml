@@ -1,0 +1,57 @@
+# ---------------------------------------------------------------------------
+# Stack completa para execucao local: PostgreSQL + API.
+#
+# O enunciado avisa que a aplicacao sera executada pelo avaliador. Este arquivo
+# existe para que `docker compose up --build` seja tudo o que ele precisa
+# digitar, sem instalar Java, Maven ou banco na maquina.
+# ---------------------------------------------------------------------------
+services:
+
+  banco:
+    image: postgres:16-alpine
+    container_name: votacao-banco
+    environment:
+      POSTGRES_DB: votacao
+      POSTGRES_USER: votacao
+      POSTGRES_PASSWORD: votacao
+    ports:
+      - "5432:5432"
+    volumes:
+      - dados-postgres:/var/lib/postgresql/data
+    healthcheck:
+      # A API so sobe depois que o banco aceita conexoes; sem isso o Flyway
+      # falharia na primeira tentativa em uma maquina lenta.
+      test: ["CMD-SHELL", "pg_isready -U votacao -d votacao"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: .
+    container_name: votacao-api
+    depends_on:
+      banco:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://banco:5432/votacao
+      SPRING_DATASOURCE_USERNAME: votacao
+      SPRING_DATASOURCE_PASSWORD: votacao
+      # Dica do enunciado: o dominio das URLs de callback e configuravel. Ao
+      # testar de um celular na mesma rede, troque por http://SEU_IP:8080.
+      APP_CALLBACK_BASE_URL: ${APP_CALLBACK_BASE_URL:-http://localhost:8080}
+      APP_CORS_ALLOWED_ORIGINS: ${APP_CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:4173}
+      # Tarefa Bonus 1: o servico do enunciado esta fora do ar. Desligado por
+      # padrao para que a avaliacao nao dependa de um terceiro indisponivel.
+      APP_USER_INFO_ENABLED: ${APP_USER_INFO_ENABLED:-false}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+
+volumes:
+  dados-postgres:

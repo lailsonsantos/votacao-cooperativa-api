@@ -1,0 +1,31 @@
+{
+  "name": "votacao-cooperativa-api",
+  "description": "API de gerenciamento de sessoes de votacao em assembleias cooperativas",
+  "repository": "https://github.com/lailsonsantos/votacao-cooperativa-api",
+  "keywords": ["java", "spring-boot", "postgresql", "server-driven-ui"],
+  "stack": "heroku-24",
+  "buildpacks": [{ "url": "heroku/java" }],
+  "addons": [{ "plan": "heroku-postgresql:essential-0" }],
+  "env": {
+    "SPRING_PROFILES_ACTIVE": {
+      "description": "Perfil do Spring. Use 'prod' na nuvem.",
+      "value": "prod"
+    },
+    "APP_CALLBACK_BASE_URL": {
+      "description": "URL publica da aplicacao, usada para montar as URLs das telas do Anexo 1. Ajuste apos o primeiro deploy.",
+      "value": "https://SEU-APP.herokuapp.com"
+    },
+    "APP_CORS_ALLOWED_ORIGINS": {
+      "description": "Origens autorizadas a consumir a API pelo navegador (o frontend React).",
+      "value": "https://SEU-FRONT.herokuapp.com"
+    },
+    "APP_USER_INFO_ENABLED": {
+      "description": "Liga a verificacao externa de CPF (Tarefa Bonus 1). O endpoint do enunciado esta fora do ar; mantenha false salvo se apontar para um stub.",
+      "value": "false"
+    },
+    "APP_SESSAO_DURACAO_PADRAO": {
+      "description": "Duracao padrao da sessao de votacao, em minutos.",
+      "value": "1"
+    }
+  }
+}

@@ -1,0 +1,148 @@
+### ---------------------------------------------------------------------------
+### Colecao de requisicoes da API de Votacao Cooperativa.
+### Roda direto no IntelliJ IDEA e no VS Code (extensao REST Client).
+### ---------------------------------------------------------------------------
+
+@host = http://localhost:8080
+@api = {{host}}/api/v1
+
+### 1. Cadastrar uma pauta
+# @name criarPauta
+POST {{api}}/pautas
+Content-Type: application/json
+
+{
+  "titulo": "Reforma do estatuto social",
+  "descricao": "Atualizacao dos artigos 12 a 18 do estatuto social."
+}
+
+### Guarda o id da pauta criada para as chamadas seguintes.
+@pautaId = {{criarPauta.response.body.id}}
+
+### 2. Listar pautas (paginado)
+GET {{api}}/pautas?page=0&size=10
+
+### 3. Detalhar a pauta
+GET {{api}}/pautas/{{pautaId}}
+
+### 4. Abrir sessao com duracao explicita
+POST {{api}}/pautas/{{pautaId}}/sessao
+Content-Type: application/json
+
+{
+  "duracaoMinutos": 10
+}
+
+### 4b. Abrir sessao SEM corpo -> aplica o default de 1 minuto do enunciado
+POST {{api}}/pautas/{{pautaId}}/sessao
+
+### 5. Consultar a sessao
+GET {{api}}/pautas/{{pautaId}}/sessao
+
+### 6. Registrar um voto
+POST {{api}}/pautas/{{pautaId}}/votos
+Content-Type: application/json
+
+{
+  "associadoId": "19839091069",
+  "opcao": "SIM"
+}
+
+### 7. Segundo voto do mesmo associado -> 409 Voto duplicado
+POST {{api}}/pautas/{{pautaId}}/votos
+Content-Type: application/json
+
+{
+  "associadoId": "19839091069",
+  "opcao": "NAO"
+}
+
+### 8. CPF invalido -> 400, sem tocar o banco
+POST {{api}}/pautas/{{pautaId}}/votos
+Content-Type: application/json
+
+{
+  "associadoId": "11111111111",
+  "opcao": "SIM"
+}
+
+### 9. Voto de outro associado
+POST {{api}}/pautas/{{pautaId}}/votos
+Content-Type: application/json
+
+{
+  "associadoId": "62289608068",
+  "opcao": "NAO"
+}
+
+### 10. Apurar o resultado
+GET {{api}}/pautas/{{pautaId}}/resultado
+
+
+### ===========================================================================
+### Telas do Anexo 1 (Server-Driven UI)
+### ===========================================================================
+
+### 11. Menu inicial -> SELECAO
+GET {{api}}/telas
+
+### 12. Lista de pautas -> SELECAO
+GET {{api}}/telas/pautas
+
+### 13. Formulario de nova pauta -> FORMULARIO
+GET {{api}}/telas/pautas/nova
+
+### 14. Cadastrar pauta pela tela -> devolve a proxima tela
+# @name criarPautaTela
+POST {{api}}/telas/pautas
+Content-Type: application/json
+
+{
+  "titulo": "Aquisicao de nova sede",
+  "descricao": "Compra do imovel da rua das Flores, 120."
+}
+
+### 15. Tela da pauta (varia conforme o estado da sessao)
+GET {{api}}/telas/pautas/{{pautaId}}
+
+### 16. Abrir sessao pela tela -> devolve a tela de identificacao
+POST {{api}}/telas/pautas/{{pautaId}}/sessao
+Content-Type: application/json
+
+{
+  "duracaoMinutos": 10
+}
+
+### 17. Identificar o associado -> devolve SELECAO com Sim/Nao
+POST {{api}}/telas/pautas/{{pautaId}}/votos/identificacao
+Content-Type: application/json
+
+{
+  "cpf": "39053344705"
+}
+
+### 18. Votar pela tela -> devolve a tela de resultado
+POST {{api}}/telas/pautas/{{pautaId}}/votos
+Content-Type: application/json
+
+{
+  "cpf": "39053344705",
+  "opcao": "SIM"
+}
+
+### 19. Tela de resultado
+GET {{api}}/telas/pautas/{{pautaId}}/resultado
+
+
+### ===========================================================================
+### Operacional
+### ===========================================================================
+
+### Health check
+GET {{host}}/actuator/health
+
+### Metricas
+GET {{host}}/actuator/metrics
+
+### Documentacao OpenAPI
+GET {{host}}/v3/api-docs

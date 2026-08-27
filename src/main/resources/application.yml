@@ -1,0 +1,100 @@
+# ---------------------------------------------------------------------------
+# Configuracao base. Todo valor sensivel ou dependente de ambiente vem de
+# variavel de ambiente, com default util para desenvolvimento local.
+# Perfil ativo padrao: "local" (H2 em memoria, sem dependencia externa).
+# ---------------------------------------------------------------------------
+spring:
+  application:
+    name: votacao-cooperativa-api
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+  jackson:
+    default-property-inclusion: non_null
+    deserialization:
+      fail-on-unknown-properties: false
+  jpa:
+    open-in-view: false          # Evita sessao JPA aberta durante a serializacao.
+    hibernate:
+      ddl-auto: validate         # O schema e do Flyway; o Hibernate apenas confere.
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: ${PORT:8080}             # PORT e injetada pela plataforma de nuvem.
+  error:
+    include-message: never       # Mensagens de erro vem do nosso handler, nao do container.
+  compression:
+    enabled: true
+
+app:
+  callback:
+    # Dica explicita do enunciado: o dominio das URLs de callback e configuravel,
+    # para funcionar em emulador, dispositivo fisico e nuvem sem recompilar.
+    base-url: ${APP_CALLBACK_BASE_URL:http://localhost:8080}
+  sessao:
+    # Default de 1 minuto definido no enunciado, em configuracao para nao existir
+    # numero magico no codigo.
+    duracao-padrao-minutos: ${APP_SESSAO_DURACAO_PADRAO:1}
+  cors:
+    allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:4173}
+  user-info:
+    # Tarefa Bonus 1. O endpoint do enunciado esta fora do ar desde o fim do
+    # plano gratuito da Heroku; ver README, secao "Tarefa Bonus 1".
+    base-url: ${APP_USER_INFO_URL:https://user-info.herokuapp.com}
+    enabled: ${APP_USER_INFO_ENABLED:true}
+    fallback-permite-voto: ${APP_USER_INFO_FALLBACK:true}
+    connect-timeout-ms: ${APP_USER_INFO_CONNECT_TIMEOUT:2000}
+    read-timeout-ms: ${APP_USER_INFO_READ_TIMEOUT:3000}
+
+resilience4j:
+  retry:
+    instances:
+      userInfo:
+        max-attempts: 2
+        wait-duration: 200ms
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+        # Retry apenas para falhas transientes. Um 4xx nao melhora com repeticao.
+        retry-exceptions:
+          - org.springframework.web.client.ResourceAccessException
+          - org.springframework.web.client.HttpServerErrorException
+  circuitbreaker:
+    instances:
+      userInfo:
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true            # Necessario para liveness/readiness em nuvem.
+      show-details: when_authorized
+  info:
+    env:
+      enabled: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+  api-docs:
+    path: /v3/api-docs
+
+logging:
+  level:
+    br.com.cooperativa.votacao: ${LOG_LEVEL_APP:INFO}
