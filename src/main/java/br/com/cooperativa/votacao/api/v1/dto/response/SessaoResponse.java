@@ -17,7 +17,7 @@ public record SessaoResponse(
     /**
      * Converte a entidade para a representação da API.
      *
-     * @param sessão entidade de origem
+     * @param sessao entidade de origem
      * @param agora instante de referência, vindo do relógio injetado
      * @return a representação correspondente
      */

@@ -9,7 +9,7 @@ public interface SessaoVotacaoRepository {
     /**
      * Persiste a sessão e confirma a gravação imediatamente.
      *
-     * @param sessão sessão a persistir
+     * @param sessao sessão a persistir
      * @return a sessão persistida
      */
     SessaoVotacao salvarEConfirmar(SessaoVotacao sessao);

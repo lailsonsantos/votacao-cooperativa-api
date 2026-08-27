@@ -7,7 +7,7 @@ spring:
   application:
     name: votacao-cooperativa-api
   lifecycle:
-    # Tempo maximo para drenar as requisições em andamento antes de encerrar.
+    # Tempo máximo para drenar as requisições em andamento antes de encerrar.
     timeout-per-shutdown-phase: 20s
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:local}
@@ -16,9 +16,9 @@ spring:
     deserialization:
       fail-on-unknown-properties: false
   jpa:
-    open-in-view: false          # Evita sessão JPA aberta durante a serializacao.
+    open-in-view: false          # Evita sessão JPA aberta durante a serialização.
     hibernate:
-      ddl-auto: validate         # O schema e do Flyway; o Hibernate apenas confere.
+      ddl-auto: validate         # O schema é do Flyway; o Hibernate apenas confere.
     properties:
       hibernate:
         jdbc:
@@ -41,8 +41,8 @@ server:
 
 app:
   callback:
-    # Dica explícita do enunciado: o domínio das URLs de callback e configuravel,
-    # para funcionar em emulador, dispositivo fisico e nuvem sem recompilar.
+    # Dica explícita do enunciado: o domínio das URLs de callback é configurável,
+    # para funcionar em emulador, dispositivo físico e nuvem sem recompilar.
     base-url: ${APP_CALLBACK_BASE_URL:http://localhost:8080}
   sessao:
     # Default de 1 minuto definido no enunciado, em configuração para não existir
@@ -89,9 +89,9 @@ management:
     health:
       probes:
         enabled: true            # Necessário para liveness/readiness em nuvem.
-      # O enunciado autoriza abstrair a segurança das interfaces, então não ha
+      # O enunciado autoriza abstrair a segurança das interfaces, então não há
       # autenticação e "when_authorized" nunca exibiria nada. Mostrar os detalhes
-      # permite ao avaliador ver a saude do banco. Com segurança real, isto
+      # permite ao avaliador ver a saúde do banco. Com segurança real, isto
       # voltaria a ser "when_authorized".
       show-details: always
   info:

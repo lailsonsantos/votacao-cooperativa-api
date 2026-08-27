@@ -216,7 +216,7 @@ public class GlobalExceptionHandler {
     /**
      * Extrai o nome do parametro violado do caminho da propriedade.
      *
-     * @param violação violação de restrição
+     * @param violacao violação de restrição
      * @return o nome do parametro
      */
     private static String ultimoNo(jakarta.validation.ConstraintViolation<?> violacao) {
@@ -279,7 +279,7 @@ public class GlobalExceptionHandler {
      * Monta o corpo de erro no padrão RFC 7807.
      *
      * @param status status HTTP
-     * @param código identificador estável do erro
+     * @param codigo identificador estável do erro
      * @param titulo titulo curto
      * @param detalhe explicação ao consumidor
      * @param request requisição que originou a falha

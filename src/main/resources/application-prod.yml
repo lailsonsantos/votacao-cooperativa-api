@@ -4,8 +4,8 @@
 # A conexão pode chegar de duas formas, e as duas funcionam sem alteração:
 #
 #   1. DATABASE_URL no formato URI (postgresql://usuario:senha@host:porta/banco),
-#      que e como Render, Railway, Fly.io, Neon e Supabase a injetam. A conversao
-#      para JDBC e feita por DatabaseUrlEnvironmentPostProcessor.
+#      que é como Render, Railway, Fly.io, Neon e Supabase a injetam. A conversão
+#      para JDBC é feita por DatabaseUrlEnvironmentPostProcessor.
 #
 #   2. SPRING_DATASOURCE_URL / _USERNAME / _PASSWORD explicitas, que tem
 #      precedência sobre a anterior.

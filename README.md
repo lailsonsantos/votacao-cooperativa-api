@@ -537,6 +537,23 @@ teste, o que empurra para escrever teste só para o número fechar.
 Ramo importa mais que linha: uma linha com `if` pode aparecer coberta com metade
 dos caminhos nunca exercitados.
 
+`./mvnw javadoc:javadoc` roda sem um aviso sequer — cada `@param` documentado
+corresponde a um parâmetro que existe de verdade.
+
+### Verificação manual
+
+Além da suíte, a aplicação foi exercitada com a API e o frontend no ar, cobrindo
+os dois lados do comportamento:
+
+| | O que foi conferido |
+|---|---|
+| Caminho feliz | Cadastro, abertura sem corpo (default de 1 min), quatro votos e apuração parcial |
+| Erros REST | `404` pauta e rota inexistentes · `405` método errado · `409` segunda sessão, voto duplicado, voto e apuração sem sessão · `400` CPF inválido, opção fora do domínio, título em branco, JSON e UUID malformados, paginação fora dos limites · `403` origem não autorizada |
+| Telas do Anexo 1 | Menu, seleção de pautas, tela da pauta em cada estado da sessão, resultado e erro renderizado como tela com HTTP `200` |
+
+Nas mensagens de erro o CPF aparece mascarado (`390******05`), inclusive dentro
+da tela devolvida ao cliente.
+
 ### Logs
 
 - Legível no perfil `local`; **JSON** (`logstash-logback-encoder`) no perfil `prod`.
@@ -595,10 +612,13 @@ Fora isso, basta a imagem Docker, a porta em `$PORT` e `/actuator/health` para a
 | `app.sessao.duracao-padrao-minutos` | `APP_SESSAO_DURACAO_PADRAO` | `1` | Default do enunciado |
 | `app.cors.allowed-origins` | `APP_CORS_ALLOWED_ORIGINS` | `http://localhost:5173,...` | Origens do frontend |
 | `app.user-info.base-url` | `APP_USER_INFO_URL` | `https://user-info.herokuapp.com` | Serviço de CPF |
-| `app.user-info.enabled` | `APP_USER_INFO_ENABLED` | `true` | Desliga a integração |
+| `app.user-info.enabled` | `APP_USER_INFO_ENABLED` | `true`, mas `false` no perfil `local`, no compose e no Render | Desliga a integração |
 | `app.user-info.fallback-permite-voto` | `APP_USER_INFO_FALLBACK` | `true` | Comportamento com circuito aberto |
+| — | `SPRING_PROFILES_ACTIVE` | `local` | Perfil ativo: `local` (H2) ou `prod` (PostgreSQL) |
 | — | `DATABASE_URL` | — | Conexão em formato URI, convertida na inicialização |
 | — | `DB_PORT` | `5434` | Porta do PostgreSQL no host, no compose |
+| — | `PORT` | `8080` | Porta HTTP, injetada pela plataforma de nuvem |
+| `logging.level.br.com.cooperativa.votacao` | `LOG_LEVEL_APP` | `INFO` | Verbosidade do log da aplicação |
 
 Nenhum segredo no repositório.
 

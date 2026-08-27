@@ -62,7 +62,7 @@ class ResultadoServiceImplTest {
     /**
      * Cria uma linha de contagem como a consulta agregada devolveria.
      *
-     * @param opção opção votada
+     * @param opcao opção votada
      * @param total quantidade de votos
      * @return a projeção correspondente
      */

@@ -54,7 +54,7 @@ public class ResultadoServiceImpl implements ResultadoService {
     /**
      * Executa a contagem agregada e monta o resultado.
      *
-     * @param sessão sessão a apurar
+     * @param sessao sessão a apurar
      * @param status situação da sessão no momento da apuração
      * @return o resultado com o desfecho calculado
      */

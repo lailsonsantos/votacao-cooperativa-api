@@ -12,7 +12,7 @@ services:
       POSTGRES_PASSWORD: votacao
     ports:
       # A porta no host é 5434, e não 5432, para não disputar com outro
-      # PostgreSQL que já esteja rodando na máquina — o sintoma dessa disputa e
+      # PostgreSQL que já esteja rodando na máquina — o sintoma dessa disputa é
       # um erro de autenticação, não de conexão, porque a aplicação encontra um
       # banco de verdade que simplesmente não é o dela.
       # Sobrescreva com DB_PORT se 5434 também estiver em uso.
@@ -40,7 +40,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://banco:5432/votacao
       SPRING_DATASOURCE_USERNAME: votacao
       SPRING_DATASOURCE_PASSWORD: votacao
-      # Dica do enunciado: o domínio das URLs de callback e configuravel. Ao
+      # Dica do enunciado: o domínio das URLs de callback é configurável. Ao
       # testar de um celular na mesma rede, troque por http://SEU_IP:8080.
       APP_CALLBACK_BASE_URL: ${APP_CALLBACK_BASE_URL:-http://localhost:8080}
       APP_CORS_ALLOWED_ORIGINS: ${APP_CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:4173}

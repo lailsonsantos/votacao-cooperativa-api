@@ -16,7 +16,7 @@ public interface VotoService {
      *
      * @param pautaId identificador da pauta em votação
      * @param cpf CPF do associado, já validado
-     * @param opção opção escolhida
+     * @param opcao opção escolhida
      * @return o voto persistido
      * @throws SessaoNaoAbertaException se a pauta não tiver sessão
      * @throws SessaoEncerradaException se a sessão já tiver fechado

@@ -21,7 +21,7 @@ public class RelogioDeTeste extends Clock {
     /**
      * Adianta o relógio.
      *
-     * @param duração quanto avancar
+     * @param duracao quanto avancar
      */
     public void avancar(Duration duracao) {
         agora = agora.plus(duracao);

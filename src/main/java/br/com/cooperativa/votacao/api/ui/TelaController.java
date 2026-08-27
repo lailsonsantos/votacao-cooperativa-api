@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
         name = "Telas (Server-Driven UI)",
         description =
                 "Descrições de tela no formato do Anexo 1. Cada POST executa a ação e devolve"
-                        + " a proxima tela.")
+                        + " a próxima tela.")
 @RequiredArgsConstructor
 public class TelaController {
     private final PautaService pautaService;

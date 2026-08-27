@@ -108,7 +108,7 @@ public class TelaFactory {
     /**
      * Tela de identificação do associado, para uma pauta com sessão aberta.
      *
-     * @param sessão sessão aberta
+     * @param sessao sessão aberta
      * @param agora instante de referência, para calcular o tempo restante
      * @return tela FORMULARIO que coleta o CPF
      */

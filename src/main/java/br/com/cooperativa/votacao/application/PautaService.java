@@ -11,7 +11,7 @@ public interface PautaService {
      * Cadastra uma nova pauta.
      *
      * @param titulo titulo da pauta, já validado na borda
-     * @param descrição descrição opcional
+     * @param descricao descrição opcional
      * @return a pauta persistida
      */
     Pauta criar(String titulo, String descricao);

@@ -347,7 +347,7 @@ class VotacaoApiIT extends IntegracaoTest {
      *
      * @param pautaId identificador da pauta
      * @param cpf CPF do associado
-     * @param opção opção escolhida
+     * @param opcao opção escolhida
      * @return o resultado da requisição, para encadeamento de asserções
      * @throws Exception se a requisição falhar
      */

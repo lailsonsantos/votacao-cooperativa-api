@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ApiV1
-@Tag(name = "Sessoes", description = "Abertura e consulta das sessões de votação")
+@Tag(name = "Sessões", description = "Abertura e consulta das sessões de votação")
 @RequiredArgsConstructor
 public class SessaoVotacaoController {
     private final SessaoVotacaoService sessaoService;

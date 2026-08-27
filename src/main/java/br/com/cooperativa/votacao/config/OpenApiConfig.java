@@ -26,16 +26,16 @@ public class OpenApiConfig {
                                         Gerenciamento de pautas, sessões de votação e apuração de \
                                         resultados em assembleias cooperativas.
 
-                                        A API expoe duas superficies:
+                                        A API expõe duas superfícies:
 
                                         - `/api/v1/**` — REST orientada a recursos.
                                         - `/api/v1/telas/**` — Server-Driven UI no formato do \
                                         Anexo 1, consumida pelo cliente.
 
-                                        Versionamento por URI. Mudancas compativeis não sobem a \
-                                        versão; mudancas incompativeis criam `/api/v2` e a versão \
-                                        anterior e depreciada por cabecalhos `Deprecation` e \
-                                        `Sunset`, com janela minima de 6 meses.
+                                        Versionamento por URI. Mudanças compatíveis não sobem a \
+                                        versão; mudanças incompatíveis criam `/api/v2` e a versão \
+                                        anterior é depreciada por cabeçalhos `Deprecation` e \
+                                        `Sunset`, com janela mínima de 6 meses.
                                         """)
                                 .contact(new Contact().name("Lailson Santos"))
                                 .license(new License().name("MIT")));

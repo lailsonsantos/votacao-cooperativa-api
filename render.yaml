@@ -10,7 +10,7 @@
 #   APP_CORS_ALLOWED_ORIGINS  = a URL publica do frontend
 #
 # APP_CALLBACK_BASE_URL importa mais do que parece: as URLs das telas do Anexo 1
-# sao absolutas, e com o valor errado o cliente tentaria falar com o host errado.
+# são absolutas, e com o valor errado o cliente tentaria falar com o host errado.
 # ---------------------------------------------------------------------------
 services:
   - type: web
@@ -30,7 +30,7 @@ services:
         value: prod
 
       # O Render entrega a conexão como URI postgresql://, que o Spring não
-      # consome diretamente. A conversao para JDBC e feita em tempo de
+      # consome diretamente. A conversão para JDBC é feita em tempo de
       # inicializacao por DatabaseUrlEnvironmentPostProcessor.
       - key: DATABASE_URL
         fromDatabase:
@@ -68,6 +68,6 @@ databases:
     region: oregon
     postgresMajorVersion: "16"
     # ATENÇÃO: o plano gratuito de banco do Render expira 30 dias após a criação,
-    # com 14 dias de carencia antes da exclusao definitiva dos dados. E suficiente
+    # com 14 dias de carência antes da exclusão definitiva dos dados. É suficiente
     # para uma avaliacao; para uso prolongado, troque por "basic-256mb".
     plan: free
