@@ -6,6 +6,19 @@ assembleias cooperativas. Solução do teste técnico descrito em
 
 **Frontend (repositório separado):** https://github.com/lailsonsantos/votacao-cooperativa-web
 
+## No ar
+
+| | |
+|---|---|
+| **Aplicação** | https://votacao-cooperativa-web.onrender.com |
+| **API REST** | https://votacao-cooperativa-api.onrender.com/api/v1 |
+| **Telas do Anexo 1** | https://votacao-cooperativa-api.onrender.com/api/v1/telas |
+| **Swagger UI** | https://votacao-cooperativa-api.onrender.com/swagger-ui.html |
+| **Health** | https://votacao-cooperativa-api.onrender.com/actuator/health |
+
+A aba **Simulador** da aplicação renderiza as telas do Anexo 1 direto do servidor
+— é a forma mais rápida de ver o contrato funcionando.
+
 ---
 
 ## Como executar

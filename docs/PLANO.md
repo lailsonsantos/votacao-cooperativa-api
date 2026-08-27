@@ -6,6 +6,10 @@
 > explícito: *"Explicação breve do porquê das escolhas tomadas"*), e atualizado
 > com o que foi efetivamente construído.
 
+**No ar:** https://votacao-cooperativa-web.onrender.com
+· API: https://votacao-cooperativa-api.onrender.com/api/v1
+· Swagger: https://votacao-cooperativa-api.onrender.com/swagger-ui.html
+
 **Repositórios**
 
 | Repositório | Conteúdo | Testes |
