@@ -35,7 +35,7 @@ public class PautaController {
         @ApiResponse(responseCode = "201", description = "Pauta cadastrada"),
         @ApiResponse(
                 responseCode = "400",
-                description = "Dados invalidos",
+                description = "Dados inválidos",
                 content = @io.swagger.v3.oas.annotations.media.Content)
     })
     public ResponseEntity<PautaResponse> criar(@Valid @RequestBody CriarPautaRequest request) {
@@ -48,11 +48,11 @@ public class PautaController {
     @Operation(summary = "Lista as pautas cadastradas, de forma paginada")
     public PaginaResponse<PautaResponse> listar(
             @RequestParam(defaultValue = "0")
-                    @Min(value = 0, message = "A pagina nao pode ser negativa.")
+                    @Min(value = 0, message = "A página não pode ser negativa.")
                     int page,
             @RequestParam(defaultValue = "20")
-                    @Min(value = 1, message = "O tamanho da pagina deve ser ao menos 1.")
-                    @Max(value = 100, message = "O tamanho da pagina nao pode passar de 100.")
+                    @Min(value = 1, message = "O tamanho da página deve ser ao menos 1.")
+                    @Max(value = 100, message = "O tamanho da página não pode passar de 100.")
                     int size) {
         return PaginaResponse.de(pautaService.listar(page, size), PautaResponse::de);
     }

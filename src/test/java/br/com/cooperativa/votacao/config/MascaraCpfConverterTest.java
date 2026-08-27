@@ -33,7 +33,7 @@ class MascaraCpfConverterTest {
         "'CPF 198.390.910-69 recusado',           'CPF 198******69 recusado'",
         "'valor (19839091069) duplicado',         'valor (198******69) duplicado'"
     })
-    @DisplayName("mascara CPF com e sem pontuacao")
+    @DisplayName("mascara CPF com e sem pontuação")
     void mascara(String entrada, String esperado) {
         assertThat(converter.convert(evento(entrada))).isEqualTo(esperado);
     }
@@ -46,7 +46,7 @@ class MascaraCpfConverterTest {
     }
 
     @Test
-    @DisplayName("nao mascara os primeiros digitos de um numero maior")
+    @DisplayName("não mascara os primeiros digitos de um número maior")
     void naoMascaraNumeroMaior() {
         // Sem os lookarounds, os 11 primeiros dígitos de um identificador de 15
         // seriam substituidos, corrompendo o log em vez de proteger dado pessoal.
@@ -57,12 +57,12 @@ class MascaraCpfConverterTest {
     @Test
     @DisplayName("preserva mensagens sem CPF")
     void semCpf() {
-        var texto = "Sessao aberta. pautaId=3a7b duracaoMinutos=5";
+        var texto = "Sessão aberta. pautaId=3a7b duracaoMinutos=5";
         assertThat(converter.convert(evento(texto))).isEqualTo(texto);
     }
 
     @Test
-    @DisplayName("nao quebra com mensagem vazia ou nula")
+    @DisplayName("não quebra com mensagem vazia ou nula")
     void mensagemVaziaOuNula() {
         assertThat(converter.convert(evento(""))).isEmpty();
         assertThat(converter.convert(evento(null))).isNull();

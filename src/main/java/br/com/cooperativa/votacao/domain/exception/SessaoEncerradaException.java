@@ -9,11 +9,11 @@ public class SessaoEncerradaException extends NegocioException {
         super(
                 TipoErro.REGRA_VIOLADA,
                 "sessao-encerrada",
-                "A sessao de votacao da pauta %s ja foi encerrada.".formatted(pautaId));
+                "A sessão de votação da pauta %s já foi encerrada.".formatted(pautaId));
     }
 
     @Override
     public String getTitulo() {
-        return "Sessao encerrada";
+        return "Sessão encerrada";
     }
 }

@@ -15,14 +15,14 @@ class CpfTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"19839091069", "198.390.910-69", "62289608068"})
-    @DisplayName("aceita CPF valido com ou sem pontuacao")
+    @DisplayName("aceita CPF válido com ou sem pontuação")
     void aceitaCpfValido(String valor) {
         assertThat(Cpf.de(valor).numero()).hasSize(11).containsOnlyDigits();
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"11111111111", "00000000000", "12345678901", "123", "abcdefghijk"})
-    @DisplayName("recusa CPF invalido, inclusive digitos repetidos")
+    @DisplayName("recusa CPF inválido, inclusive digitos repetidos")
     void recusaCpfInvalido(String valor) {
         assertThatThrownBy(() -> Cpf.de(valor)).isInstanceOf(CpfInvalidoException.class);
     }
@@ -40,7 +40,7 @@ class CpfTest {
     }
 
     @Test
-    @DisplayName("nao quebra ao mascarar valor curto ou nulo")
+    @DisplayName("não quebra ao mascarar valor curto ou nulo")
     void mascaraValorInesperado() {
         assertThat(Cpf.mascarar(null)).isNull();
         assertThat(Cpf.mascarar("123")).isEqualTo("123");

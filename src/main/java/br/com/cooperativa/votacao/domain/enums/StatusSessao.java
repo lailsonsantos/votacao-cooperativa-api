@@ -21,6 +21,6 @@ public enum StatusSessao {
                 .filter(s -> s.id == id)
                 .findFirst()
                 .orElseThrow(
-                        () -> new IllegalArgumentException("Status de sessao invalido: " + id));
+                        () -> new IllegalArgumentException("Status de sessão inválido: " + id));
     }
 }

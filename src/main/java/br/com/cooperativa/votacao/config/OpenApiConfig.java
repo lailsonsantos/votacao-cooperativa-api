@@ -19,11 +19,11 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(
                         new Info()
-                                .title("API de Votacao Cooperativa")
+                                .title("API de Votação Cooperativa")
                                 .version("v1")
                                 .description(
                                         """
-                                        Gerenciamento de pautas, sessoes de votacao e apuracao de \
+                                        Gerenciamento de pautas, sessões de votação e apuração de \
                                         resultados em assembleias cooperativas.
 
                                         A API expoe duas superficies:
@@ -32,8 +32,8 @@ public class OpenApiConfig {
                                         - `/api/v1/telas/**` — Server-Driven UI no formato do \
                                         Anexo 1, consumida pelo cliente.
 
-                                        Versionamento por URI. Mudancas compativeis nao sobem a \
-                                        versao; mudancas incompativeis criam `/api/v2` e a versao \
+                                        Versionamento por URI. Mudancas compativeis não sobem a \
+                                        versão; mudancas incompativeis criam `/api/v2` e a versão \
                                         anterior e depreciada por cabecalhos `Deprecation` e \
                                         `Sunset`, com janela minima de 6 meses.
                                         """)

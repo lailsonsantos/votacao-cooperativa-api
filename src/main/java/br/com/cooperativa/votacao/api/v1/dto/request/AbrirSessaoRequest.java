@@ -4,13 +4,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Positive;
 
-@Schema(description = "Parametros de abertura da sessao de votacao")
+@Schema(description = "Parametros de abertura da sessão de votação")
 public record AbrirSessaoRequest(
         @Schema(
                         example = "5",
                         description =
-                                "Duracao da sessao em minutos. Ausente ou nulo aplica o padrao"
+                                "Duração da sessão em minutos. Ausente ou nulo aplica o padrão"
                                         + " de 1 minuto.")
-                @Positive(message = "A duracao da sessao deve ser maior que zero.")
-                @Max(value = 10_080, message = "A duracao da sessao nao pode passar de 7 dias.")
+                @Positive(message = "A duração da sessão deve ser maior que zero.")
+                @Max(value = 10_080, message = "A duração da sessão não pode passar de 7 dias.")
                 Integer duracaoMinutos) {}

@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ApiV1
-@Tag(name = "Votos", description = "Registro de votos e apuracao do resultado")
+@Tag(name = "Votos", description = "Registro de votos e apuração do resultado")
 @RequiredArgsConstructor
 public class VotoController {
     private final VotoService votoService;
@@ -32,17 +32,17 @@ public class VotoController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(
             summary = "Registra o voto de um associado",
-            description = "Cada associado pode votar uma unica vez por pauta.")
+            description = "Cada associado pode votar uma única vez por pauta.")
     @ApiResponses({
         @ApiResponse(responseCode = "201", description = "Voto registrado"),
-        @ApiResponse(responseCode = "400", description = "CPF invalido", content = @Content),
+        @ApiResponse(responseCode = "400", description = "CPF inválido", content = @Content),
         @ApiResponse(
                 responseCode = "409",
-                description = "Voto duplicado ou sessao inexistente",
+                description = "Voto duplicado ou sessão inexistente",
                 content = @Content),
         @ApiResponse(
                 responseCode = "422",
-                description = "Sessao encerrada ou associado nao autorizado",
+                description = "Sessão encerrada ou associado não autorizado",
                 content = @Content)
     })
     public VotoResponse votar(
@@ -55,13 +55,13 @@ public class VotoController {
     @Operation(
             summary = "Apura o resultado de uma pauta",
             description =
-                    "Com a sessao ainda aberta, a resposta vem com parcial=true e o numero"
-                            + " pode mudar ate o fechamento.")
+                    "Com a sessão ainda aberta, a resposta vem com parcial=true e o número"
+                            + " pode mudar até o fechamento.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Resultado apurado"),
         @ApiResponse(
                 responseCode = "409",
-                description = "A pauta ainda nao teve sessao aberta",
+                description = "A pauta ainda não teve sessão aberta",
                 content = @Content)
     })
     public ResultadoResponse resultado(@PathVariable UUID id) {

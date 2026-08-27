@@ -6,7 +6,7 @@ import br.com.cooperativa.votacao.domain.model.ResultadoVotacao;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.UUID;
 
-@Schema(description = "Apuracao dos votos de uma pauta")
+@Schema(description = "Apuração dos votos de uma pauta")
 public record ResultadoResponse(
         UUID pautaId,
         String titulo,

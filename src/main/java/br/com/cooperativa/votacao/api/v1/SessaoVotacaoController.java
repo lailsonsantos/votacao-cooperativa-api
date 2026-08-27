@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ApiV1
-@Tag(name = "Sessoes", description = "Abertura e consulta das sessoes de votacao")
+@Tag(name = "Sessoes", description = "Abertura e consulta das sessões de votação")
 @RequiredArgsConstructor
 public class SessaoVotacaoController {
     private final SessaoVotacaoService sessaoService;
@@ -29,14 +29,14 @@ public class SessaoVotacaoController {
     @PostMapping("/pautas/{id}/sessao")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(
-            summary = "Abre a sessao de votacao de uma pauta",
-            description = "Quando a duracao nao e informada, a sessao fica aberta por 1 minuto.")
+            summary = "Abre a sessão de votação de uma pauta",
+            description = "Quando a duração não é informada, a sessão fica aberta por 1 minuto.")
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Sessao aberta"),
+        @ApiResponse(responseCode = "201", description = "Sessão aberta"),
         @ApiResponse(responseCode = "404", description = "Pauta inexistente", content = @Content),
         @ApiResponse(
                 responseCode = "409",
-                description = "A pauta ja possui sessao",
+                description = "A pauta já possui sessão",
                 content = @Content)
     })
     public SessaoResponse abrir(
@@ -47,12 +47,12 @@ public class SessaoVotacaoController {
     }
 
     @GetMapping("/pautas/{id}/sessao")
-    @Operation(summary = "Consulta a sessao de votacao de uma pauta")
+    @Operation(summary = "Consulta a sessão de votação de uma pauta")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Sessao encontrada"),
+        @ApiResponse(responseCode = "200", description = "Sessão encontrada"),
         @ApiResponse(
                 responseCode = "409",
-                description = "A pauta ainda nao teve sessao aberta",
+                description = "A pauta ainda não teve sessão aberta",
                 content = @Content)
     })
     public SessaoResponse consultar(@PathVariable UUID id) {

@@ -24,7 +24,7 @@ public class PautaServiceImpl implements PautaService {
     @Transactional
     public Pauta criar(String titulo, String descricao) {
         var pauta = pautaRepository.salvar(Pauta.criar(titulo, descricao, clock.instant()));
-        log.info("Pauta criada. id={} titulo='{}'", pauta.getId(), pauta.getTitulo());
+        log.info("Pauta criada. id={} título='{}'", pauta.getId(), pauta.getTitulo());
         return pauta;
     }
 

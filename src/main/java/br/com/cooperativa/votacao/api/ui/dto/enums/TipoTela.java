@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 public enum TipoTela {
-    FORMULARIO(1, "Formulario"),
-    SELECAO(2, "Selecao");
+    FORMULARIO(1, "Formulário"),
+    SELECAO(2, "Seleção");
 
     private final int id;
     private final String descricao;
@@ -20,6 +20,6 @@ public enum TipoTela {
         return Arrays.stream(values())
                 .filter(t -> t.id == id)
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Tipo de tela invalido: " + id));
+                .orElseThrow(() -> new IllegalArgumentException("Tipo de tela inválido: " + id));
     }
 }

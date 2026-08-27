@@ -49,7 +49,7 @@ class ArquiteturaTest {
                             "io.swagger..",
                             "com.fasterxml.jackson..")
                     .because(
-                            "o dominio precisa poder ser exposto por outro transporte e"
+                            "o domínio precisa poder ser exposto por outro transporte e"
                                     + " persistido de outra forma sem alteracao");
 
     /** A camada de aplicação não conhece implementações de integração. */
@@ -61,7 +61,7 @@ class ArquiteturaTest {
                     .should()
                     .dependOnClassesThat()
                     .resideInAPackage("..infrastructure..")
-                    .because("a dependencia deve apontar para a porta, nao para o adaptador");
+                    .because("a dependencia deve apontar para a porta, não para o adaptador");
 
     /** A infraestrutura enxerga apenas as portas, nunca os casos de uso. */
     @ArchTest
@@ -72,7 +72,7 @@ class ArquiteturaTest {
                     .should()
                     .dependOnClassesThat()
                     .resideInAPackage("br.com.cooperativa.votacao.application")
-                    .because("o adaptador implementa a porta; nao consome caso de uso");
+                    .because("o adaptador implementa a porta; não consome caso de uso");
 
     /** Ninguém depende de uma implementação de caso de uso. */
     @ArchTest
@@ -83,7 +83,7 @@ class ArquiteturaTest {
                     .should()
                     .dependOnClassesThat()
                     .resideInAPackage("..application.impl..")
-                    .because("o consumidor depende da abstracao, nao da implementacao");
+                    .because("o consumidor depende da abstracao, não da implementacao");
 
     /** Nenhuma regra de negócio mora em controlador. */
     @ArchTest
@@ -94,7 +94,7 @@ class ArquiteturaTest {
                     .should()
                     .dependOnClassesThat()
                     .resideInAPackage("..domain.repository..")
-                    .because("o acesso a dados pertence a camada de aplicacao");
+                    .because("o acesso a dados pertence a camada de aplicação");
 
     /** Nenhum ciclo entre os pacotes de primeiro nível. */
     @ArchTest

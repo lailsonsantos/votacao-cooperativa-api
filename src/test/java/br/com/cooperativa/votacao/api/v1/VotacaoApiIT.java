@@ -74,7 +74,7 @@ class VotacaoApiIT extends IntegracaoTest {
     }
 
     @Test
-    @DisplayName("percorre o fluxo completo: pauta, sessao, votos e resultado")
+    @DisplayName("percorre o fluxo completo: pauta, sessão, votos e resultado")
     void fluxoCompleto() throws Exception {
         var pautaId = criarPauta("Reforma do estatuto");
         abrirSessao(pautaId, 10);
@@ -114,9 +114,9 @@ class VotacaoApiIT extends IntegracaoTest {
     }
 
     @Test
-    @DisplayName("recusa abrir uma segunda sessao para a mesma pauta")
+    @DisplayName("recusa abrir uma segunda sessão para a mesma pauta")
     void recusaSegundaSessao() throws Exception {
-        var pautaId = criarPauta("Pauta com sessao unica");
+        var pautaId = criarPauta("Pauta com sessão única");
         abrirSessao(pautaId, 5);
 
         mockMvc.perform(
@@ -124,13 +124,13 @@ class VotacaoApiIT extends IntegracaoTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{\"duracaoMinutos\":5}"))
                 .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.title").value("Sessao ja aberta"));
+                .andExpect(jsonPath("$.title").value("Sessão já aberta"));
     }
 
     @Test
-    @DisplayName("aplica a duracao padrao de 1 minuto quando o corpo e omitido")
+    @DisplayName("aplica a duração padrão de 1 minuto quando o corpo é omitido")
     void aplicaDuracaoPadrao() throws Exception {
-        var pautaId = criarPauta("Pauta com duracao padrao");
+        var pautaId = criarPauta("Pauta com duração padrão");
 
         mockMvc.perform(post("/api/v1/pautas/{id}/sessao", pautaId))
                 .andExpect(status().isCreated())
@@ -142,38 +142,38 @@ class VotacaoApiIT extends IntegracaoTest {
     }
 
     @Test
-    @DisplayName("recusa voto em pauta sem sessao aberta")
+    @DisplayName("recusa voto em pauta sem sessão aberta")
     void recusaVotoSemSessao() throws Exception {
-        var pautaId = criarPauta("Pauta sem sessao");
+        var pautaId = criarPauta("Pauta sem sessão");
 
         votar(pautaId, "19839091069", "SIM")
                 .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.title").value("Sessao nao aberta"));
+                .andExpect(jsonPath("$.title").value("Sessão não aberta"));
     }
 
     @Test
-    @DisplayName("recusa CPF invalido com 400 antes de tocar o banco")
+    @DisplayName("recusa CPF inválido com 400 antes de tocar o banco")
     void recusaCpfInvalido() throws Exception {
-        var pautaId = criarPauta("Pauta com cpf invalido");
+        var pautaId = criarPauta("Pauta com cpf inválido");
         abrirSessao(pautaId, 5);
 
         // 11111111111 tem onze dígitos mas não é CPF válido. O @CPF pega na borda
         // e a resposta diz qual campo falhou.
         votar(pautaId, "11111111111", "SIM")
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.title").value("Requisicao invalida"))
+                .andExpect(jsonPath("$.title").value("Requisição inválida"))
                 .andExpect(
                         jsonPath("$.detail")
                                 .value(org.hamcrest.Matchers.containsString("associadoId")))
                 .andExpect(
                         jsonPath("$.detail")
-                                .value(org.hamcrest.Matchers.containsString("nao e valido")));
+                                .value(org.hamcrest.Matchers.containsString("não é válido")));
     }
 
     @Test
-    @DisplayName("recusa opcao de voto fora do enum com 400, nao 500")
+    @DisplayName("recusa opção de voto fora do enum com 400, não 500")
     void recusaOpcaoInvalida() throws Exception {
-        var pautaId = criarPauta("Pauta com opcao invalida");
+        var pautaId = criarPauta("Pauta com opção inválida");
         abrirSessao(pautaId, 5);
 
         mockMvc.perform(
@@ -191,7 +191,7 @@ class VotacaoApiIT extends IntegracaoTest {
     void pautaInexistente() throws Exception {
         mockMvc.perform(get("/api/v1/pautas/{id}", UUID.randomUUID()))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.title").value("Recurso nao encontrado"));
+                .andExpect(jsonPath("$.title").value("Recurso não encontrado"));
     }
 
     @Test
@@ -226,39 +226,39 @@ class VotacaoApiIT extends IntegracaoTest {
     }
 
     @Test
-    @DisplayName("rota inexistente devolve 404, nao 500")
+    @DisplayName("rota inexistente devolve 404, não 500")
     void rotaInexistente() throws Exception {
         // Sem tratador dedicado, isto caía no catch-all e virava 500: um erro do
         // cliente reportado como falha do servidor.
         mockMvc.perform(get("/api/v1/inexistente"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.title").value("Rota invalida"));
+                .andExpect(jsonPath("$.title").value("Rota inválida"));
     }
 
     @Test
-    @DisplayName("metodo nao suportado devolve 405, nao 500")
+    @DisplayName("metodo não suportado devolve 405, não 500")
     void metodoNaoSuportado() throws Exception {
         mockMvc.perform(delete("/api/v1/pautas"))
                 .andExpect(status().isMethodNotAllowed())
-                .andExpect(jsonPath("$.title").value("Rota invalida"));
+                .andExpect(jsonPath("$.title").value("Rota inválida"));
     }
 
     @Test
-    @DisplayName("limita o tamanho da pagina para impedir resposta ilimitada")
+    @DisplayName("limita o tamanho da página para impedir resposta ilimitada")
     void limitaTamanhoDaPagina() throws Exception {
         // Sem o @Max, size=999999 devolveria a base inteira.
         mockMvc.perform(get("/api/v1/pautas").param("size", "999999"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.title").value("Requisicao invalida"))
+                .andExpect(jsonPath("$.title").value("Requisição inválida"))
                 .andExpect(
                         jsonPath("$.detail")
                                 .value(
                                         org.hamcrest.Matchers.containsString(
-                                                "nao pode passar de 100")));
+                                                "não pode passar de 100")));
     }
 
     @Test
-    @DisplayName("recusa pagina negativa com 400, nao 500")
+    @DisplayName("recusa página negativa com 400, não 500")
     void recusaPaginaNegativa() throws Exception {
         mockMvc.perform(get("/api/v1/pautas").param("page", "-1"))
                 .andExpect(status().isBadRequest())
@@ -266,11 +266,11 @@ class VotacaoApiIT extends IntegracaoTest {
                         jsonPath("$.detail")
                                 .value(
                                         org.hamcrest.Matchers.containsString(
-                                                "nao pode ser negativa")));
+                                                "não pode ser negativa")));
     }
 
     @Test
-    @DisplayName("recusa tamanho de pagina zero com 400, nao 500")
+    @DisplayName("recusa tamanho de página zero com 400, não 500")
     void recusaTamanhoZero() throws Exception {
         mockMvc.perform(get("/api/v1/pautas").param("size", "0"))
                 .andExpect(status().isBadRequest())
@@ -280,7 +280,7 @@ class VotacaoApiIT extends IntegracaoTest {
     }
 
     @Test
-    @DisplayName("garante um unico voto sob 200 requisicoes simultaneas do mesmo associado")
+    @DisplayName("garante um único voto sob 200 requisições simultaneas do mesmo associado")
     void unicidadeSobConcorrencia() throws Exception {
         var pautaId = criarPauta("Pauta sob concorrencia");
         abrirSessao(pautaId, 10);

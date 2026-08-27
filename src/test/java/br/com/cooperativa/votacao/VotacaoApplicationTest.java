@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class VotacaoApplicationTest {
 
     @Test
-    @DisplayName("a aplicacao sobe e encerra pelo metodo main")
+    @DisplayName("a aplicação sobe e encerra pelo método main")
     void sobePeloMain() {
         assertThatCode(
                         () ->

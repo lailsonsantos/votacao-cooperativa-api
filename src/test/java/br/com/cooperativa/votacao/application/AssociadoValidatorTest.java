@@ -40,7 +40,7 @@ class AssociadoValidatorTest {
     }
 
     @Test
-    @DisplayName("libera o voto quando o servico responde ABLE_TO_VOTE")
+    @DisplayName("libera o voto quando o serviço responde ABLE_TO_VOTE")
     void liberaQuandoHabilitado() {
         when(client.consultar(CPF)).thenReturn(Optional.of(new AptidaoParaVotar(true)));
 
@@ -48,27 +48,27 @@ class AssociadoValidatorTest {
     }
 
     @Test
-    @DisplayName("bloqueia o voto quando o servico responde UNABLE_TO_VOTE")
+    @DisplayName("bloqueia o voto quando o serviço responde UNABLE_TO_VOTE")
     void bloqueiaQuandoImpedido() {
         when(client.consultar(CPF)).thenReturn(Optional.of(new AptidaoParaVotar(false)));
 
         assertThatThrownBy(() -> validador(true).validarPodeVotar(CPF))
                 .isInstanceOf(AssociadoNaoAutorizadoException.class)
-                .hasMessageContaining("nao esta habilitado");
+                .hasMessageContaining("não está habilitado");
     }
 
     @Test
-    @DisplayName("bloqueia o voto quando o CPF e desconhecido (404 no servico)")
+    @DisplayName("bloqueia o voto quando o CPF é desconhecido (404 no serviço)")
     void bloqueiaQuandoDesconhecido() {
         when(client.consultar(CPF)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> validador(true).validarPodeVotar(CPF))
                 .isInstanceOf(AssociadoNaoAutorizadoException.class)
-                .hasMessageContaining("nao encontrado");
+                .hasMessageContaining("não encontrado");
     }
 
     @Test
-    @DisplayName("nao consulta o servico quando a integracao esta desligada")
+    @DisplayName("não consulta o serviço quando a integração está desligada")
     void naoConsultaQuandoDesligado() {
         assertThatCode(() -> validador(false).validarPodeVotar(CPF)).doesNotThrowAnyException();
 

@@ -10,11 +10,11 @@ import org.hibernate.validator.constraints.br.CPF;
 public record RegistrarVotoRequest(
         @Schema(
                         example = "19839091069",
-                        description = "CPF do associado, com ou sem pontuacao",
+                        description = "CPF do associado, com ou sem pontuação",
                         requiredMode = Schema.RequiredMode.REQUIRED)
-                @NotBlank(message = "O identificador do associado e obrigatorio.")
-                @CPF(message = "O CPF informado nao e valido.")
+                @NotBlank(message = "O identificador do associado é obrigatório.")
+                @CPF(message = "O CPF informado não é válido.")
                 String associadoId,
         @Schema(example = "SIM", requiredMode = Schema.RequiredMode.REQUIRED)
-                @NotNull(message = "A opcao de voto e obrigatoria (SIM ou NAO).")
+                @NotNull(message = "A opção de voto é obrigatória (SIM ou NAO).")
                 OpcaoVoto opcao) {}

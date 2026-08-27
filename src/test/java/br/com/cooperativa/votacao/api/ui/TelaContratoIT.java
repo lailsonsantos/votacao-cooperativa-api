@@ -52,7 +52,7 @@ class TelaContratoIT extends IntegracaoTest {
     }
 
     @Test
-    @DisplayName("menu e uma tela SELECAO com URLs absolutas configuraveis")
+    @DisplayName("menu é uma tela SELECAO com URLs absolutas configuráveis")
     void menu() throws Exception {
         mockMvc.perform(get("/api/v1/telas"))
                 .andExpect(status().isOk())
@@ -71,7 +71,7 @@ class TelaContratoIT extends IntegracaoTest {
     }
 
     @Test
-    @DisplayName("formulario de nova pauta traz os tipos de item do Anexo 1")
+    @DisplayName("formulário de nova pauta traz os tipos de item do Anexo 1")
     void formularioNovaPauta() throws Exception {
         mockMvc.perform(get("/api/v1/telas/pautas/nova"))
                 .andExpect(status().isOk())
@@ -89,9 +89,9 @@ class TelaContratoIT extends IntegracaoTest {
     }
 
     @Test
-    @DisplayName("pauta sem sessao oferece INPUT_NUMERO com a duracao padrao")
+    @DisplayName("pauta sem sessão oferece INPUT_NÚMERO com a duração padrão")
     void pautaSemSessao() throws Exception {
-        var pautaId = criarPautaPelaTela("Pauta para abrir sessao");
+        var pautaId = criarPautaPelaTela("Pauta para abrir sessão");
 
         mockMvc.perform(get("/api/v1/telas/pautas/{id}", pautaId))
                 .andExpect(status().isOk())
@@ -106,7 +106,7 @@ class TelaContratoIT extends IntegracaoTest {
     }
 
     @Test
-    @DisplayName("fluxo de voto: abre sessao, identifica CPF e devolve SELECAO Sim/Nao")
+    @DisplayName("fluxo de voto: abre sessão, identifica CPF e devolve SELECAO Sim/Não")
     void fluxoDeVoto() throws Exception {
         var pautaId = criarPautaPelaTela("Pauta para votar");
 
@@ -134,7 +134,7 @@ class TelaContratoIT extends IntegracaoTest {
                 // o Anexo 1: o cliente apenas reenvia o objeto.
                 .andExpect(jsonPath("$.itens[0].body.opcao").value("SIM"))
                 .andExpect(jsonPath("$.itens[0].body.cpf").value("19839091069"))
-                .andExpect(jsonPath("$.itens[1].texto").value("Nao"))
+                .andExpect(jsonPath("$.itens[1].texto").value("Não"))
                 .andExpect(jsonPath("$.itens[1].body.opcao").value("NAO"));
 
         mockMvc.perform(
@@ -149,9 +149,9 @@ class TelaContratoIT extends IntegracaoTest {
     }
 
     @Test
-    @DisplayName("erro de negocio vira tela legivel com HTTP 200, nao status cru")
+    @DisplayName("erro de negócio vira tela legivel com HTTP 200, não status cru")
     void erroViraTela() throws Exception {
-        var pautaId = criarPautaPelaTela("Pauta sem sessao para erro");
+        var pautaId = criarPautaPelaTela("Pauta sem sessão para erro");
 
         // A API REST devolveria 409 aqui. A camada de telas devolve 200 com uma
         // tela que o cliente sabe renderizar, porque ele não interpreta status.
@@ -161,14 +161,14 @@ class TelaContratoIT extends IntegracaoTest {
                                 .content("{\"cpf\":\"19839091069\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.tipo").value("FORMULARIO"))
-                .andExpect(jsonPath("$.titulo").value("Sessao nao aberta"))
+                .andExpect(jsonPath("$.titulo").value("Sessão não aberta"))
                 .andExpect(jsonPath("$.botaoOk.texto").value("Voltar"));
     }
 
     @Test
-    @DisplayName("recusa CPF invalido na tela, onde Bean Validation nao alcanca")
+    @DisplayName("recusa CPF inválido na tela, onde Bean Validation não alcanca")
     void cpfInvalidoNaTela() throws Exception {
-        var pautaId = criarPautaPelaTela("Pauta com cpf invalido na tela");
+        var pautaId = criarPautaPelaTela("Pauta com cpf inválido na tela");
 
         mockMvc.perform(
                         post("/api/v1/telas/pautas/{id}/sessao", pautaId)
@@ -184,13 +184,13 @@ class TelaContratoIT extends IntegracaoTest {
                                 .content("{\"cpf\":\"11111111111\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.tipo").value("FORMULARIO"))
-                .andExpect(jsonPath("$.titulo").value("CPF invalido"))
+                .andExpect(jsonPath("$.titulo").value("CPF inválido"))
                 .andExpect(
                         jsonPath("$.itens[0].texto").value(Matchers.containsString("111******11")));
     }
 
     @Test
-    @DisplayName("impede oferecer voto a quem ja votou")
+    @DisplayName("impede oferecer voto a quem já votou")
     void impedeVotoRepetidoNaTela() throws Exception {
         var pautaId = criarPautaPelaTela("Pauta com voto repetido");
 
@@ -214,6 +214,6 @@ class TelaContratoIT extends IntegracaoTest {
                 .andExpect(jsonPath("$.tipo").value("FORMULARIO"))
                 .andExpect(
                         jsonPath("$.itens[0].texto")
-                                .value(Matchers.containsString("ja registrou")));
+                                .value(Matchers.containsString("já registrou")));
     }
 }

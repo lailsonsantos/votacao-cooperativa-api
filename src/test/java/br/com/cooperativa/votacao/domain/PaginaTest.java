@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-@DisplayName("Pagina")
+@DisplayName("Página")
 class PaginaTest {
 
-    @ParameterizedTest(name = "total={0} tamanho={1} resulta em {2} paginas")
+    @ParameterizedTest(name = "total={0} tamanho={1} resulta em {2} páginas")
     @CsvSource({
         "0,  10, 0",
         "1,  10, 1",
@@ -23,22 +23,22 @@ class PaginaTest {
         "20, 10, 2",
         "21, 10, 3"
     })
-    @DisplayName("arredonda o total de paginas para cima")
+    @DisplayName("arredonda o total de páginas para cima")
     void totalPaginas(long total, int tamanho, int esperado) {
         var pagina = new Pagina<>(List.of(), 0, tamanho, total);
         assertThat(pagina.totalPaginas()).isEqualTo(esperado);
     }
 
-    @ParameterizedTest(name = "pagina={0} de {1} elementos: ultima={2}")
+    @ParameterizedTest(name = "página={0} de {1} elementos: ultima={2}")
     @CsvSource({"0, 25, false", "1, 25, false", "2, 25, true", "0, 0,  true", "0, 5,  true"})
-    @DisplayName("identifica corretamente a ultima pagina")
+    @DisplayName("identifica corretamente a ultima página")
     void ultima(int indice, long total, boolean esperado) {
         var pagina = new Pagina<>(List.of(), indice, 10, total);
         assertThat(pagina.ultima()).isEqualTo(esperado);
     }
 
     @Test
-    @DisplayName("nao divide por zero quando o tamanho e invalido")
+    @DisplayName("não divide por zero quando o tamanho é inválido")
     void tamanhoZero() {
         // Defesa contra um caminho que só surgiria por engano; o importante é não
         // derrubar a requisição com ArithmeticException.
@@ -47,7 +47,7 @@ class PaginaTest {
     }
 
     @Test
-    @DisplayName("converte o conteudo preservando os dados de paginacao")
+    @DisplayName("converte o conteúdo preservando os dados de paginação")
     void mapear() {
         var original = new Pagina<>(List.of(1, 2, 3), 2, 3, 42);
 
@@ -60,7 +60,7 @@ class PaginaTest {
     }
 
     @Test
-    @DisplayName("conteudo nulo vira lista vazia, e nao NullPointerException")
+    @DisplayName("conteúdo nulo vira lista vazia, e não NullPointerException")
     void conteudoNulo() {
         // Defesa da copia defensiva: List.copyOf recusa nulo, então o caso e
         // tratado antes. Sem isso, uma porta mal implementada derrubaria a API.
@@ -68,7 +68,7 @@ class PaginaTest {
     }
 
     @Test
-    @DisplayName("a lista devolvida e imutavel")
+    @DisplayName("a lista devolvida é imutável")
     void conteudoImutavel() {
         var pagina = new Pagina<>(new java.util.ArrayList<>(List.of("a")), 0, 10, 1);
 
@@ -77,7 +77,7 @@ class PaginaTest {
     }
 
     @Test
-    @DisplayName("reconhece pagina vazia")
+    @DisplayName("reconhece página vazia")
     void vazia() {
         assertThat(new Pagina<>(List.of(), 0, 10, 0).vazia()).isTrue();
         assertThat(new Pagina<>(List.of("a"), 0, 10, 1).vazia()).isFalse();

@@ -25,19 +25,19 @@ class AcaoTelaRequestTest {
     }
 
     @Test
-    @DisplayName("aceita numero enviado como valor JSON")
+    @DisplayName("aceita número enviado como valor JSON")
     void inteiroComoNumero() throws Exception {
         assertThat(de("{\"duracaoMinutos\":5}").inteiro("duracaoMinutos")).isEqualTo(5);
     }
 
     @Test
-    @DisplayName("aceita numero enviado como texto")
+    @DisplayName("aceita número enviado como texto")
     void inteiroComoTexto() throws Exception {
         assertThat(de("{\"duracaoMinutos\":\"5\"}").inteiro("duracaoMinutos")).isEqualTo(5);
     }
 
     @Test
-    @DisplayName("devolve nulo em vez de estourar quando o texto nao e numero")
+    @DisplayName("devolve nulo em vez de estourar quando o texto não é número")
     void inteiroInvalido() throws Exception {
         // Nulo faz o serviço aplicar o padrão; uma exceção aqui viraria 500 para
         // uma entrada que o usuário simplesmente digitou errado.
@@ -65,7 +65,7 @@ class AcaoTelaRequestTest {
     }
 
     @Test
-    @DisplayName("texto so de espacos equivale a ausente")
+    @DisplayName("texto só de espacos equivale a ausente")
     void textoEmBranco() throws Exception {
         // Distinguir "" de null aqui evitaria que o servidor aplicasse o padrão;
         // tratar ambos como ausente é o comportamento útil.
@@ -75,7 +75,7 @@ class AcaoTelaRequestTest {
     }
 
     @Test
-    @DisplayName("converte valor nao textual para texto")
+    @DisplayName("converte valor não textual para texto")
     void textoDeNumero() throws Exception {
         assertThat(de("{\"opcao\":123}").texto("opcao")).isEqualTo("123");
     }

@@ -22,6 +22,6 @@ public enum ResultadoApuracao {
         return Arrays.stream(values())
                 .filter(r -> r.id == id)
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Resultado invalido: " + id));
+                .orElseThrow(() -> new IllegalArgumentException("Resultado inválido: " + id));
     }
 }

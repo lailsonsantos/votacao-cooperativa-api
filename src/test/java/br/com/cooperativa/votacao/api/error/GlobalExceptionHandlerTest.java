@@ -62,7 +62,7 @@ class GlobalExceptionHandlerTest {
 
         @GetMapping({"/api/v1/inesperado", "/api/v1/telas/inesperado"})
         String inesperado() {
-            throw new IllegalStateException("falha nao prevista");
+            throw new IllegalStateException("falha não prevista");
         }
 
         /** Dispara a violação diretamente. */
@@ -106,11 +106,11 @@ class GlobalExceptionHandlerTest {
     class Rest {
 
         @Test
-        @DisplayName("falha de negocio vira ProblemDetail com o status da regra")
+        @DisplayName("falha de negócio vira ProblemDetail com o status da regra")
         void negocio() throws Exception {
             mockMvc.perform(get("/api/v1/negocio"))
                     .andExpect(status().isUnprocessableEntity())
-                    .andExpect(jsonPath("$.title").value("Sessao encerrada"))
+                    .andExpect(jsonPath("$.title").value("Sessão encerrada"))
                     .andExpect(
                             jsonPath("$.type")
                                     .value(org.hamcrest.Matchers.endsWith("sessao-encerrada")))
@@ -134,7 +134,7 @@ class GlobalExceptionHandlerTest {
         }
 
         @Test
-        @DisplayName("violacao de integridade nao traduzida vira 409 generico")
+        @DisplayName("violação de integridade não traduzida vira 409 generico")
         void integridade() throws Exception {
             mockMvc.perform(get("/api/v1/integridade"))
                     .andExpect(status().isConflict())
@@ -153,11 +153,11 @@ class GlobalExceptionHandlerTest {
                                     .value(
                                             org.hamcrest.Matchers.not(
                                                     org.hamcrest.Matchers.containsString(
-                                                            "falha nao prevista"))));
+                                                            "falha não prevista"))));
         }
 
         @Test
-        @DisplayName("campo obrigatorio ausente vira 400 nomeando o campo")
+        @DisplayName("campo obrigatório ausente vira 400 nomeando o campo")
         void corpoInvalido() throws Exception {
             mockMvc.perform(
                             post("/api/v1/validado")
@@ -185,30 +185,30 @@ class GlobalExceptionHandlerTest {
     class Telas {
 
         @Test
-        @DisplayName("falha de negocio vira tela legivel com HTTP 200")
+        @DisplayName("falha de negócio vira tela legivel com HTTP 200")
         void negocio() throws Exception {
             // O cliente do Anexo 1 não interpreta status: um 422 cru o deixaria
             // sem nada para desenhar.
             mockMvc.perform(get("/api/v1/telas/negocio"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.tipo").value("FORMULARIO"))
-                    .andExpect(jsonPath("$.titulo").value("Sessao encerrada"))
+                    .andExpect(jsonPath("$.titulo").value("Sessão encerrada"))
                     .andExpect(jsonPath("$.botaoOk.texto").value("Voltar"));
         }
 
         @Test
-        @DisplayName("CPF invalido vira tela com o numero mascarado")
+        @DisplayName("CPF inválido vira tela com o número mascarado")
         void cpf() throws Exception {
             mockMvc.perform(get("/api/v1/telas/cpf"))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.titulo").value("CPF invalido"))
+                    .andExpect(jsonPath("$.titulo").value("CPF inválido"))
                     .andExpect(
                             jsonPath("$.itens[0].texto")
                                     .value(org.hamcrest.Matchers.containsString("111******11")));
         }
 
         @Test
-        @DisplayName("violacao de integridade vira tela de conflito")
+        @DisplayName("violação de integridade vira tela de conflito")
         void integridade() throws Exception {
             mockMvc.perform(get("/api/v1/telas/integridade"))
                     .andExpect(status().isOk())
@@ -216,7 +216,7 @@ class GlobalExceptionHandlerTest {
         }
 
         @Test
-        @DisplayName("falha inesperada tambem vira tela, e nao 500 cru")
+        @DisplayName("falha inesperada também vira tela, e não 500 cru")
         void inesperado() throws Exception {
             mockMvc.perform(get("/api/v1/telas/inesperado"))
                     .andExpect(status().isOk())
@@ -225,7 +225,7 @@ class GlobalExceptionHandlerTest {
         }
 
         @Test
-        @DisplayName("campo obrigatorio ausente vira tela de dados invalidos")
+        @DisplayName("campo obrigatório ausente vira tela de dados inválidos")
         void corpoInvalido() throws Exception {
             mockMvc.perform(
                             post("/api/v1/telas/validado")
@@ -233,19 +233,19 @@ class GlobalExceptionHandlerTest {
                                     .content("{\"titulo\":\"\"}"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.tipo").value("FORMULARIO"))
-                    .andExpect(jsonPath("$.titulo").value("Dados invalidos"));
+                    .andExpect(jsonPath("$.titulo").value("Dados inválidos"));
         }
 
         @Test
-        @DisplayName("parametro invalido vira tela de dados invalidos")
+        @DisplayName("parametro inválido vira tela de dados inválidos")
         void parametroInvalido() throws Exception {
             mockMvc.perform(get("/api/v1/telas/parametro"))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.titulo").value("Dados invalidos"));
+                    .andExpect(jsonPath("$.titulo").value("Dados inválidos"));
         }
 
         @Test
-        @DisplayName("corpo malformado vira tela de dados invalidos")
+        @DisplayName("corpo malformado vira tela de dados inválidos")
         void corpoMalformado() throws Exception {
             mockMvc.perform(
                             post("/api/v1/telas/negocio")

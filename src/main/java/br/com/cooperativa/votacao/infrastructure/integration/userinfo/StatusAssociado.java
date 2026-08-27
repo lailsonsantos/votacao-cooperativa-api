@@ -27,6 +27,6 @@ public enum StatusAssociado {
                 .filter(s -> s.id == id)
                 .findFirst()
                 .orElseThrow(
-                        () -> new IllegalArgumentException("Status de associado invalido: " + id));
+                        () -> new IllegalArgumentException("Status de associado inválido: " + id));
     }
 }

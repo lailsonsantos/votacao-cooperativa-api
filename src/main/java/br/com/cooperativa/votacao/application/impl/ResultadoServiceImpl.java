@@ -78,7 +78,7 @@ public class ResultadoServiceImpl implements ResultadoService {
                         totais.getOrDefault(OpcaoVoto.NAO, 0L));
 
         log.info(
-                "Resultado apurado. pautaId={} status={} sim={} nao={} desfecho={}",
+                "Resultado apurado. pautaId={} status={} sim={} não={} desfecho={}",
                 resultado.pautaId(),
                 resultado.status(),
                 resultado.votosSim(),

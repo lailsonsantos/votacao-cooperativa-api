@@ -24,7 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @Import(TelaEstadosIT.RelogioControlavel.class)
-@DisplayName("Telas por estado da sessao")
+@DisplayName("Telas por estado da sessão")
 class TelaEstadosIT extends IntegracaoTest {
 
     /** Substitui o relógio da aplicação por um que o teste consegue adiantar. */
@@ -76,26 +76,26 @@ class TelaEstadosIT extends IntegracaoTest {
     }
 
     @Test
-    @DisplayName("o relogio controlavel realmente substitui o da aplicacao")
+    @DisplayName("o relogio controlavel realmente substitui o da aplicação")
     void relogioSubstituido() {
         org.assertj.core.api.Assertions.assertThat(clockInjetado).isSameAs(relogio);
     }
 
     @Test
-    @DisplayName("sem sessao, a tela oferece a abertura")
+    @DisplayName("sem sessão, a tela oferece a abertura")
     void semSessao() throws Exception {
-        var id = criarPauta("Pauta sem sessao");
+        var id = criarPauta("Pauta sem sessão");
 
         mockMvc.perform(get("/api/v1/telas/pautas/{id}", id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.tipo").value("FORMULARIO"))
-                .andExpect(jsonPath("$.botaoOk.texto").value("Abrir sessao"));
+                .andExpect(jsonPath("$.botaoOk.texto").value("Abrir sessão"));
     }
 
     @Test
-    @DisplayName("com sessao aberta, a mesma URL passa a pedir o CPF")
+    @DisplayName("com sessão aberta, a mesma URL passa a pedir o CPF")
     void sessaoAberta() throws Exception {
-        var id = criarPauta("Pauta com sessao aberta");
+        var id = criarPauta("Pauta com sessão aberta");
         mockMvc.perform(
                         post("/api/v1/telas/pautas/{id}/sessao", id)
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -143,9 +143,9 @@ class TelaEstadosIT extends IntegracaoTest {
     }
 
     @Test
-    @DisplayName("identificar-se apos o encerramento vira tela de erro")
+    @DisplayName("identificar-se após o encerramento vira tela de erro")
     void identificacaoAposEncerramento() throws Exception {
-        var id = criarPauta("Pauta encerrada para identificacao");
+        var id = criarPauta("Pauta encerrada para identificação");
         mockMvc.perform(
                         post("/api/v1/telas/pautas/{id}/sessao", id)
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -159,7 +159,7 @@ class TelaEstadosIT extends IntegracaoTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{\"cpf\":\"19839091069\"}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.titulo").value("Sessao encerrada"));
+                .andExpect(jsonPath("$.titulo").value("Sessão encerrada"));
     }
 
     @Test
@@ -192,15 +192,15 @@ class TelaEstadosIT extends IntegracaoTest {
     }
 
     @Test
-    @DisplayName("corpo invalido na camada de telas vira tela, e nao status cru")
+    @DisplayName("corpo inválido na camada de telas vira tela, e não status cru")
     void corpoInvalidoViraTela() throws Exception {
-        var id = criarPauta("Pauta com corpo invalido");
+        var id = criarPauta("Pauta com corpo inválido");
         mockMvc.perform(
                         post("/api/v1/telas/pautas/{id}/sessao", id)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{quebrado"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.tipo").value("FORMULARIO"))
-                .andExpect(jsonPath("$.titulo").value("Dados invalidos"));
+                .andExpect(jsonPath("$.titulo").value("Dados inválidos"));
     }
 }

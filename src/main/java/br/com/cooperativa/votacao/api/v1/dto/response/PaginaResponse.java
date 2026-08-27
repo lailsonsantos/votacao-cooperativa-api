@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.function.Function;
 
-@Schema(description = "Pagina de resultados")
+@Schema(description = "Página de resultados")
 public record PaginaResponse<T>(
         List<T> conteudo,
         int pagina,

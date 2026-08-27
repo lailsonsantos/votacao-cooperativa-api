@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public enum OpcaoVoto {
     SIM(1, "Sim"),
-    NAO(2, "Nao");
+    NAO(2, "Não");
 
     private final int id;
     private final String descricao;
@@ -20,6 +20,6 @@ public enum OpcaoVoto {
         return Arrays.stream(values())
                 .filter(o -> o.id == id)
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Opcao de voto invalida: " + id));
+                .orElseThrow(() -> new IllegalArgumentException("Opção de voto inválida: " + id));
     }
 }

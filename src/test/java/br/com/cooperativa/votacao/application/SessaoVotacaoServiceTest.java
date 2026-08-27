@@ -58,7 +58,7 @@ class SessaoVotacaoServiceTest {
     }
 
     @Test
-    @DisplayName("aplica a duracao padrao de 1 minuto quando nenhuma e informada")
+    @DisplayName("aplica a duração padrão de 1 minuto quando nenhuma é informada")
     void aplicaDuracaoPadrao() {
         when(pautaService.buscar(pauta.getId())).thenReturn(pauta);
         when(sessaoRepository.existePorPauta(pauta.getId())).thenReturn(false);
@@ -71,7 +71,7 @@ class SessaoVotacaoServiceTest {
     }
 
     @Test
-    @DisplayName("aplica a duracao informada na chamada")
+    @DisplayName("aplica a duração informada na chamada")
     void aplicaDuracaoInformada() {
         when(pautaService.buscar(pauta.getId())).thenReturn(pauta);
         when(sessaoRepository.existePorPauta(pauta.getId())).thenReturn(false);
@@ -84,7 +84,7 @@ class SessaoVotacaoServiceTest {
     }
 
     @Test
-    @DisplayName("recusa abrir uma segunda sessao para a mesma pauta")
+    @DisplayName("recusa abrir uma segunda sessão para a mesma pauta")
     void recusaSegundaSessao() {
         when(pautaService.buscar(pauta.getId())).thenReturn(pauta);
         when(sessaoRepository.existePorPauta(pauta.getId())).thenReturn(true);
@@ -94,7 +94,7 @@ class SessaoVotacaoServiceTest {
     }
 
     @Test
-    @DisplayName("traduz violacao de constraint em sessao ja aberta")
+    @DisplayName("traduz violação de constraint em sessão já aberta")
     void traduzViolacaoDeConstraint() {
         when(pautaService.buscar(pauta.getId())).thenReturn(pauta);
         // Checagem prévia passa: nenhuma sessão existia no instante da consulta.
@@ -109,7 +109,7 @@ class SessaoVotacaoServiceTest {
     }
 
     @Test
-    @DisplayName("busca tolerante devolve vazio quando nao ha sessao")
+    @DisplayName("busca tolerante devolve vazio quando não ha sessão")
     void buscaTolerante() {
         var pautaId = UUID.randomUUID();
         when(sessaoRepository.buscarPorPauta(pautaId)).thenReturn(Optional.empty());
@@ -120,7 +120,7 @@ class SessaoVotacaoServiceTest {
     }
 
     @Test
-    @DisplayName("exige sessao existente na consulta obrigatoria")
+    @DisplayName("exige sessão existente na consulta obrigatória")
     void exigeSessaoExistente() {
         var pautaId = UUID.randomUUID();
         when(sessaoRepository.buscarPorPauta(pautaId)).thenReturn(Optional.empty());

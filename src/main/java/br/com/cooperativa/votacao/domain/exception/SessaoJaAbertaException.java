@@ -9,11 +9,11 @@ public class SessaoJaAbertaException extends NegocioException {
         super(
                 TipoErro.CONFLITO,
                 "sessao-ja-aberta",
-                "A pauta %s ja possui uma sessao de votacao.".formatted(pautaId));
+                "A pauta %s já possui uma sessão de votação.".formatted(pautaId));
     }
 
     @Override
     public String getTitulo() {
-        return "Sessao ja aberta";
+        return "Sessão já aberta";
     }
 }

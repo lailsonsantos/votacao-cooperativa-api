@@ -18,7 +18,7 @@ class CorrelationIdFilterTest {
     private final CorrelationIdFilter filtro = new CorrelationIdFilter();
 
     @Test
-    @DisplayName("reaproveita o identificador do cliente quando o formato e valido")
+    @DisplayName("reaproveita o identificador do cliente quando o formato é válido")
     void reaproveitaIdentificadorValido() throws Exception {
         var request = new MockHttpServletRequest();
         var response = new MockHttpServletResponse();
@@ -33,7 +33,7 @@ class CorrelationIdFilterTest {
     @ValueSource(
             strings = {
                 // Divisão de resposta: injetaria um cabecalho novo.
-                "abc\r\nSet-Cookie: sessao=roubada",
+                "abc\r\nSet-Cookie: sessão=roubada",
                 // Injeção de log: forjaria uma linha inteira.
                 "abc\nINFO Voto registrado indevidamente",
                 "abc def",
@@ -42,7 +42,7 @@ class CorrelationIdFilterTest {
                 // Acima do limite de 64 caracteres.
                 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             })
-    @DisplayName("descarta identificador fora do formato e gera um proprio")
+    @DisplayName("descarta identificador fora do formato e gera um próprio")
     void descartaIdentificadorPerigoso(String valor) throws Exception {
         var request = new MockHttpServletRequest();
         var response = new MockHttpServletResponse();
@@ -57,7 +57,7 @@ class CorrelationIdFilterTest {
     }
 
     @Test
-    @DisplayName("gera identificador quando o cliente nao envia nenhum")
+    @DisplayName("gera identificador quando o cliente não envia nenhum")
     void geraQuandoAusente() throws Exception {
         var response = new MockHttpServletResponse();
 
@@ -67,7 +67,7 @@ class CorrelationIdFilterTest {
     }
 
     @Test
-    @DisplayName("limpa o MDC ao final, para nao vazar entre requisicoes")
+    @DisplayName("limpa o MDC ao final, para não vazar entre requisições")
     void limpaMdc() throws Exception {
         var request = new MockHttpServletRequest();
         request.addHeader(CorrelationIdFilter.HEADER, "abc-123");

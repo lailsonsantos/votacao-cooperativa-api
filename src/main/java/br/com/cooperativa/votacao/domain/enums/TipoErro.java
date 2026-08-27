@@ -5,10 +5,10 @@ import lombok.Getter;
 
 @Getter
 public enum TipoErro {
-    ENTRADA_INVALIDA(1, "Entrada invalida"),
-    NAO_ENCONTRADO(2, "Recurso nao encontrado"),
+    ENTRADA_INVALIDA(1, "Entrada inválida"),
+    NAO_ENCONTRADO(2, "Recurso não encontrado"),
     CONFLITO(3, "Conflito com o estado atual"),
-    REGRA_VIOLADA(4, "Regra de negocio violada");
+    REGRA_VIOLADA(4, "Regra de negócio violada");
 
     private final int id;
     private final String descricao;
@@ -22,6 +22,6 @@ public enum TipoErro {
         return Arrays.stream(values())
                 .filter(t -> t.id == id)
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Tipo de erro invalido: " + id));
+                .orElseThrow(() -> new IllegalArgumentException("Tipo de erro inválido: " + id));
     }
 }

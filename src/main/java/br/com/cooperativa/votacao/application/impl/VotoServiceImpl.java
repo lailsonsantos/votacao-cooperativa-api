@@ -36,7 +36,7 @@ public class VotoServiceImpl implements VotoService {
         var agora = clock.instant();
         if (!sessao.estaAberta(agora)) {
             log.warn(
-                    "Voto recusado: sessao encerrada. pautaId={} associado={}",
+                    "Voto recusado: sessão encerrada. pautaId={} associado={}",
                     pautaId,
                     cpf.mascarado());
             throw new SessaoEncerradaException(pautaId);
@@ -50,7 +50,7 @@ public class VotoServiceImpl implements VotoService {
                             Voto.registrar(sessao, cpf.numero(), opcao, agora));
 
             log.info(
-                    "Voto registrado. pautaId={} sessaoId={} associado={} opcao={}",
+                    "Voto registrado. pautaId={} sessaoId={} associado={} opção={}",
                     pautaId,
                     sessao.getId(),
                     cpf.mascarado(),

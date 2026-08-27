@@ -9,11 +9,11 @@ public class RecursoNaoEncontradoException extends NegocioException {
         super(
                 TipoErro.NAO_ENCONTRADO,
                 "recurso-nao-encontrado",
-                "%s nao encontrada para o identificador %s.".formatted(recurso, id));
+                "%s não encontrada para o identificador %s.".formatted(recurso, id));
     }
 
     @Override
     public String getTitulo() {
-        return "Recurso nao encontrado";
+        return "Recurso não encontrado";
     }
 }

@@ -35,7 +35,7 @@ class PautaServiceImplTest {
     }
 
     @Test
-    @DisplayName("carimba a criacao com o instante do relogio injetado")
+    @DisplayName("carimba a criação com o instante do relogio injetado")
     void criar() {
         when(repositorio.salvar(any(Pauta.class))).thenAnswer(c -> c.getArgument(0));
 
@@ -50,7 +50,7 @@ class PautaServiceImplTest {
     }
 
     @Test
-    @DisplayName("monta a pagina com o total vindo do repositorio")
+    @DisplayName("monta a página com o total vindo do repositorio")
     void listar() {
         var uma = Pauta.criar("A", null, AGORA);
         var outra = Pauta.criar("B", null, AGORA);
@@ -79,7 +79,7 @@ class PautaServiceImplTest {
     }
 
     @Test
-    @DisplayName("busca de pauta inexistente vira erro de negocio, nao Optional vazio")
+    @DisplayName("busca de pauta inexistente vira erro de negócio, não Optional vazio")
     void buscarInexistente() {
         var id = UUID.randomUUID();
         when(repositorio.buscarPorId(id)).thenReturn(Optional.empty());

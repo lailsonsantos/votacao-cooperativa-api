@@ -45,7 +45,7 @@ class DatabaseUrlEnvironmentPostProcessorTest {
     }
 
     @Test
-    @DisplayName("aplica a porta padrao do PostgreSQL quando a URI a omite")
+    @DisplayName("aplica a porta padrão do PostgreSQL quando a URI a omite")
     void portaPadrao() {
         var propriedades =
                 DatabaseUrlEnvironmentPostProcessor.converter("postgres://u:p@host/banco");
@@ -67,7 +67,7 @@ class DatabaseUrlEnvironmentPostProcessorTest {
     }
 
     @Test
-    @DisplayName("repassa sem alteracao uma URL que ja esta em formato JDBC")
+    @DisplayName("repassa sem alteracao uma URL que já está em formato JDBC")
     void urlJaEmJdbc() {
         var propriedades =
                 DatabaseUrlEnvironmentPostProcessor.converter("jdbc:postgresql://host:5432/b");
@@ -78,7 +78,7 @@ class DatabaseUrlEnvironmentPostProcessorTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"mysql://u:p@host/b", "nao-e-uma-uri", "http://exemplo.com"})
-    @DisplayName("ignora valores que nao sao conexoes PostgreSQL")
+    @DisplayName("ignora valores que não são conexoes PostgreSQL")
     void ignoraValoresIrreconheciveis(String valor) {
         assertThat(DatabaseUrlEnvironmentPostProcessor.converter(valor)).isEmpty();
     }
@@ -111,7 +111,7 @@ class DatabaseUrlEnvironmentPostProcessorTest {
     }
 
     @Test
-    @DisplayName("aceita usuario sem senha")
+    @DisplayName("aceita usuário sem senha")
     void usuarioSemSenha() {
         var propriedades =
                 DatabaseUrlEnvironmentPostProcessor.converter("postgres://usuario@host/banco");
@@ -141,7 +141,7 @@ class DatabaseUrlEnvironmentPostProcessorTest {
     }
 
     @Test
-    @DisplayName("nao faz nada quando DATABASE_URL nao esta definida")
+    @DisplayName("não faz nada quando DATABASE_URL não está definida")
     void semDatabaseUrl() {
         var environment = new MockEnvironment();
 
@@ -155,7 +155,7 @@ class DatabaseUrlEnvironmentPostProcessorTest {
     }
 
     @Test
-    @DisplayName("nao altera o ambiente quando DATABASE_URL existe mas e irreconhecivel")
+    @DisplayName("não altera o ambiente quando DATABASE_URL existe mas é irreconhecível")
     void databaseUrlIrreconhecivel() {
         var environment = new MockEnvironment();
         environment.setProperty(

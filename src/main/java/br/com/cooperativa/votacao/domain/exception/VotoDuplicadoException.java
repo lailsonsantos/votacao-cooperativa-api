@@ -10,7 +10,7 @@ public class VotoDuplicadoException extends NegocioException {
         super(
                 TipoErro.CONFLITO,
                 "voto-duplicado",
-                "O associado %s ja registrou voto na pauta %s."
+                "O associado %s já registrou voto na pauta %s."
                         .formatted(Cpf.mascarar(associadoId), pautaId),
                 causa);
     }

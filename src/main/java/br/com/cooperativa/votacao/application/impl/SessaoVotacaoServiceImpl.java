@@ -48,7 +48,7 @@ public class SessaoVotacaoServiceImpl implements SessaoVotacaoService {
         try {
             var salva = sessaoRepository.salvarEConfirmar(sessao);
             log.info(
-                    "Sessao de votacao aberta. pautaId={} sessaoId={} duracaoMinutos={} "
+                    "Sessão de votação aberta. pautaId={} sessaoId={} duracaoMinutos={} "
                             + "fechamentoEm={}",
                     pautaId,
                     salva.getId(),

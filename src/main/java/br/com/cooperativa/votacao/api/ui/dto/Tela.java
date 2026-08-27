@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "Descricao de tela no formato do Anexo 1")
+@Schema(description = "Descrição de tela no formato do Anexo 1")
 public record Tela(
         TipoTela tipo, String titulo, List<?> itens, Botao botaoOk, Botao botaoCancelar) {
 

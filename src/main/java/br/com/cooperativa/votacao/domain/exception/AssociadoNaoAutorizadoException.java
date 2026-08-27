@@ -10,6 +10,6 @@ public class AssociadoNaoAutorizadoException extends NegocioException {
 
     @Override
     public String getTitulo() {
-        return "Associado nao autorizado a votar";
+        return "Associado não autorizado a votar";
     }
 }

@@ -54,7 +54,7 @@ class TelaFactoryTest {
         }
 
         @Test
-        @DisplayName("formulario de nova pauta pede titulo e descricao")
+        @DisplayName("formulário de nova pauta pede título e descrição")
         void novaPauta() {
             var tela = telas.novaPauta();
 
@@ -73,7 +73,7 @@ class TelaFactoryTest {
     class Lista {
 
         @Test
-        @DisplayName("uma opcao por pauta, cada uma levando ao proprio detalhe")
+        @DisplayName("uma opção por pauta, cada uma levando ao proprio detalhe")
         void comPautas() {
             var outra = Pauta.criar("Aquisicao de sede", null, AGORA);
             var tela = telas.listaPautas(new Pagina<>(List.of(pauta, outra), 0, 20, 2));
@@ -87,7 +87,7 @@ class TelaFactoryTest {
         }
 
         @Test
-        @DisplayName("lista vazia vira FORMULARIO com saida, e nao SELECAO sem itens")
+        @DisplayName("lista vazia vira FORMULARIO com saída, e não SELECAO sem itens")
         void semPautas() {
             var tela = telas.listaPautas(new Pagina<>(List.of(), 0, 20, 0));
 
@@ -103,7 +103,7 @@ class TelaFactoryTest {
     class Estados {
 
         @Test
-        @DisplayName("sem sessao, sugere a duracao padrao vinda de configuracao")
+        @DisplayName("sem sessão, sugere a duração padrão vinda de configuracao")
         void semSessao() {
             var tela = telas.pautaSemSessao(pauta, 1);
 
@@ -121,35 +121,35 @@ class TelaFactoryTest {
         }
 
         @Test
-        @DisplayName("pauta sem descricao nao gera item de texto vazio")
+        @DisplayName("pauta sem descrição não gera item de texto vazio")
         void semDescricao() {
-            var semTexto = Pauta.criar("So o titulo", null, AGORA);
+            var semTexto = Pauta.criar("Só o título", null, AGORA);
 
             var tela = telas.pautaSemSessao(semTexto, 1);
 
             assertThat(tela.itens())
                     .filteredOn(i -> ((ItemTela) i).tipo() == TipoItem.TEXTO)
                     .hasSize(1)
-                    .allSatisfy(i -> assertThat(((ItemTela) i).texto()).contains("Situacao"));
+                    .allSatisfy(i -> assertThat(((ItemTela) i).texto()).contains("Situação"));
         }
 
         @Test
-        @DisplayName("descricao em branco nao vira item de texto vazio")
+        @DisplayName("descrição em branco não vira item de texto vazio")
         void descricaoEmBranco() {
             // Nulo e "   " precisam ter o mesmo efeito: um item TEXTO vazio
             // apareceria na tela do associado como uma linha em branco.
-            var comEspacos = Pauta.criar("So o titulo", "   ", AGORA);
+            var comEspacos = Pauta.criar("Só o título", "   ", AGORA);
 
             var tela = telas.pautaSemSessao(comEspacos, 1);
 
             assertThat(tela.itens())
                     .filteredOn(i -> ((ItemTela) i).tipo() == TipoItem.TEXTO)
                     .hasSize(1)
-                    .allSatisfy(i -> assertThat(((ItemTela) i).texto()).contains("Situacao"));
+                    .allSatisfy(i -> assertThat(((ItemTela) i).texto()).contains("Situação"));
         }
 
         @Test
-        @DisplayName("sessao aberta coleta o CPF e informa o tempo restante")
+        @DisplayName("sessão aberta coleta o CPF e informa o tempo restante")
         void identificacao() {
             var sessao = SessaoVotacao.abrir(pauta, AGORA, Duration.ofMinutes(5));
 
@@ -179,7 +179,7 @@ class TelaFactoryTest {
         }
 
         @Test
-        @DisplayName("com a sessao ja encerrada, informa o encerramento")
+        @DisplayName("com a sessão já encerrada, informa o encerramento")
         void identificacaoAposFechamento() {
             var sessao = SessaoVotacao.abrir(pauta, AGORA, Duration.ofMinutes(1));
 
@@ -196,14 +196,14 @@ class TelaFactoryTest {
     class VotoResultado {
 
         @Test
-        @DisplayName("opcoes de voto levam o CPF no corpo de cada item")
+        @DisplayName("opções de voto levam o CPF no corpo de cada item")
         void opcoesDeVoto() {
             var tela = telas.opcoesDeVoto(pauta, "19839091069");
 
             assertThat(tela.tipo()).isEqualTo(TipoTela.SELECAO);
             assertThat(tela.itens())
                     .extracting(i -> ((ItemSelecao) i).texto())
-                    .containsExactly("Sim", "Nao");
+                    .containsExactly("Sim", "Não");
             // O cliente apenas reenvia o body; é o servidor quem define o conteúdo.
             assertThat(tela.itens())
                     .allSatisfy(
@@ -213,7 +213,7 @@ class TelaFactoryTest {
         }
 
         @Test
-        @DisplayName("resultado parcial avisa que a sessao segue aberta")
+        @DisplayName("resultado parcial avisa que a sessão segue aberta")
         void resultadoParcial() {
             var r =
                     ResultadoVotacao.de(
@@ -231,7 +231,7 @@ class TelaFactoryTest {
         }
 
         @Test
-        @DisplayName("descreve cada desfecho possivel")
+        @DisplayName("descreve cada desfecho possível")
         void desfechos() {
             record Caso(long sim, long nao, String esperado) {}
             List.of(
@@ -257,7 +257,7 @@ class TelaFactoryTest {
         @Test
         @DisplayName("tela de erro tem mensagem e caminho de volta")
         void erro() {
-            var tela = telas.erro("Voto duplicado", "Voce ja votou nesta pauta.");
+            var tela = telas.erro("Voto duplicado", "Você já votou nesta pauta.");
 
             assertThat(tela.tipo()).isEqualTo(TipoTela.FORMULARIO);
             assertThat(tela.titulo()).isEqualTo("Voto duplicado");
@@ -269,7 +269,7 @@ class TelaFactoryTest {
     }
 
     @Test
-    @DisplayName("tela sem itens nao quebra na copia defensiva")
+    @DisplayName("tela sem itens não quebra na copia defensiva")
     void telaSemItens() {
         // List.copyOf recusa nulo, então o caso é tratado antes. O campo nulo é
         // significativo: ele some da serialização, como o Anexo 1 exige.
@@ -281,7 +281,7 @@ class TelaFactoryTest {
     }
 
     @Test
-    @DisplayName("itens da tela sao imutaveis")
+    @DisplayName("itens da tela são imutaveis")
     void itensImutaveis() {
         var tela = telas.menu();
 

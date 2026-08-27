@@ -17,7 +17,7 @@ class ResultadoVotacaoTest {
 
     private static final UUID PAUTA = UUID.randomUUID();
 
-    @ParameterizedTest(name = "sim={0} nao={1} resulta em {2}")
+    @ParameterizedTest(name = "sim={0} não={1} resulta em {2}")
     @CsvSource({
         "10, 3,  APROVADA",
         "3,  10, REPROVADA",
@@ -35,7 +35,7 @@ class ResultadoVotacaoTest {
     }
 
     @Test
-    @DisplayName("marca como parcial enquanto a sessao esta aberta")
+    @DisplayName("marca como parcial enquanto a sessão está aberta")
     void marcaParcial() {
         assertThat(ResultadoVotacao.de(PAUTA, "Pauta", StatusSessao.ABERTA, 5, 2).parcial())
                 .isTrue();

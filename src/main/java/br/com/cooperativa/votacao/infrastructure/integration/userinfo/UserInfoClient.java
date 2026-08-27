@@ -32,7 +32,7 @@ public class UserInfoClient implements ConsultaAptidaoParaVotar {
     @Retry(name = INSTANCIA)
     @CircuitBreaker(name = INSTANCIA, fallbackMethod = "consultarFallback")
     public Optional<AptidaoParaVotar> consultar(Cpf cpf) {
-        log.debug("Consultando servico externo para o CPF {}", cpf.mascarado());
+        log.debug("Consultando serviço externo para o CPF {}", cpf.mascarado());
 
         var resposta =
                 restClient
@@ -62,7 +62,7 @@ public class UserInfoClient implements ConsultaAptidaoParaVotar {
     @SuppressWarnings("unused")
     private Optional<AptidaoParaVotar> consultarFallback(Cpf cpf, Throwable erro) {
         log.warn(
-                "Servico de verificacao de CPF indisponivel para {}. Aplicando fallback "
+                "Serviço de verificação de CPF indisponível para {}. Aplicando fallback "
                         + "(permite voto = {}). Causa: {}",
                 cpf.mascarado(),
                 properties.fallbackPermiteVoto(),

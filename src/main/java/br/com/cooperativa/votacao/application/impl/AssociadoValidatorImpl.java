@@ -23,7 +23,7 @@ public class AssociadoValidatorImpl implements AssociadoValidator {
         // aplicação sem depender do serviço externo.
         if (!properties.enabled()) {
             log.debug(
-                    "Verificacao externa de aptidao desabilitada; liberando o voto de {}.",
+                    "Verificação externa de aptidao desabilitada; liberando o voto de {}.",
                     cpf.mascarado());
             return;
         }
@@ -34,12 +34,12 @@ public class AssociadoValidatorImpl implements AssociadoValidator {
                         .orElseThrow(
                                 () ->
                                         new AssociadoNaoAutorizadoException(
-                                                "CPF nao encontrado na base de associados."));
+                                                "CPF não encontrado na base de associados."));
 
         if (!aptidao.podeVotar()) {
-            log.warn("Associado {} esta impedido de votar.", cpf.mascarado());
+            log.warn("Associado {} está impedido de votar.", cpf.mascarado());
             throw new AssociadoNaoAutorizadoException(
-                    "O associado nao esta habilitado a votar nesta assembleia.");
+                    "O associado não está habilitado a votar nesta assembleia.");
         }
     }
 }

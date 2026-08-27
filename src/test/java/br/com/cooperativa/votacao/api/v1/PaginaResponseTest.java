@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 class PaginaResponseTest {
 
     @Test
-    @DisplayName("converte o conteudo e preserva os dados de paginacao")
+    @DisplayName("converte o conteúdo e preserva os dados de paginação")
     void converte() {
         var dominio = new Pagina<>(List.of(1, 2, 3), 1, 3, 10);
 
@@ -27,7 +27,7 @@ class PaginaResponseTest {
     }
 
     @Test
-    @DisplayName("marca a ultima pagina corretamente")
+    @DisplayName("marca a ultima página corretamente")
     void ultimaPagina() {
         var resposta = PaginaResponse.de(new Pagina<>(List.of("a"), 3, 3, 10), s -> s);
 
@@ -35,7 +35,7 @@ class PaginaResponseTest {
     }
 
     @Test
-    @DisplayName("conteudo nulo vira lista vazia")
+    @DisplayName("conteúdo nulo vira lista vazia")
     void conteudoNulo() {
         var resposta = new PaginaResponse<String>(null, 0, 10, 0, 0, true);
 
@@ -43,7 +43,7 @@ class PaginaResponseTest {
     }
 
     @Test
-    @DisplayName("lida com pagina vazia sem quebrar")
+    @DisplayName("lida com página vazia sem quebrar")
     void vazia() {
         var resposta =
                 PaginaResponse.de(new Pagina<Integer>(List.of(), 0, 20, 0), Object::toString);

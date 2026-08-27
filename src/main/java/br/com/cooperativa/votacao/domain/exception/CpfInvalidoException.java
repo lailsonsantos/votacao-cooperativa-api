@@ -9,11 +9,11 @@ public class CpfInvalidoException extends NegocioException {
         super(
                 TipoErro.ENTRADA_INVALIDA,
                 "cpf-invalido",
-                "O CPF informado (%s) nao e valido.".formatted(Cpf.mascarar(valor)));
+                "O CPF informado (%s) não é válido.".formatted(Cpf.mascarar(valor)));
     }
 
     @Override
     public String getTitulo() {
-        return "CPF invalido";
+        return "CPF inválido";
     }
 }

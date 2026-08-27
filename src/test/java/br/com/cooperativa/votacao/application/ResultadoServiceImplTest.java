@@ -81,7 +81,7 @@ class ResultadoServiceImplTest {
     }
 
     @Test
-    @DisplayName("apura sessao aberta e marca o resultado como parcial")
+    @DisplayName("apura sessão aberta e marca o resultado como parcial")
     void sessaoAberta() {
         when(sessaoService.buscarObrigatoria(pauta.getId())).thenReturn(sessao);
         when(votoRepository.contarPorOpcao(sessao.getId()))
@@ -96,7 +96,7 @@ class ResultadoServiceImplTest {
     }
 
     @Test
-    @DisplayName("nao cacheia enquanto a sessao esta aberta")
+    @DisplayName("não cacheia enquanto a sessão está aberta")
     void naoCacheiaSessaoAberta() {
         when(sessaoService.buscarObrigatoria(pauta.getId())).thenReturn(sessao);
         when(votoRepository.contarPorOpcao(sessao.getId()))
@@ -148,7 +148,7 @@ class ResultadoServiceImplTest {
     }
 
     @Test
-    @DisplayName("sessao sem nenhum voto resulta em SEM_VOTOS")
+    @DisplayName("sessão sem nenhum voto resulta em SEM_VOTOS")
     void semVotos() {
         when(sessaoService.buscarObrigatoria(pauta.getId())).thenReturn(sessao);
         when(votoRepository.contarPorOpcao(sessao.getId())).thenReturn(List.of());
@@ -160,7 +160,7 @@ class ResultadoServiceImplTest {
     }
 
     @Test
-    @DisplayName("nao consulta o repositorio quando o resultado ja esta em cache")
+    @DisplayName("não consulta o repositorio quando o resultado já está em cache")
     void reaproveitaCacheEntreInstancias() {
         when(sessaoService.buscarObrigatoria(pauta.getId())).thenReturn(sessao);
         when(votoRepository.contarPorOpcao(sessao.getId()))
@@ -175,7 +175,7 @@ class ResultadoServiceImplTest {
     }
 
     @Test
-    @DisplayName("propaga a falha quando a pauta nunca teve sessao")
+    @DisplayName("propaga a falha quando a pauta nunca teve sessão")
     void semSessao() {
         var id = pauta.getId();
         when(sessaoService.buscarObrigatoria(id))

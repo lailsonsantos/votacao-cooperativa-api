@@ -21,7 +21,7 @@ import org.springframework.test.context.DynamicPropertySource;
 
 @SpringBootTest
 @ActiveProfiles("local")
-@DisplayName("Fallback da integracao de CPF (Bonus 1)")
+@DisplayName("Fallback da integração de CPF (Bonus 1)")
 class UserInfoFallbackIT {
 
     private static WireMockServer wireMock;
@@ -60,7 +60,7 @@ class UserInfoFallbackIT {
     }
 
     @Test
-    @DisplayName("libera o voto quando o servico externo esta indisponivel")
+    @DisplayName("libera o voto quando o serviço externo está indisponível")
     void aplicaFallbackConfigurado() {
         var resposta = client.consultar(Cpf.de("19839091069"));
 

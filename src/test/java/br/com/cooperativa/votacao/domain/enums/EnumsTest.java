@@ -30,7 +30,7 @@ class EnumsTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("todosOsEnums")
-    @DisplayName("todo valor tem id unico e descricao preenchida")
+    @DisplayName("todo valor tem id único e descrição preenchida")
     void idUnicoEDescricaoPreenchida(String nome, Object[] valores) {
         var ids = Arrays.stream(valores).map(v -> chamar(v, "getId")).toList();
         var descricoes =
@@ -71,7 +71,7 @@ class EnumsTest {
     }
 
     @Test
-    @DisplayName("a descricao do resultado e a que aparece na tela")
+    @DisplayName("a descrição do resultado é a que aparece na tela")
     void descricaoDoResultado() {
         assertThat(ResultadoApuracao.APROVADA.getDescricao()).isEqualTo("APROVADA");
         assertThat(ResultadoApuracao.SEM_VOTOS.getDescricao()).isEqualTo("Nenhum voto registrado");

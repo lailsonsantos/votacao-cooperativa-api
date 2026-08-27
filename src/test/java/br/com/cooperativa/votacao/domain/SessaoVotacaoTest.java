@@ -18,7 +18,7 @@ class SessaoVotacaoTest {
     private final Pauta pauta = Pauta.criar("Reforma do estatuto", null, ABERTURA);
 
     @Test
-    @DisplayName("permanece aberta durante a janela de votacao")
+    @DisplayName("permanece aberta durante a janela de votação")
     void abertaDuranteAJanela() {
         var sessao = SessaoVotacao.abrir(pauta, ABERTURA, Duration.ofMinutes(5));
 
@@ -28,7 +28,7 @@ class SessaoVotacaoTest {
     }
 
     @Test
-    @DisplayName("fecha exatamente no instante de fechamento, nao depois")
+    @DisplayName("fecha exatamente no instante de fechamento, não depois")
     void fechaNoInstanteDeFechamento() {
         var sessao = SessaoVotacao.abrir(pauta, ABERTURA, Duration.ofMinutes(5));
 
@@ -50,7 +50,7 @@ class SessaoVotacaoTest {
     }
 
     @Test
-    @DisplayName("aplica a duracao informada ao instante de fechamento")
+    @DisplayName("aplica a duração informada ao instante de fechamento")
     void aplicaDuracao() {
         var sessao = SessaoVotacao.abrir(pauta, ABERTURA, Duration.ofMinutes(3));
 

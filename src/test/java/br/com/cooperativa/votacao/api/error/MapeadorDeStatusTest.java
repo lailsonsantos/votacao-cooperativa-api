@@ -47,7 +47,7 @@ class MapeadorDeStatusTest {
 
     @ParameterizedTest(name = "produz {1}")
     @MethodSource("excecoes")
-    @DisplayName("cada excecao de negocio produz o status correspondente")
+    @DisplayName("cada exceção de negócio produz o status correspondente")
     void mapeia(NegocioException excecao, HttpStatus esperado) {
         assertThat(MapeadorDeStatus.de(excecao.getTipo())).isEqualTo(esperado);
     }
@@ -62,7 +62,7 @@ class MapeadorDeStatusTest {
     }
 
     @Test
-    @DisplayName("cada excecao carrega titulo e codigo estaveis")
+    @DisplayName("cada exceção carrega título e código estáveis")
     void tituloECodigo() {
         var e =
                 new VotoDuplicadoException(
@@ -80,12 +80,12 @@ class MapeadorDeStatusTest {
     void titulos() {
         var id = UUID.randomUUID();
         assertThat(new RecursoNaoEncontradoException("Pauta", id).getTitulo())
-                .isEqualTo("Recurso nao encontrado");
-        assertThat(new SessaoJaAbertaException(id).getTitulo()).isEqualTo("Sessao ja aberta");
-        assertThat(new SessaoNaoAbertaException(id).getTitulo()).isEqualTo("Sessao nao aberta");
-        assertThat(new SessaoEncerradaException(id).getTitulo()).isEqualTo("Sessao encerrada");
-        assertThat(new CpfInvalidoException("111").getTitulo()).isEqualTo("CPF invalido");
+                .isEqualTo("Recurso não encontrado");
+        assertThat(new SessaoJaAbertaException(id).getTitulo()).isEqualTo("Sessão já aberta");
+        assertThat(new SessaoNaoAbertaException(id).getTitulo()).isEqualTo("Sessão não aberta");
+        assertThat(new SessaoEncerradaException(id).getTitulo()).isEqualTo("Sessão encerrada");
+        assertThat(new CpfInvalidoException("111").getTitulo()).isEqualTo("CPF inválido");
         assertThat(new AssociadoNaoAutorizadoException("x").getTitulo())
-                .isEqualTo("Associado nao autorizado a votar");
+                .isEqualTo("Associado não autorizado a votar");
     }
 }

@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(
         name = "Telas (Server-Driven UI)",
         description =
-                "Descricoes de tela no formato do Anexo 1. Cada POST executa a acao e devolve"
+                "Descrições de tela no formato do Anexo 1. Cada POST executa a ação e devolve"
                         + " a proxima tela.")
 @RequiredArgsConstructor
 public class TelaController {
@@ -46,26 +46,26 @@ public class TelaController {
     private final Clock clock;
 
     @GetMapping
-    @Operation(summary = "Menu inicial da aplicacao")
+    @Operation(summary = "Menu inicial da aplicação")
     public Tela menu() {
         return telas.menu();
     }
 
     @GetMapping("/pautas")
-    @Operation(summary = "Lista as pautas como tela de selecao")
+    @Operation(summary = "Lista as pautas como tela de seleção")
     public Tela listarPautas(
             @RequestParam(defaultValue = "0")
-                    @Min(value = 0, message = "A pagina nao pode ser negativa.")
+                    @Min(value = 0, message = "A página não pode ser negativa.")
                     int page,
             @RequestParam(defaultValue = "20")
-                    @Min(value = 1, message = "O tamanho da pagina deve ser ao menos 1.")
-                    @Max(value = 100, message = "O tamanho da pagina nao pode passar de 100.")
+                    @Min(value = 1, message = "O tamanho da página deve ser ao menos 1.")
+                    @Max(value = 100, message = "O tamanho da página não pode passar de 100.")
                     int size) {
         return telas.listaPautas(pautaService.listar(page, size));
     }
 
     @GetMapping("/pautas/nova")
-    @Operation(summary = "Formulario de cadastro de pauta")
+    @Operation(summary = "Formulário de cadastro de pauta")
     public Tela formularioNovaPauta() {
         return telas.novaPauta();
     }
@@ -82,7 +82,7 @@ public class TelaController {
     }
 
     @GetMapping("/pautas/{id}")
-    @Operation(summary = "Tela da pauta, variando conforme o estado da sessao")
+    @Operation(summary = "Tela da pauta, variando conforme o estado da sessão")
     public Tela pauta(@PathVariable UUID id) {
         var pauta = pautaService.buscar(id);
         var sessao = sessaoService.buscar(id);
@@ -100,14 +100,14 @@ public class TelaController {
     }
 
     @PostMapping("/pautas/{id}/sessao")
-    @Operation(summary = "Abre a sessao e devolve a tela de votacao")
+    @Operation(summary = "Abre a sessão e devolve a tela de votação")
     public Tela abrirSessao(@PathVariable UUID id, @RequestBody AcaoTelaRequest acao) {
         var sessao = sessaoService.abrir(id, acao.inteiro(TelaFactory.CAMPO_DURACAO));
         return telas.identificacao(sessao, clock.instant());
     }
 
     @PostMapping("/pautas/{id}/votos/identificacao")
-    @Operation(summary = "Valida o CPF e devolve as opcoes de voto")
+    @Operation(summary = "Valida o CPF e devolve as opções de voto")
     public Tela identificar(@PathVariable UUID id, @RequestBody AcaoTelaRequest acao) {
         var pauta = pautaService.buscar(id);
         var sessao = sessaoService.buscarObrigatoria(id);
@@ -119,7 +119,7 @@ public class TelaController {
         var cpf = Cpf.de(acao.texto(TelaFactory.CAMPO_CPF));
 
         if (votoService.jaVotou(id, cpf)) {
-            return telas.erro(pauta.getTitulo(), "Voce ja registrou seu voto nesta pauta.");
+            return telas.erro(pauta.getTitulo(), "Você já registrou seu voto nesta pauta.");
         }
 
         return telas.opcoesDeVoto(pauta, cpf.numero());
@@ -136,7 +136,7 @@ public class TelaController {
     }
 
     @GetMapping("/pautas/{id}/resultado")
-    @Operation(summary = "Tela de resultado da apuracao")
+    @Operation(summary = "Tela de resultado da apuração")
     public Tela resultado(@PathVariable UUID id) {
         return telas.resultado(resultadoService.apurar(id));
     }

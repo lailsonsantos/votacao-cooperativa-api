@@ -39,7 +39,7 @@ public class TelaFactory {
         return Tela.selecao(
                 "Assembleia Cooperativa",
                 List.of(
-                        ItemSelecao.navegacao("Pautas em deliberacao", urls.listaPautas()),
+                        ItemSelecao.navegacao("Pautas em deliberação", urls.listaPautas()),
                         ItemSelecao.navegacao("Cadastrar nova pauta", urls.novaPauta())));
     }
 
@@ -52,9 +52,9 @@ public class TelaFactory {
         return Tela.formulario(
                 "Nova pauta",
                 List.of(
-                        ItemTela.texto("Informe o assunto que sera submetido a assembleia."),
-                        ItemTela.inputTexto(CAMPO_TITULO, "Titulo da pauta", null),
-                        ItemTela.inputTexto(CAMPO_DESCRICAO, "Descricao", null)),
+                        ItemTela.texto("Informe o assunto que será submetido a assembleia."),
+                        ItemTela.inputTexto(CAMPO_TITULO, "Título da pauta", null),
+                        ItemTela.inputTexto(CAMPO_DESCRICAO, "Descrição", null)),
                 Botao.de("Cadastrar", urls.criarPauta(), Map.of()),
                 Botao.navegacao("Cancelar", urls.menu()));
     }
@@ -69,8 +69,8 @@ public class TelaFactory {
         if (pautas.vazia()) {
             // SELECAO vazia deixaria o usuário sem saída. Uso FORMULARIO pra ter botão.
             return Tela.formulario(
-                    "Pautas em deliberacao",
-                    List.of(ItemTela.texto("Nenhuma pauta cadastrada ate o momento.")),
+                    "Pautas em deliberação",
+                    List.of(ItemTela.texto("Nenhuma pauta cadastrada até o momento.")),
                     Botao.navegacao("Cadastrar nova pauta", urls.novaPauta()),
                     Botao.navegacao("Voltar", urls.menu()));
         }
@@ -80,7 +80,7 @@ public class TelaFactory {
                         .map(p -> ItemSelecao.navegacao(p.getTitulo(), urls.pauta(p.getId())))
                         .toList();
 
-        return Tela.selecao("Pautas em deliberacao", itens);
+        return Tela.selecao("Pautas em deliberação", itens);
     }
 
     /**
@@ -93,15 +93,15 @@ public class TelaFactory {
     public Tela pautaSemSessao(Pauta pauta, int duracaoPadraoMinutos) {
         var itens = new ArrayList<ItemTela>();
         adicionarDescricao(itens, pauta);
-        itens.add(ItemTela.texto("Situacao: nenhuma sessao de votacao foi aberta."));
+        itens.add(ItemTela.texto("Situação: nenhuma sessão de votação foi aberta."));
         itens.add(
                 ItemTela.inputNumero(
-                        CAMPO_DURACAO, "Duracao da sessao (minutos)", duracaoPadraoMinutos));
+                        CAMPO_DURACAO, "Duração da sessão (minutos)", duracaoPadraoMinutos));
 
         return Tela.formulario(
                 pauta.getTitulo(),
                 itens,
-                Botao.de("Abrir sessao", urls.abrirSessao(pauta.getId()), Map.of()),
+                Botao.de("Abrir sessão", urls.abrirSessao(pauta.getId()), Map.of()),
                 Botao.navegacao("Voltar", urls.listaPautas()));
     }
 
@@ -116,7 +116,7 @@ public class TelaFactory {
         var pauta = sessao.getPauta();
         var itens = new ArrayList<ItemTela>();
         adicionarDescricao(itens, pauta);
-        itens.add(ItemTela.texto("Sessao aberta. " + tempoRestante(sessao.tempoRestante(agora))));
+        itens.add(ItemTela.texto("Sessão aberta. " + tempoRestante(sessao.tempoRestante(agora))));
         itens.add(ItemTela.inputTexto(CAMPO_CPF, "Seu CPF", null));
 
         return Tela.formulario(
@@ -139,7 +139,7 @@ public class TelaFactory {
                 pauta.getTitulo(),
                 List.of(
                         ItemSelecao.de("Sim", url, Map.of(CAMPO_CPF, cpf, "opcao", "SIM")),
-                        ItemSelecao.de("Nao", url, Map.of(CAMPO_CPF, cpf, "opcao", "NAO"))));
+                        ItemSelecao.de("Não", url, Map.of(CAMPO_CPF, cpf, "opcao", "NAO"))));
     }
 
     /**
@@ -153,10 +153,10 @@ public class TelaFactory {
                 List.of(
                         ItemTela.texto(
                                 resultado.parcial()
-                                        ? "Apuracao parcial: a sessao ainda esta aberta."
-                                        : "Sessao encerrada. Resultado final."),
+                                        ? "Apuração parcial: a sessão ainda está aberta."
+                                        : "Sessão encerrada. Resultado final."),
                         ItemTela.texto("Sim: %d voto(s)".formatted(resultado.votosSim())),
-                        ItemTela.texto("Nao: %d voto(s)".formatted(resultado.votosNao())),
+                        ItemTela.texto("Não: %d voto(s)".formatted(resultado.votosNao())),
                         ItemTela.texto("Total: %d voto(s)".formatted(resultado.totalVotos())),
                         ItemTela.texto("Resultado: " + resultado.resultado().getDescricao()));
 
@@ -202,7 +202,7 @@ public class TelaFactory {
      */
     private String tempoRestante(Duration restante) {
         if (restante.isZero()) {
-            return "A votacao foi encerrada.";
+            return "A votação foi encerrada.";
         }
         var minutos = restante.toMinutes();
         var segundos = restante.toSecondsPart();

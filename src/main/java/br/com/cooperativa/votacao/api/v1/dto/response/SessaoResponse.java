@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
 import java.util.UUID;
 
-@Schema(description = "Sessao de votacao de uma pauta")
+@Schema(description = "Sessão de votação de uma pauta")
 public record SessaoResponse(
         UUID id,
         UUID pautaId,

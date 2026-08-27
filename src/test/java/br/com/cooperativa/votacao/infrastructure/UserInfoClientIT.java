@@ -97,7 +97,7 @@ class UserInfoClientIT {
     }
 
     @Test
-    @DisplayName("trata 404 como CPF desconhecido, e nao como falha de comunicacao")
+    @DisplayName("trata 404 como CPF desconhecido, e não como falha de comunicação")
     void desconhecido() {
         wireMock.stubFor(
                 get(urlPathEqualTo("/users/11144477735")).willReturn(aResponse().withStatus(404)));

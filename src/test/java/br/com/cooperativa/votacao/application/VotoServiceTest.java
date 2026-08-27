@@ -65,7 +65,7 @@ class VotoServiceTest {
     }
 
     @Test
-    @DisplayName("registra o voto quando a sessao esta aberta")
+    @DisplayName("registra o voto quando a sessão está aberta")
     void registraVotoComSessaoAberta() {
         when(sessaoService.buscarObrigatoria(pautaId)).thenReturn(sessao);
         when(votoRepository.salvarEConfirmar(any(Voto.class)))
@@ -79,7 +79,7 @@ class VotoServiceTest {
     }
 
     @Test
-    @DisplayName("recusa voto apos o fechamento da sessao")
+    @DisplayName("recusa voto após o fechamento da sessão")
     void recusaVotoComSessaoEncerrada() {
         when(sessaoService.buscarObrigatoria(pautaId)).thenReturn(sessao);
 
@@ -106,7 +106,7 @@ class VotoServiceTest {
     }
 
     @Test
-    @DisplayName("traduz violacao de constraint em voto duplicado")
+    @DisplayName("traduz violação de constraint em voto duplicado")
     void traduzViolacaoDeConstraint() {
         when(sessaoService.buscarObrigatoria(pautaId)).thenReturn(sessao);
         when(votoRepository.salvarEConfirmar(any(Voto.class)))

@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(NegocioException.class)
     public ResponseEntity<Object> tratarNegocio(NegocioException e, HttpServletRequest request) {
-        log.warn("Regra de negocio violada: [{}] {}", e.getTipo(), e.getMessage());
+        log.warn("Regra de negócio violada: [{}] {}", e.getTipo(), e.getMessage());
 
         if (ehTela(request)) {
             return ResponseEntity.ok(telas.erro(e.getTitulo(), e.getMessage()));
@@ -72,10 +72,10 @@ public class GlobalExceptionHandler {
                         .map(erro -> "%s: %s".formatted(erro.getField(), erro.getDefaultMessage()))
                         .collect(Collectors.joining(" "));
 
-        log.warn("Requisicao invalida: {}", detalhe);
+        log.warn("Requisição inválida: {}", detalhe);
 
         if (ehTela(request)) {
-            return ResponseEntity.ok(telas.erro("Dados invalidos", detalhe));
+            return ResponseEntity.ok(telas.erro("Dados inválidos", detalhe));
         }
 
         return ResponseEntity.badRequest()
@@ -83,7 +83,7 @@ public class GlobalExceptionHandler {
                         problema(
                                 HttpStatus.BAD_REQUEST,
                                 "requisicao-invalida",
-                                "Requisicao invalida",
+                                "Requisição inválida",
                                 detalhe,
                                 request));
     }
@@ -101,13 +101,13 @@ public class GlobalExceptionHandler {
     })
     public ResponseEntity<Object> tratarCorpoInvalido(Exception e, HttpServletRequest request) {
         var detalhe =
-                "Nao foi possivel interpretar a requisicao. Verifique os campos e os valores"
-                        + " enviados (a opcao de voto deve ser SIM ou NAO).";
+                "Não foi possível interpretar a requisição. Verifique os campos e os valores"
+                        + " enviados (a opção de voto deve ser SIM ou NAO).";
 
-        log.warn("Corpo de requisicao invalido: {}", e.getMessage());
+        log.warn("Corpo de requisição inválido: {}", e.getMessage());
 
         if (ehTela(request)) {
-            return ResponseEntity.ok(telas.erro("Dados invalidos", detalhe));
+            return ResponseEntity.ok(telas.erro("Dados inválidos", detalhe));
         }
 
         return ResponseEntity.badRequest()
@@ -115,7 +115,7 @@ public class GlobalExceptionHandler {
                         problema(
                                 HttpStatus.BAD_REQUEST,
                                 "requisicao-invalida",
-                                "Requisicao invalida",
+                                "Requisição inválida",
                                 detalhe,
                                 request));
     }
@@ -131,8 +131,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> tratarIntegridade(
             DataIntegrityViolationException e, HttpServletRequest request) {
         log.warn(
-                "Violacao de integridade nao traduzida: {}", e.getMostSpecificCause().getMessage());
-        var detalhe = "A operacao conflita com dados ja registrados.";
+                "Violação de integridade não traduzida: {}", e.getMostSpecificCause().getMessage());
+        var detalhe = "A operacao conflita com dados já registrados.";
 
         if (ehTela(request)) {
             return ResponseEntity.ok(telas.erro("Conflito", detalhe));
@@ -164,21 +164,21 @@ public class GlobalExceptionHandler {
         var status = metodoNaoSuportado ? HttpStatus.METHOD_NOT_ALLOWED : HttpStatus.NOT_FOUND;
         var detalhe =
                 metodoNaoSuportado
-                        ? "O metodo %s nao e suportado neste recurso."
+                        ? "O método %s não é suportado neste recurso."
                                 .formatted(request.getMethod())
-                        : "Nao existe recurso em %s.".formatted(request.getRequestURI());
+                        : "Não existe recurso em %s.".formatted(request.getRequestURI());
 
         log.warn(
-                "Requisicao para rota invalida: {} {}",
+                "Requisição para rota inválida: {} {}",
                 request.getMethod(),
                 request.getRequestURI());
 
         if (ehTela(request)) {
-            return ResponseEntity.ok(telas.erro("Tela nao encontrada", detalhe));
+            return ResponseEntity.ok(telas.erro("Tela não encontrada", detalhe));
         }
 
         return ResponseEntity.status(status)
-                .body(problema(status, "rota-invalida", "Rota invalida", detalhe, request));
+                .body(problema(status, "rota-invalida", "Rota inválida", detalhe, request));
     }
 
     /**
@@ -197,10 +197,10 @@ public class GlobalExceptionHandler {
                         .map(v -> "%s: %s".formatted(ultimoNo(v), v.getMessage()))
                         .collect(Collectors.joining(" "));
 
-        log.warn("Parametro de requisicao invalido: {}", detalhe);
+        log.warn("Parametro de requisição inválido: {}", detalhe);
 
         if (ehTela(request)) {
-            return ResponseEntity.ok(telas.erro("Dados invalidos", detalhe));
+            return ResponseEntity.ok(telas.erro("Dados inválidos", detalhe));
         }
 
         return ResponseEntity.badRequest()
@@ -208,7 +208,7 @@ public class GlobalExceptionHandler {
                         problema(
                                 HttpStatus.BAD_REQUEST,
                                 "requisicao-invalida",
-                                "Requisicao invalida",
+                                "Requisição inválida",
                                 detalhe,
                                 request));
     }
