@@ -1,5 +1,7 @@
 package br.com.cooperativa.votacao.application;
 
+import br.com.cooperativa.votacao.application.impl.SessaoVotacaoServiceImpl;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -50,7 +52,7 @@ class SessaoVotacaoServiceTest {
                         new AppProperties.Sessao(DURACAO_PADRAO));
 
         servico =
-                new SessaoVotacaoService(
+                new SessaoVotacaoServiceImpl(
                         sessaoRepository,
                         pautaService,
                         properties,

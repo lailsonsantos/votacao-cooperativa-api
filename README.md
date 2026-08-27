@@ -102,7 +102,7 @@ Testcontainers).
 ./mvnw verify
 ```
 
-Executa 75 testes e o gate de cobertura. Relatório em
+Executa 76 testes e o gate de cobertura. Relatório em
 `target/site/jacoco/index.html`.
 
 > **Docker Engine 29+** elevou a versão mínima da API aceita. O projeto já fixa
@@ -315,7 +315,7 @@ Análise completa das alternativas e da política de depreciação:
 
 ## Qualidade
 
-**75 testes**, gate de cobertura em 80% de linhas (falha o build abaixo disso).
+**76 testes**, gate de cobertura em 80% de linhas (falha o build abaixo disso).
 
 | Nível | Ferramenta | Alvo |
 |---|---|---|
@@ -324,7 +324,7 @@ Análise completa das alternativas e da política de depreciação:
 | Contrato de tela | MockMvc + `jsonPath` | Cada campo conferido contra o Anexo 1 |
 | Integração externa | WireMock | Os 4 cenários do serviço de CPF |
 | Concorrência | `ExecutorService` + `CountDownLatch` | 200 threads → 1 voto |
-| Arquitetura | ArchUnit | 7 regras: direção das dependências, domínio livre de framework, ausência de ciclos |
+| Arquitetura | ArchUnit | 8 regras: direção das dependências, domínio livre de framework, ausência de ciclos |
 
 ### Logs
 
@@ -420,7 +420,8 @@ src/main/java/br/com/cooperativa/votacao
 │   ├── model/
 │   ├── repository/   Portas de persistência, com apenas os métodos usados
 │   └── exception/
-├── application/      Casos de uso e @Transactional
+├── application/      Portas de entrada: o contrato dos casos de uso
+│   ├── impl/         Implementações dos casos de uso e @Transactional
 │   └── port/         Portas de saída (o que a aplicação precisa do mundo externo)
 ├── infrastructure/   Adaptadores: persistência JPA e serviço externo de CPF
 └── api/

@@ -1,5 +1,7 @@
 package br.com.cooperativa.votacao.application;
 
+import br.com.cooperativa.votacao.application.impl.AssociadoValidatorImpl;
+
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.never;
@@ -38,7 +40,7 @@ class AssociadoValidatorTest {
     private AssociadoValidator validador(boolean habilitada) {
         var properties =
                 new UserInfoProperties("http://stub", habilitada, true, 2000, 3000);
-        return new AssociadoValidator(client, properties);
+        return new AssociadoValidatorImpl(client, properties);
     }
 
     @Test

@@ -1,5 +1,7 @@
 package br.com.cooperativa.votacao.application;
 
+import br.com.cooperativa.votacao.application.impl.VotoServiceImpl;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -63,7 +65,7 @@ class VotoServiceTest {
      * @return o servico pronto para uso
      */
     private VotoService servicoEm(Instant agora) {
-        return new VotoService(
+        return new VotoServiceImpl(
                 votoRepository,
                 sessaoService,
                 associadoValidator,

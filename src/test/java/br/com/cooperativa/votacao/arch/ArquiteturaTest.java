@@ -115,6 +115,24 @@ class ArquiteturaTest {
                     .because("o adaptador implementa a porta; nao consome caso de uso");
 
     /**
+     * Ninguem depende de uma implementacao de caso de uso.
+     *
+     * <p>As classes de {@code application.impl} sao detalhe: quem as consome
+     * depende da interface correspondente, e o Spring resolve a ligacao. Sem esta
+     * regra, um import descuidado reintroduziria o acoplamento que as abstracoes
+     * existem para evitar, e ninguem perceberia ate a proxima troca.
+     */
+    @ArchTest
+    static final ArchRule ninguemDependeDeImplementacao =
+            noClasses()
+                    .that()
+                    .resideOutsideOfPackage("..application.impl..")
+                    .should()
+                    .dependOnClassesThat()
+                    .resideInAPackage("..application.impl..")
+                    .because("o consumidor depende da abstracao, nao da implementacao");
+
+    /**
      * Nenhuma regra de negocio mora em controlador.
      *
      * <p>E o que permite que as duas superficies HTTP compartilhem o mesmo

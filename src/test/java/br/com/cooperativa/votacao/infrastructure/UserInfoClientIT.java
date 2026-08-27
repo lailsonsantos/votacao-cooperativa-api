@@ -6,7 +6,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import br.com.cooperativa.votacao.application.AssociadoValidator;
+import br.com.cooperativa.votacao.application.impl.AssociadoValidatorImpl;
 import br.com.cooperativa.votacao.config.UserInfoProperties;
 import br.com.cooperativa.votacao.domain.exception.AssociadoNaoAutorizadoException;
 import br.com.cooperativa.votacao.domain.model.Cpf;
@@ -100,7 +100,7 @@ class UserInfoClientIT {
                                         .withHeader("Content-Type", "application/json")
                                         .withBody("{\"status\":\"UNABLE_TO_VOTE\"}")));
 
-        var validador = new AssociadoValidator(client, properties);
+        var validador = new AssociadoValidatorImpl(client, properties);
 
         assertThatThrownBy(() -> validador.validarPodeVotar(Cpf.de("62289608068")))
                 .isInstanceOf(AssociadoNaoAutorizadoException.class);

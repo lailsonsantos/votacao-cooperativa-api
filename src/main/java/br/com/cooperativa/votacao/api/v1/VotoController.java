@@ -57,8 +57,6 @@ public class VotoController {
     })
     public VotoResponse votar(
             @PathVariable UUID id, @Valid @RequestBody RegistrarVotoRequest request) {
-        // Cpf.de valida os digitos verificadores antes de qualquer acesso a banco
-        // ou chamada remota; um numero impossivel nao merece uma ida a rede.
         var voto = votoService.registrar(id, Cpf.de(request.associadoId()), request.opcao());
         return VotoResponse.de(voto);
     }

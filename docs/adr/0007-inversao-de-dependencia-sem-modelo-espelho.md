@@ -38,6 +38,19 @@ duplicar o modelo.
 - `Pagina<T>` é um record de domínio, para que as portas não precisem falar
   `org.springframework.data.domain.Page`.
 
+**Portas de entrada.** Os casos de uso também são interfaces
+(`PautaService`, `SessaoVotacaoService`, `VotoService`, `ResultadoService`,
+`AssociadoValidator`), implementadas em `application.impl`. Se as portas de saída
+declaram o que a aplicação precisa do mundo externo, as de entrada declaram o que
+o mundo externo pode pedir à aplicação — e o padrão só fica coerente com as duas
+metades.
+
+O argumento contra interfaces com uma única implementação é conhecido e válido em
+geral. Aqui ele não se aplica por dois motivos concretos: a camada de API tem
+**duas superfícies** (REST e telas) consumindo os mesmos casos de uso, e o
+contrato precisa ser explícito para ambas; e o Javadoc de contrato passa a viver
+em um só lugar, com as implementações documentando apenas o *como*.
+
 **O que continua como estava:** as entidades seguem anotadas com JPA e servindo
 como modelo de domínio.
 
@@ -55,6 +68,8 @@ como modelo de domínio.
   de herdar vinte.
 - Open/Closed no tratamento de erros: uma regra nova reutiliza uma natureza
   existente e `MapeadorDeStatus` não muda.
+- O Javadoc de contrato vive na interface e não se repete na implementação —
+  duplicá-lo criaria duas versões livres para divergir.
 
 **Contra.**
 
@@ -73,6 +88,8 @@ diferente de `JpaRepository`, que traz uma API inteira e semântica transacional
 
 ## Verificação
 
-`ArquiteturaTest` tem sete regras que fazem o build falhar se a direção das
+`ArquiteturaTest` tem oito regras que fazem o build falhar se a direção das
 dependências for invertida — incluindo a que proíbe `org.springframework..` no
-domínio, exatamente a brecha por onde `HttpStatus` havia entrado.
+domínio (exatamente a brecha por onde `HttpStatus` havia entrado) e a que impede
+qualquer classe de fora de `application.impl` de depender de uma implementação de
+caso de uso.
