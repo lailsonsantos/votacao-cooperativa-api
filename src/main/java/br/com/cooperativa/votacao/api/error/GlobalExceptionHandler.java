@@ -268,14 +268,6 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Monta a tela de erro apresentada ao cliente do Anexo 1.
-     *
-     * @param titulo titulo da tela
-     * @param mensagem explicação ao usuário
-     * @return a tela de erro
-     */
-
-    /**
      * Monta o corpo de erro no padrão RFC 7807.
      *
      * @param status status HTTP
